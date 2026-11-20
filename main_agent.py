@@ -16,6 +16,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.store.memory import InMemoryStore
 from browser_tools import BrowserAgent, get_browser_tools, get_document_tools
 from mcp_manager import MCPManager
+import random
 
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env", override=True)
@@ -35,7 +36,7 @@ llm = ChatGoogleGenerativeAI(
     model=MODEL,
     google_api_key=API_KEY,
     temperature=0.7,
-    seed=42,
+    seed=random.randint(1, 1000000),
     max_output_tokens=8192,
     top_p=0.95,
     top_k=40,
