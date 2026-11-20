@@ -21,6 +21,8 @@ sqlparse
 # Document Processing & Operations
 PyMuPDF
 python-docx
+spire.doc
+plum-dispatch
 reportlab
 pypdf
 pdf2docx
