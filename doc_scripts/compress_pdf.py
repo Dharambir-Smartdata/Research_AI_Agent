@@ -23,7 +23,10 @@ def compress_pdf(input_path: str, output_path: str = None) -> str:
 
     orig_size = inp.stat().st_size
     new_size = output_path.stat().st_size
-    print(f"Compressed {inp.name} ({orig_size} bytes -> {new_size} bytes)")
+    orig_kb = orig_size / 1024
+    new_kb = new_size / 1024
+    reduction = ((orig_size - new_size) / orig_size * 100) if orig_size else 0
+    print(f"Compressed {inp.name}: {orig_kb:.1f} KB -> {new_kb:.1f} KB ({reduction:.1f}% reduction)")
     print(f"SAVED: {output_path}")
     return str(output_path)
 

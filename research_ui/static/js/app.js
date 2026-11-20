@@ -1624,7 +1624,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .replace(/\[.*?\]\((?:uploads\/|\/api\/uploads\/|http)[^)]*\)/gi, '')
                 .replace(/(?:You can download[^.\n]*|Download the[^.\n]*|Download link:?)[^.\n]*\.?/gi, '')
                 .replace(/(?:uploads\/|\buploads[\\/])/g, '')
-                .replace(/(?:The modified file has been saved as:?|Saved as:?)\s*`?[a-zA-Z0-9_\-.]+\.(?:pdf|docx|doc|md|txt)`?/gi, '')
+                .replace(/^(?:The modified file has been saved as:?|Saved as:?|Output file:?)\s*.*$/gim, '')
                 .trim();
         }
 

@@ -426,12 +426,15 @@ async def main():
             try:
                 print("\n[AGENT] Working...\n")
                 file_path = _extract_file(prompt)
-                is_doc_task = bool(
-                    (file_path and file_path.lower().endswith(
-                        (".pdf", ".docx", ".doc", ".md", ".txt", ".png", ".jpg", ".jpeg")
-                    ))
-                    or is_document_intent(prompt, has_last_report=bool(last_report))
+                from mediator_agent import route_query
+                selected_agent = await route_query(
+                    llm=llm,
+                    prompt=prompt,
+                    active_document=active_document,
+                    attached_files=[file_path] if file_path else [],
+                    has_last_report=bool(last_report),
                 )
+                is_doc_task = (selected_agent == "document_agent")
 
                 # ---------- ROUTE: Document Agent ----------
                 if is_doc_task:

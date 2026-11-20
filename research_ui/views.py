@@ -25,6 +25,7 @@ from main_agent import (
     is_document_intent,
     _get_latest_upload_file,
 )
+from mediator_agent import route_query
 
 # Global singleton agent instances with asyncio lock
 _agent_instance = None
@@ -551,18 +552,15 @@ async def chat_api(request):
     conv_record = convs.get(conv_id, {})
     active_doc = conv_record.get("active_document") or (data.get("active_document") or "").strip() or None
 
-    is_doc_by_file = bool(
-        file_path
-        and file_path.lower().endswith(
-            (".pdf", ".docx", ".doc", ".md", ".txt", ".png", ".jpg", ".jpeg")
-        )
-    )
-    is_doc_by_intent = is_document_intent(
-        prompt,
+    # Mediator agent dynamically routes between document_agent and main_agent
+    selected_agent = await route_query(
+        llm=llm,
+        prompt=prompt,
+        active_document=active_doc,
+        attached_files=file_paths or ([file_path] if file_path else []),
         has_last_report=bool(last_report),
-        has_active_doc=bool(active_doc),
     )
-    is_doc_task = is_doc_by_file or is_doc_by_intent
+    is_doc_task = (selected_agent == "document_agent")
 
     target_doc = None
     try:
