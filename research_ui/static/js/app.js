@@ -724,13 +724,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     agentStatusPill.innerHTML = `
                         <span class="pulsing-dot mr-2"></span>
                         <span class="text-xs font-medium text-emerald-400">Agent Ready</span>
-                        <span class="mx-2 text-slate-600">|</span>
-                        <span class="text-xs text-indigo-300 font-mono">${data.model}</span>
                     `;
-                }
-                const modelLabel = document.getElementById('selectedModelLabel');
-                if (modelLabel && data.model) {
-                    modelLabel.textContent = data.model;
                 }
             }
         } catch (e) {
@@ -2311,7 +2305,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.autoResizeTextarea = function(el) {
         if (!el) return;
         el.style.height = 'auto';
-        el.style.height = Math.min(el.scrollHeight, 176) + 'px';
+        if (!el.value || el.value.trim() === '') {
+            el.style.height = '34px';
+        } else {
+            el.style.height = Math.min(el.scrollHeight, 176) + 'px';
+        }
     };
 
     window.handlePromptKeydown = function(e) {
