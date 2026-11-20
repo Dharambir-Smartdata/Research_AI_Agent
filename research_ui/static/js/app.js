@@ -17,25 +17,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let attachedFiles = [];
     let currentActiveDocument = null;
 
-    // DOM Elements
-    const chatContainer = document.getElementById('chat-container');
-    const welcomeHero = document.getElementById('welcome-hero');
+    // DOM Elements (Supports modern OmniResearch.ai V2.5 template & legacy IDs)
+    const chatContainer = document.getElementById('conversationSection') || document.getElementById('chat-container');
+    const welcomeHero = document.getElementById('heroSection') || document.getElementById('welcome-hero');
     const chatForm = document.getElementById('chat-form');
-    const promptInput = document.getElementById('prompt-input');
-    const sendBtn = document.getElementById('send-btn');
+    const promptInput = document.getElementById('promptInput') || document.getElementById('prompt-input');
+    const sendBtn = document.getElementById('executeBtn') || document.getElementById('send-btn');
     const uploadFileBtn = document.getElementById('upload-file-btn');
-    const fileUploadInput = document.getElementById('file-upload-input');
-    const attachedFileBar = document.getElementById('attached-file-bar');
+    const fileUploadInput = document.getElementById('hiddenFileInput') || document.getElementById('file-upload-input');
+    const attachedFileBar = document.getElementById('attachedFilesBar') || document.getElementById('attached-file-bar');
     const attachedFileName = document.getElementById('attached-file-name');
     const attachedFileSize = document.getElementById('attached-file-size');
     const removeAttachedFileBtn = document.getElementById('remove-attached-file-btn');
-    const reportsDrawer = document.getElementById('reports-drawer');
-    const drawerBackdrop = document.getElementById('drawer-backdrop');
+    const reportsDrawer = document.getElementById('vaultDrawer') || document.getElementById('reports-drawer');
+    const drawerBackdrop = document.getElementById('vaultDrawerBackdrop') || document.getElementById('drawer-backdrop');
     const toggleDrawerBtn = document.getElementById('toggle-drawer-btn');
     const closeDrawerBtn = document.getElementById('close-drawer-btn');
-    const reportsList = document.getElementById('reports-list');
-    const reportsCountBadge = document.getElementById('reports-count-badge');
-    const drawerCountBadge = document.getElementById('drawer-count-badge');
+    const reportsList = document.getElementById('vaultDocList') || document.getElementById('reports-list');
+    const reportsCountBadge = document.getElementById('vaultCountBadge') || document.getElementById('reports-count-badge');
+    const drawerCountBadge = document.getElementById('drawer-count-badge') || document.getElementById('vaultCountBadge');
     const reportSearch = document.getElementById('report-search');
     const filterTabs = document.querySelectorAll('.filter-tab');
     const previewModal = document.getElementById('preview-modal');
@@ -47,17 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const agentStatusPill = document.getElementById('agent-status-pill');
 
     // Conversation History Elements
-    const historyDrawer = document.getElementById('history-drawer');
+    const historyDrawer = document.getElementById('sidebar') || document.getElementById('history-drawer');
     const toggleHistoryBtn = document.getElementById('toggle-history-btn');
     const closeHistoryBtn = document.getElementById('close-history-btn');
-    const historyList = document.getElementById('history-list');
-    const historyCountBadge = document.getElementById('history-count-badge');
-    const historySearch = document.getElementById('history-search');
+    const historyList = document.getElementById('historyList') || document.getElementById('history-list');
+    const historyCountBadge = document.getElementById('historyCountBadge') || document.getElementById('history-count-badge');
+    const historySearch = document.getElementById('historySearch') || document.getElementById('history-search');
     const historyNewChatBtn = document.getElementById('history-new-chat-btn');
     const clearAllHistoryBtn = document.getElementById('clear-all-history-btn');
 
     // Theme Switcher Elements
-    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    const themeToggleBtn = document.getElementById('themeCycleBtn') || document.getElementById('theme-toggle-btn');
 
     function updateThemeUI() {
         const isDark = document.documentElement.classList.contains('dark');
@@ -112,31 +112,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Auto-grow textarea
-    promptInput.addEventListener('input', () => {
-        promptInput.style.height = 'auto';
-        promptInput.style.height = Math.min(promptInput.scrollHeight, 160) + 'px';
-    });
+    if (promptInput) {
+        promptInput.addEventListener('input', () => {
+            promptInput.style.height = 'auto';
+            promptInput.style.height = Math.min(promptInput.scrollHeight, 176) + 'px';
+        });
 
-    // Enter to send (Shift+Enter for new line)
-    promptInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            chatForm.dispatchEvent(new Event('submit'));
-        }
-    });
-
-    // Quick suggestion cards
-    document.querySelectorAll('.suggestion-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const prompt = card.getAttribute('data-prompt');
-            if (prompt && !isResearching) {
-                promptInput.value = prompt;
-                promptInput.style.height = 'auto';
-                promptInput.style.height = Math.min(promptInput.scrollHeight, 160) + 'px';
-                chatForm.dispatchEvent(new Event('submit'));
+        // Enter to send (Shift+Enter for new line)
+        promptInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                if (typeof window.executePrompt === 'function') {
+                    window.executePrompt();
+                } else if (chatForm) {
+                    chatForm.dispatchEvent(new Event('submit'));
+                }
             }
         });
-    });
+    }
+
+    if (chatForm) {
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const prompt = promptInput ? promptInput.value.trim() : '';
+            if (!prompt) return;
+            await submitResearchQuery(prompt, { isFromComposer: true });
+        });
+    }
 
     // Drawer toggles
     function openReportsDrawer() {
@@ -153,38 +155,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openHistoryDrawer() {
         closeReportsDrawer();
-        historyDrawer.classList.remove('-translate-x-full');
-        drawerBackdrop.classList.remove('hidden');
-        setTimeout(() => drawerBackdrop.classList.add('opacity-100'), 10);
+        const isMobile = window.innerWidth < 1024;
+        if (historyDrawer) {
+            historyDrawer.classList.remove('-translate-x-full');
+            if (!isMobile) {
+                historyDrawer.style.width = '276px';
+                historyDrawer.style.opacity = '1';
+            }
+        }
+        if (isMobile) {
+            const backdrop = document.getElementById('mobileBackdrop') || drawerBackdrop;
+            if (backdrop) {
+                backdrop.classList.remove('hidden');
+                setTimeout(() => backdrop.classList.add('opacity-100'), 10);
+            }
+        }
     }
 
     function closeHistoryDrawer() {
-        historyDrawer.classList.add('-translate-x-full');
-        checkBackdrop();
+        const isMobile = window.innerWidth < 1024;
+        if (isMobile) {
+            if (historyDrawer) historyDrawer.classList.add('-translate-x-full');
+            const backdrop = document.getElementById('mobileBackdrop') || drawerBackdrop;
+            if (backdrop) {
+                backdrop.classList.remove('opacity-100');
+                setTimeout(() => backdrop.classList.add('hidden'), 150);
+            }
+            checkBackdrop();
+        } else {
+            // On desktop screens, sidebar must stay permanently in place
+            if (historyDrawer) {
+                historyDrawer.classList.remove('-translate-x-full');
+            }
+        }
     }
 
     function checkBackdrop() {
         setTimeout(() => {
-            if (reportsDrawer.classList.contains('translate-x-full') && 
-                historyDrawer.classList.contains('-translate-x-full')) {
+            const isMobile = window.innerWidth < 1024;
+            const reportsClosed = !reportsDrawer || reportsDrawer.classList.contains('translate-x-full');
+            const historyClosed = isMobile ? (!historyDrawer || historyDrawer.classList.contains('-translate-x-full')) : true;
+            if (reportsClosed && historyClosed && drawerBackdrop) {
                 drawerBackdrop.classList.remove('opacity-100');
                 drawerBackdrop.classList.add('hidden');
             }
         }, 150);
     }
 
-    toggleDrawerBtn.addEventListener('click', openReportsDrawer);
-    closeDrawerBtn.addEventListener('click', closeReportsDrawer);
-    toggleHistoryBtn.addEventListener('click', openHistoryDrawer);
-    closeHistoryBtn.addEventListener('click', closeHistoryDrawer);
-    drawerBackdrop.addEventListener('click', () => {
-        closeReportsDrawer();
-        closeHistoryDrawer();
-    });
+    if (toggleDrawerBtn) toggleDrawerBtn.addEventListener('click', openReportsDrawer);
+    if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeReportsDrawer);
+    if (toggleHistoryBtn) toggleHistoryBtn.addEventListener('click', openHistoryDrawer);
+    if (closeHistoryBtn) closeHistoryBtn.addEventListener('click', closeHistoryDrawer);
+    if (drawerBackdrop) {
+        drawerBackdrop.addEventListener('click', () => {
+            closeReportsDrawer();
+            closeHistoryDrawer();
+        });
+    }
 
-    historySearch.addEventListener('input', () => {
-        renderHistoryList();
-    });
+    if (historySearch) {
+        historySearch.addEventListener('input', () => {
+            renderHistoryList();
+        });
+    }
 
     // Report Drawer Search & Filter Tabs Listeners
     const clearReportSearchBtn = document.getElementById('clear-report-search-btn');
@@ -248,14 +281,12 @@ document.addEventListener('DOMContentLoaded', () => {
         attachedFileBar.classList.remove('hidden');
         attachedFileBar.classList.add('flex');
         attachedFileBar.innerHTML = attachedFiles.map((f, i) => `
-            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-indigo-500/15 border border-indigo-500/30 text-[11px] font-medium text-slate-800 dark:text-slate-200">
-                <i data-lucide="file-text" class="w-3 h-3 text-indigo-500 flex-shrink-0"></i>
-                <span class="max-w-[130px] truncate" title="${escapeHtml(f.filename)}">${escapeHtml(f.filename)}</span>
-                <span class="text-[9px] text-slate-400 font-mono">${escapeHtml(f.size_human)}</span>
-                <button type="button" data-remove-idx="${i}" class="p-0.5 rounded text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 transition-colors ml-0.5" title="Remove">
-                    <i data-lucide="x" class="w-3 h-3"></i>
-                </button>
-            </div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-500/12 border border-indigo-500/25 text-xs font-mono text-indigo-700 dark:text-indigo-300 font-medium">
+                <i data-lucide="file-text" class="w-3.5 h-3.5 text-indigo-500 flex-shrink-0"></i>
+                <span class="truncate max-w-[200px]" title="${escapeHtml(f.filename)}">${escapeHtml(f.filename)}</span>
+                ${f.size_human ? `<span class="text-[10px] text-gray-400 font-mono">(${escapeHtml(f.size_human)})</span>` : ''}
+                <button type="button" onclick="window.removeAttachment('${escapeHtml(f.filename)}')" class="hover:text-rose-500 ml-0.5 cursor-pointer font-sans text-sm leading-none">&times;</button>
+            </span>
         `).join('');
         if (window.lucide) lucide.createIcons();
     }
@@ -289,6 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newFiles = data.files || [data];
                 attachedFiles.push(...newFiles);
                 renderAttachedFiles();
+                fetchReports();
                 showToast(`Attached ${newFiles.length} file${newFiles.length > 1 ? 's' : ''}`, 'success');
                 promptInput.focus();
             } else {
@@ -339,10 +371,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    historyNewChatBtn.addEventListener('click', () => {
-        closeHistoryDrawer();
-        startNewThread();
-    });
+    if (historyNewChatBtn) {
+        historyNewChatBtn.addEventListener('click', () => {
+            closeHistoryDrawer();
+            startNewThread();
+        });
+    }
 
     if (closePreviewBtn) {
         closePreviewBtn.addEventListener('click', () => {
@@ -440,6 +474,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    window.openDocCapabilities = openDocCapabilities;
+    window.closeDocCapabilities = closeDocCapabilities;
+    window.insertPromptExample = function(text) {
+        if (promptInput) {
+            promptInput.value = text;
+            closeDocCapabilities();
+            promptInput.focus();
+            if (typeof window.autoResizeTextarea === 'function') {
+                window.autoResizeTextarea(promptInput);
+            }
+        }
+    };
+
     if (openDocCapabilitiesBtn) {
         openDocCapabilitiesBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -473,14 +520,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    clearAllHistoryBtn.addEventListener('click', () => {
-        clearAllHistory();
-    });
+    if (clearAllHistoryBtn) {
+        clearAllHistoryBtn.addEventListener('click', () => {
+            clearAllHistory();
+        });
+    }
 
     // Reset Agent Session / New Thread
-    resetSessionBtn.addEventListener('click', () => {
-        startNewThread();
-    });
+    if (resetSessionBtn) {
+        resetSessionBtn.addEventListener('click', () => {
+            startNewThread();
+        });
+    }
 
     async function startNewThread() {
         try {
@@ -491,8 +542,13 @@ document.addEventListener('DOMContentLoaded', () => {
         currentActiveDocument = null;
         attachedFiles = [];
         renderAttachedFiles();
-        chatContainer.innerHTML = '';
+        if (chatContainer) {
+            chatContainer.classList.add('hidden');
+            chatContainer.innerHTML = '';
+        }
         if (welcomeHero) welcomeHero.classList.remove('hidden');
+        const aurora = document.getElementById('auroraBackdrop');
+        if (aurora) aurora.classList.remove('opacity-30');
         renderHistoryList();
         showToast('Fresh thread ready.', 'info');
     }
@@ -508,7 +564,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
             if (data.status === 'success') {
                 conversationsData = data.conversations || [];
-                historyCountBadge.textContent = conversationsData.length;
+                if (historyCountBadge) historyCountBadge.textContent = conversationsData.length;
                 renderHistoryList();
             }
         } catch (err) {
@@ -516,8 +572,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function renderHistoryList() {
-        const query = (historySearch.value || '').toLowerCase().trim();
+    function renderHistoryList(filterQuery) {
+        const query = (typeof filterQuery === 'string' ? filterQuery : (historySearch && historySearch.value ? historySearch.value : '')).toLowerCase().trim();
         let filtered = conversationsData;
 
         if (query) {
@@ -527,62 +583,44 @@ document.addEventListener('DOMContentLoaded', () => {
             );
         }
 
+        if (!historyList) return;
+        if (historyCountBadge) historyCountBadge.textContent = filtered.length;
+
         if (filtered.length === 0) {
             historyList.innerHTML = `
-                <div class="text-center py-10 px-4">
-                    <div class="w-10 h-10 mx-auto rounded-full bg-white/5 flex items-center justify-center text-slate-500 mb-2.5">
-                        <i data-lucide="message-square-off" class="w-5 h-5"></i>
-                    </div>
-                    <p class="text-xs font-medium text-slate-400">No conversations found</p>
-                    <p class="text-[11px] text-slate-500 mt-1">Start chatting to automatically record history</p>
-                </div>
+                <div class="px-2.5 py-4 text-xs text-gray-400">No matching threads</div>
             `;
-            if (window.lucide) lucide.createIcons();
             return;
         }
 
         historyList.innerHTML = filtered.map(c => {
             const isActive = c.id === currentConversationId;
-            const activeClass = isActive 
-                ? 'bg-indigo-600/10 dark:bg-indigo-600/20 border-indigo-500/50 shadow-md shadow-indigo-500/10' 
-                : 'bg-slate-100/70 dark:bg-white/5 border-slate-200/80 dark:border-white/5 hover:bg-slate-200/60 dark:hover:bg-white/10';
-
-            // Format date
-            let timeStr = '';
-            if (c.updated_at) {
-                try {
-                    const d = new Date(c.updated_at);
-                    timeStr = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' · ' +
-                              d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
-                } catch (e) {
-                    timeStr = c.updated_at;
-                }
-            }
+            const tag = (c.active_document || (c.title && c.title.toLowerCase().includes('pdf'))) ? 'Docs' : 'Web';
 
             return `
-                <div onclick="window.loadConversation('${escapeHtml(c.id)}')" 
-                     class="group p-3 rounded-xl border ${activeClass} transition-all cursor-pointer flex items-start justify-between gap-2">
-                    <div class="flex items-start gap-2.5 min-w-0 flex-1">
-                        <div class="w-7 h-7 rounded-lg ${isActive ? 'bg-indigo-600 text-white' : 'bg-slate-200 dark:bg-white/5 text-slate-500 dark:text-slate-400'} flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <h4 class="text-xs font-semibold ${isActive ? 'text-indigo-600 dark:text-white' : 'text-slate-800 dark:text-slate-200'} truncate" title="${escapeHtml(c.title)}">
-                                ${escapeHtml(c.title)}
-                            </h4>
-                            <div class="flex items-center gap-2 mt-1 text-[11px] text-slate-500 dark:text-slate-400">
-                                <span>${timeStr}</span>
-                                <span>•</span>
-                                <span>${c.message_count} msgs</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button onclick="window.deleteConversation(event, '${escapeHtml(c.id)}')" 
-                            title="Delete thread" 
-                            class="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 transition-all flex-shrink-0">
-                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                <div class="relative group rounded-xl transition-all flex items-center justify-between ${
+                    isActive
+                      ? 'bg-indigo-500/12 dark:bg-indigo-500/15 border border-indigo-500/20'
+                      : 'hover:bg-gray-200/60 dark:hover:bg-white/[0.05] border border-transparent'
+                }">
+                    <button type="button" onclick="window.loadConversation('${escapeHtml(c.id)}')" 
+                            class="flex-1 min-w-0 text-left pl-2.5 pr-1 py-2 flex items-center text-xs transition-colors cursor-pointer ${
+                                isActive
+                                  ? 'text-indigo-700 dark:text-indigo-200 font-medium'
+                                  : 'text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-200'
+                            }">
+                        <span class="truncate">${escapeHtml(c.title)}</span>
                     </button>
+                    <div class="flex items-center gap-1.5 pr-2 shrink-0">
+                        <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-gray-200/70 dark:bg-white/[0.06] text-gray-500 dark:text-gray-400 shrink-0 select-none">${tag}</span>
+                        <button type="button" onclick="window.deleteConversation(event, '${escapeHtml(c.id)}')" 
+                                title="Delete thread" 
+                                class="opacity-0 group-hover:opacity-100 p-1 rounded-md text-gray-400 hover:text-rose-500 hover:bg-rose-500/10 transition-all cursor-pointer shrink-0">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             `;
         }).join('');
@@ -601,7 +639,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentActiveDocument = conv.active_document || null;
 
                 if (welcomeHero) welcomeHero.classList.add('hidden');
-                chatContainer.innerHTML = '';
+                if (chatContainer) {
+                    chatContainer.classList.remove('hidden');
+                    chatContainer.innerHTML = '';
+                }
+                const aurora = document.getElementById('auroraBackdrop');
+                if (aurora) aurora.classList.add('opacity-30');
 
                 (conv.messages || []).forEach(msg => {
                     if (msg.role === 'user') {
@@ -611,7 +654,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                closeHistoryDrawer();
+                if (window.innerWidth < 1024) {
+                    closeHistoryDrawer();
+                } else if (historyDrawer) {
+                    historyDrawer.classList.remove('-translate-x-full');
+                    historyDrawer.style.width = '276px';
+                    historyDrawer.style.opacity = '1';
+                }
                 renderHistoryList();
                 showToast('Loaded conversation thread', 'info');
             }
@@ -668,18 +717,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch('/api/status/');
             const data = await res.json();
             if (data.status === 'online') {
-                agentStatusPill.innerHTML = `
-                    <span class="pulsing-dot mr-2"></span>
-                    <span class="text-xs font-medium text-emerald-400">Agent Ready</span>
-                    <span class="mx-2 text-slate-600">|</span>
-                    <span class="text-xs text-indigo-300 font-mono">${data.model}</span>
-                `;
+                if (agentStatusPill) {
+                    agentStatusPill.innerHTML = `
+                        <span class="pulsing-dot mr-2"></span>
+                        <span class="text-xs font-medium text-emerald-400">Agent Ready</span>
+                        <span class="mx-2 text-slate-600">|</span>
+                        <span class="text-xs text-indigo-300 font-mono">${data.model}</span>
+                    `;
+                }
+                const modelLabel = document.getElementById('selectedModelLabel');
+                if (modelLabel && data.model) {
+                    modelLabel.textContent = data.model;
+                }
             }
         } catch (e) {
-            agentStatusPill.innerHTML = `
-                <span class="w-2 h-2 rounded-full bg-amber-400 mr-2"></span>
-                <span class="text-xs font-medium text-amber-400">Local Mode</span>
-            `;
+            if (agentStatusPill) {
+                agentStatusPill.innerHTML = `
+                    <span class="w-2 h-2 rounded-full bg-amber-400 mr-2"></span>
+                    <span class="text-xs font-medium text-amber-400">Local Mode</span>
+                `;
+            }
         }
     }
 
@@ -698,8 +755,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 uploadsData = upData.status === 'success' ? (upData.files || []) : [];
             }
             const totalCount = reportsData.length + uploadsData.length;
-            reportsCountBadge.textContent = totalCount;
-            drawerCountBadge.textContent = `${totalCount} files`;
+            const badgeIds = ['vaultCountBadge', 'headerVaultBadge', 'sidebarVaultBadge', 'reports-count-badge', 'drawer-count-badge'];
+            badgeIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = totalCount;
+            });
+            if (drawerCountBadge) drawerCountBadge.textContent = `${totalCount} files`;
             updateFilterTabsUI();
             renderReportsList();
         } catch (err) {
@@ -707,8 +768,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function renderReportsList() {
-        const query = (reportSearch && reportSearch.value ? reportSearch.value : '').toLowerCase().trim();
+    function renderReportsList(filterQuery) {
+        const query = (typeof filterQuery === 'string' ? filterQuery : (reportSearch && reportSearch.value ? reportSearch.value : '')).toLowerCase().trim();
         const allItems = [...(reportsData || []), ...(uploadsData || [])];
         let filtered = allItems;
 
@@ -734,61 +795,64 @@ document.addEventListener('DOMContentLoaded', () => {
             );
         }
 
+        if (!reportsList) return;
+
         if (filtered.length === 0) {
             reportsList.innerHTML = `
-                <div class="text-center py-12 px-4">
-                    <div class="w-12 h-12 mx-auto rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-400 dark:text-slate-500 mb-3">
-                        <i data-lucide="folder-search" class="w-6 h-6"></i>
-                    </div>
-                    <p class="text-sm font-medium text-slate-700 dark:text-slate-400">No matching files found</p>
-                    <p class="text-xs text-slate-500 mt-1">Try clearing search or choosing another tab</p>
+                <div class="text-center py-10 text-xs text-gray-400">
+                    No matching documents in Vault.
                 </div>
             `;
-            if (window.lucide) lucide.createIcons();
             return;
         }
 
         reportsList.innerHTML = filtered.map(report => {
-            const extColor = getBadgeClass(report.format);
-            const iconName = getIconName(report.format);
-            const downloadUrl = report.download_url || (report.relpath ? `/api/reports/download/${encodeURIComponent(report.relpath)}` : '#');
+            const ext = (report.format || report.filename.split('.').pop() || 'file').toUpperCase();
+            const badgeStyle = ext === 'PDF'
+                ? 'bg-rose-500/12 text-rose-500 border-rose-500/20'
+                : (ext === 'DOCX' || ext === 'DOC')
+                    ? 'bg-blue-500/12 text-blue-500 border-blue-500/20'
+                    : 'bg-emerald-500/12 text-emerald-500 border-emerald-500/20';
+
+            const downloadUrl = report.download_url || (report.relpath ? `/api/reports/download/${encodeURIComponent(report.relpath)}` : `/api/uploads/download/${encodeURIComponent(report.filename)}`);
+            const metaInfo = report.topic || (report.modified_formatted ? report.modified_formatted : 'Vault document');
 
             return `
-                <div class="p-3.5 rounded-xl bg-slate-100/90 dark:bg-[#10141f] border border-slate-200/90 dark:border-[#1d2334] hover:border-indigo-500/40 transition-all flex flex-col gap-2.5">
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="flex items-center gap-2.5 min-w-0">
-                            <div class="w-8 h-8 rounded-lg ${extColor.bg} flex items-center justify-center flex-shrink-0 shadow-sm">
-                                <i data-lucide="${iconName}" class="w-4 h-4"></i>
+                <div class="p-3.5 rounded-2xl bg-gray-50/90 dark:bg-[#181a20] border border-gray-200/80 dark:border-white/[0.07] hover:border-indigo-500/40 transition-all space-y-2.5">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl border ${badgeStyle} flex items-center justify-center text-[10px] font-mono font-bold shrink-0">
+                                ${escapeHtml(ext)}
                             </div>
                             <div class="min-w-0">
-                                <h4 class="text-xs sm:text-[13px] font-semibold text-slate-900 dark:text-slate-100 truncate" title="${escapeHtml(report.filename)}">
+                                <div class="text-xs font-semibold text-gray-900 dark:text-gray-100 truncate" title="${escapeHtml(report.filename)}">
                                     ${escapeHtml(report.filename)}
-                                </h4>
-                                <div class="flex items-center gap-2 mt-0.5">
-                                    <span class="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded ${extColor.tag} font-mono">
-                                        ${(report.format || 'file').toUpperCase()}
-                                    </span>
-                                    <span class="text-xs text-slate-500 dark:text-slate-400 truncate">${report.topic || 'uploads'}</span>
+                                </div>
+                                <div class="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 truncate">
+                                    ${escapeHtml(metaInfo)} • ${escapeHtml(report.size_human || '')}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                        <span class="text-[11px] font-normal">${report.size_human} · ${report.modified_formatted}</span>
-                        <div class="flex items-center gap-1.5 flex-shrink-0">
+                        <div class="flex items-center gap-1.5 shrink-0">
                             <button onclick="window.${report.relpath ? `previewReport('${encodeURIComponent(report.relpath)}')` : `previewDocument('${encodeURIComponent(report.filename)}')`}" 
-                                    class="px-2.5 py-1 rounded-lg bg-slate-200/80 dark:bg-[#181d2a] hover:bg-slate-300 dark:hover:bg-[#202738] text-slate-700 dark:text-slate-200 border border-slate-300/60 dark:border-slate-700/60 text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer">
-                                <i data-lucide="eye" class="w-3.5 h-3.5 text-slate-400"></i>
-                                <span>Preview</span>
+                                    class="px-2 py-1 rounded-lg bg-gray-200/80 dark:bg-white/[0.08] hover:bg-gray-300 dark:hover:bg-white/[0.12] text-gray-700 dark:text-gray-200 text-[11px] font-medium transition-colors cursor-pointer">
+                                Preview
                             </button>
-                            <a href="${downloadUrl}" 
-                               download
-                               class="px-3.5 py-1 rounded-lg bg-[#5850ec] hover:bg-[#4f46e5] text-white text-xs font-semibold transition-all flex items-center gap-1.5 shadow-sm">
-                                <i data-lucide="download" class="w-3.5 h-3.5"></i>
-                                <span>Get</span>
-                            </a>
+                            <button onclick="window.attachFromVault('${escapeHtml(report.filename)}')" 
+                                    class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-medium shadow-2xs transition-colors shrink-0 cursor-pointer">
+                                + Reference
+                            </button>
                         </div>
+                    </div>
+                    <!-- Quick MCP Document Actions -->
+                    <div class="flex items-center gap-1.5 pt-1 border-t border-gray-200/60 dark:border-white/[0.05]">
+                        <span class="text-[10px] font-mono text-gray-400 mr-1">MCP:</span>
+                        <button onclick="window.triggerVaultQuickOp('Trim', '${escapeHtml(report.filename)}')" class="px-2 py-0.5 rounded-md bg-white dark:bg-white/[0.04] hover:bg-cyan-500/15 hover:text-cyan-400 border border-gray-200/80 dark:border-white/[0.07] text-[10px] font-medium text-gray-600 dark:text-gray-300 transition-colors cursor-pointer">Trim</button>
+                        <button onclick="window.triggerVaultQuickOp('Compress', '${escapeHtml(report.filename)}')" class="px-2 py-0.5 rounded-md bg-white dark:bg-white/[0.04] hover:bg-indigo-500/15 hover:text-indigo-400 border border-gray-200/80 dark:border-white/[0.07] text-[10px] font-medium text-gray-600 dark:text-gray-300 transition-colors cursor-pointer">Compress</button>
+                        <button onclick="window.triggerVaultQuickOp('Digital Sign', '${escapeHtml(report.filename)}')" class="px-2 py-0.5 rounded-md bg-white dark:bg-white/[0.04] hover:bg-purple-500/15 hover:text-purple-400 border border-gray-200/80 dark:border-white/[0.07] text-[10px] font-medium text-gray-600 dark:text-gray-300 transition-colors cursor-pointer">Sign</button>
+                        <a href="${downloadUrl}" download class="ml-auto p-1 rounded hover:bg-gray-200/60 dark:hover:bg-white/[0.08] text-gray-400 hover:text-gray-200 transition-colors" title="Download">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                        </a>
                     </div>
                 </div>
             `;
@@ -856,7 +920,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!response.ok) {
                         throw new Error(`Document not available on server (${response.status})`);
                     }
-                    previewContent.innerHTML = `<iframe src="${previewUrl}" class="w-full h-[72vh] rounded-xl border border-slate-200/50 dark:border-white/10 bg-slate-900" title="Document Preview"></iframe>`;
+                    const freshUrl = `${previewUrl}${previewUrl.includes('?') ? '&' : '?'}t=${Date.now()}`;
+                    previewContent.innerHTML = `<iframe src="${freshUrl}" class="w-full h-[72vh] rounded-xl border border-slate-200/50 dark:border-white/10 bg-slate-900" title="Document Preview"></iframe>`;
                 }).catch(() => {
                     previewContent.innerHTML = `
                         <div class="p-8 sm:p-12 text-center flex flex-col items-center justify-center">
@@ -945,6 +1010,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Hide welcome hero if first message
         if (welcomeHero) welcomeHero.classList.add('hidden');
+        if (chatContainer) chatContainer.classList.remove('hidden');
+        const aurora = document.getElementById('auroraBackdrop');
+        if (aurora) aurora.classList.add('opacity-30');
 
         // Clear composer if query originated from prompt input
         if (options.isFromComposer) {
@@ -978,8 +1046,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const loaderId = appendAgentLoader(text, targetForLoader, insertAfter);
 
         isResearching = true;
-        sendBtn.disabled = true;
-        sendBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        if (sendBtn) {
+            sendBtn.disabled = true;
+            sendBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
         scrollToBottom();
 
         try {
@@ -1043,9 +1113,11 @@ document.addEventListener('DOMContentLoaded', () => {
             appendErrorMessage(err.message || 'Network communication error.', loaderEl);
         } finally {
             isResearching = false;
-            sendBtn.disabled = false;
-            sendBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            promptInput.focus();
+            if (sendBtn) {
+                sendBtn.disabled = false;
+                sendBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            if (promptInput) promptInput.focus();
             if (typeof window._onLiveVoiceResearchFinished === 'function') {
                 try {
                     window._onLiveVoiceResearchFinished();
@@ -1056,12 +1128,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Chat Submission Form
-    chatForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const prompt = promptInput.value.trim();
-        if (!prompt) return;
-        await submitResearchQuery(prompt, { isFromComposer: true });
-    });
+    if (chatForm) {
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const prompt = promptInput ? promptInput.value.trim() : '';
+            if (!prompt) return;
+            await submitResearchQuery(prompt, { isFromComposer: true });
+        });
+    }
 
     function appendUserMessage(text, msgId = null) {
         const msg = document.createElement('div');
@@ -1763,8 +1837,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Save helper called from quick buttons
     window.sendSaveCommand = function(cmd) {
         if (isResearching) return;
-        promptInput.value = cmd;
-        chatForm.dispatchEvent(new Event('submit'));
+        if (promptInput) promptInput.value = cmd;
+        if (chatForm) {
+            chatForm.dispatchEvent(new Event('submit'));
+        } else {
+            submitResearchQuery(cmd, { isFromComposer: true });
+        }
     };
 
     // Copy text helper
@@ -2195,7 +2273,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Event Listeners
-        liveVoiceBtn.addEventListener('click', openVoicePopup);
+        if (liveVoiceBtn) liveVoiceBtn.addEventListener('click', openVoicePopup);
         if (closeBtn) closeBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeVoicePopup(); });
 
         if (micButton) {
@@ -2225,6 +2303,241 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- Window Global Bindings for OmniResearch.ai V2.5 UI & Inline Triggers ---
+    window.autoResizeTextarea = function(el) {
+        if (!el) return;
+        el.style.height = 'auto';
+        el.style.height = Math.min(el.scrollHeight, 176) + 'px';
+    };
+
+    window.handlePromptKeydown = function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            window.executePrompt();
+        }
+    };
+
+    window.executePrompt = function(overrideText) {
+        const input = promptInput || document.getElementById('promptInput');
+        const query = (overrideText || (input ? input.value : '')).trim();
+        if (!query && attachedFiles.length === 0) return;
+        submitResearchQuery(query, { isFromComposer: !overrideText });
+    };
+
+    window.resetToHome = function() {
+        startNewThread();
+    };
+
+    window.toggleSidebar = function(forceState) {
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('mobileBackdrop');
+        if (!sidebar) return;
+        const isMobile = window.innerWidth < 1024;
+        if (isMobile) {
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+            const shouldOpen = typeof forceState === 'boolean' ? forceState : isClosed;
+            if (shouldOpen) {
+                sidebar.classList.remove('-translate-x-full');
+                if (backdrop) backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                if (backdrop) backdrop.classList.add('hidden');
+            }
+        } else {
+            if (sidebar.style.width === '0px') {
+                sidebar.style.width = '276px';
+                sidebar.style.opacity = '1';
+            } else {
+                sidebar.style.width = '0px';
+                sidebar.style.opacity = '0';
+            }
+        }
+    };
+
+    const themes = [
+        { name: 'Midnight', mode: 'dark', bg: '#0e0f12' },
+        { name: 'Obsidian', mode: 'dark', bg: '#050507' },
+        { name: 'Light', mode: 'light', bg: '#ffffff' }
+    ];
+    let currentThemeIndex = 0;
+
+    window.cycleTheme = function() {
+        currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+        const theme = themes[currentThemeIndex];
+        const html = document.documentElement;
+        const label = document.getElementById('themeLabel');
+        if (label) label.textContent = theme.name;
+
+        if (theme.mode === 'dark') {
+            html.classList.add('dark');
+            localStorage.theme = 'dark';
+        } else {
+            html.classList.remove('dark');
+            localStorage.theme = 'light';
+        }
+        document.body.style.backgroundColor = theme.bg;
+    };
+
+    window.toggleModelMenu = function() {
+        const menu = document.getElementById('modelMenu');
+        if (menu) menu.classList.toggle('hidden');
+    };
+
+    window.selectModel = function(modelName) {
+        const label = document.getElementById('selectedModelLabel');
+        if (label) label.textContent = modelName;
+        document.querySelectorAll('.model-check').forEach(el => {
+            el.classList.toggle('hidden', el.dataset.model !== modelName);
+        });
+        const menu = document.getElementById('modelMenu');
+        if (menu) menu.classList.add('hidden');
+    };
+
+    window.toggleVaultDrawer = function(open) {
+        const drawer = document.getElementById('vaultDrawer') || reportsDrawer;
+        const backdrop = document.getElementById('vaultDrawerBackdrop') || drawerBackdrop;
+        if (!drawer) return;
+        if (open) {
+            if (backdrop) backdrop.classList.remove('hidden');
+            requestAnimationFrame(() => drawer.classList.remove('translate-x-full'));
+            fetchReports();
+        } else {
+            drawer.classList.add('translate-x-full');
+            if (backdrop) setTimeout(() => backdrop.classList.add('hidden'), 280);
+        }
+    };
+
+    window.toggleVoiceModal = function(open) {
+        const modal = document.getElementById('voiceModal');
+        if (!modal) return;
+        if (open) {
+            const transcript = document.getElementById('voiceLiveTranscript');
+            if (transcript) transcript.textContent = '"Say a research prompt or document operation..."';
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    };
+
+    window.simulateVoiceTranscript = function() {
+        const transcriptEl = document.getElementById('voiceLiveTranscript');
+        if (!transcriptEl) return;
+        const sampleText = 'Compare latest research findings and synthesize into executive summary.';
+        let idx = 0;
+        transcriptEl.textContent = '"';
+        const interval = setInterval(() => {
+            transcriptEl.textContent += sampleText[idx];
+            idx++;
+            if (idx >= sampleText.length) {
+                clearInterval(interval);
+                transcriptEl.textContent += '"';
+                setTimeout(() => {
+                    window.toggleVoiceModal(false);
+                    window.executePrompt(sampleText);
+                }, 500);
+            }
+        }, 18);
+    };
+
+    window.toggleCapability = function(btn) {
+        if (!btn) return;
+        const isActive = btn.dataset.active === 'true';
+        const accent = btn.dataset.accent || 'indigo';
+        btn.dataset.active = (!isActive).toString();
+
+        const activeClasses = {
+            indigo: 'bg-indigo-500/12 text-indigo-600 dark:text-indigo-300 border-indigo-500/30',
+            cyan: 'bg-cyan-500/12 text-cyan-600 dark:text-cyan-300 border-cyan-500/30',
+            purple: 'bg-purple-500/12 text-purple-600 dark:text-purple-300 border-purple-500/30',
+        };
+
+        if (!isActive) {
+            btn.className = `cap-pill inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer ${activeClasses[accent] || activeClasses.indigo}`;
+        } else {
+            btn.className = 'cap-pill inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-200/60 dark:hover:bg-white/[0.06] border border-transparent transition-all cursor-pointer';
+        }
+    };
+
+    window.handleFileUpload = function(e) {
+        if (e && e.target && e.target.files) {
+            handleFilesUpload(e.target.files);
+            e.target.value = '';
+        }
+    };
+
+    window.attachFromVault = function(fileName) {
+        if (!fileName) return;
+        const chipName = fileName.startsWith('@') ? fileName : ('@' + fileName);
+        const existing = attachedFiles.find(f => f.filename === chipName || f.filename === fileName);
+        if (!existing) {
+            attachedFiles.push({
+                filename: chipName,
+                filepath: fileName,
+                size_human: 'Vault'
+            });
+            renderAttachedFiles();
+        }
+        window.toggleVaultDrawer(false);
+        if (promptInput) {
+            promptInput.focus();
+        }
+    };
+
+    window.removeAttachment = function(name) {
+        attachedFiles = attachedFiles.filter(f => f.filename !== name && f.filepath !== name);
+        renderAttachedFiles();
+    };
+
+    window.triggerVaultQuickOp = function(op, fileName) {
+        const toast = document.getElementById('vaultToast');
+        if (toast) {
+            toast.textContent = `✓ MCP ${op} queued on ${fileName}`;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2600);
+        }
+        if (promptInput) {
+            if (op === 'Compress') promptInput.value = `Compress document @${fileName}`;
+            else if (op === 'Trim') promptInput.value = `Trim pages from document @${fileName}`;
+            else if (op === 'Digital Sign') promptInput.value = `Digitally sign document @${fileName}`;
+            else promptInput.value = `${op} document @${fileName}`;
+            window.toggleVaultDrawer(false);
+            promptInput.focus();
+            window.autoResizeTextarea(promptInput);
+        }
+    };
+
+    window.filterHistory = function(query) {
+        renderHistoryList(query);
+    };
+
+    window.filterVaultDocs = function(query) {
+        if (reportSearch) reportSearch.value = query;
+        renderReportsList(query);
+    };
+
+    window.loadHistorySession = function(id) {
+        loadConversation(id);
+    };
+
+    // Close Model Dropdown on Outside Click
+    document.addEventListener('click', (e) => {
+        const container = document.getElementById('modelDropdownContainer');
+        if (container && !container.contains(e.target)) {
+            const menu = document.getElementById('modelMenu');
+            if (menu) menu.classList.add('hidden');
+        }
+    });
+
+    // Cmd/Ctrl + K Shortcut for New Thread
+    document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            window.resetToHome();
+        }
+    });
 
     initLiveVoiceResearchPopup();
 

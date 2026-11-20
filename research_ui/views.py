@@ -98,10 +98,17 @@ async def get_or_create_doc_agent():
 
 def index(request):
     """Main dashboard page."""
+    reports_count = len(_get_reports_list())
+    uploads_count = 0
+    if UPLOAD_DIR.exists():
+        uploads_count = sum(1 for f in UPLOAD_DIR.glob("*") if f.is_file() and not f.name.startswith("."))
+    vault_count = reports_count + uploads_count
+
     context = {
         "model_name": MODEL,
         "research_dir": str(RESEARCH_DIR),
         "upload_dir": str(UPLOAD_DIR),
+        "vault_count": vault_count,
     }
     return render(request, "research_ui/index.html", context)
 
@@ -218,6 +225,9 @@ def download_report(request, relpath):
 
     response = FileResponse(open(target_path, "rb"), content_type=content_type)
     response["Content-Disposition"] = f'attachment; filename="{target_path.name}"'
+    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response["Pragma"] = "no-cache"
+    response["Expires"] = "0"
     return response
 
 
@@ -451,6 +461,9 @@ def download_upload_file(request, relpath):
 
     response = FileResponse(open(target_path, "rb"), content_type=content_type)
     response["Content-Disposition"] = f'attachment; filename="{target_path.name}"'
+    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response["Pragma"] = "no-cache"
+    response["Expires"] = "0"
     return response
 
 
@@ -495,6 +508,9 @@ def preview_upload_file(request, relpath):
 
     response = FileResponse(open(target_path, "rb"), content_type=content_type)
     response["Content-Disposition"] = f'inline; filename="{target_path.name}"'
+    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response["Pragma"] = "no-cache"
+    response["Expires"] = "0"
     return response
 
 
