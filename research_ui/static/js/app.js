@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let attachedFiles = [];
     let currentActiveDocument = null;
 
-    // DOM Elements (Supports modern OmniResearch.ai V2.5 template & legacy IDs)
+    // DOM Elements (Supports modern VEDORA AI V2.5 template & legacy IDs)
     const chatContainer = document.getElementById('conversationSection') || document.getElementById('chat-container');
     const welcomeHero = document.getElementById('heroSection') || document.getElementById('welcome-hero');
     const chatForm = document.getElementById('chat-form');
@@ -75,11 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isDark) {
             document.documentElement.classList.remove('dark');
             document.documentElement.classList.add('light');
+            localStorage.setItem('vedora_theme', 'light');
             localStorage.setItem('omni_theme', 'light');
             showToast('Switched to Light Mode', 'info');
         } else {
             document.documentElement.classList.remove('light');
             document.documentElement.classList.add('dark');
+            localStorage.setItem('vedora_theme', 'dark');
             localStorage.setItem('omni_theme', 'dark');
             showToast('Switched to Dark Mode', 'info');
         }
@@ -402,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let deleteConfirmCallback = null;
 
     function openDeleteConfirmModal({ title = 'Delete Confirmation', message = 'Do you want to delete this file?', onConfirm }) {
-        if (localStorage.getItem('omni_dont_ask_delete') === 'true') {
+        if (localStorage.getItem('vedora_dont_ask_delete') === 'true' || localStorage.getItem('omni_dont_ask_delete') === 'true') {
             if (typeof onConfirm === 'function') onConfirm();
             return;
         }
@@ -431,6 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (deleteConfirmBtn) {
         deleteConfirmBtn.addEventListener('click', () => {
             if (deleteCheckbox && deleteCheckbox.checked) {
+                localStorage.setItem('vedora_dont_ask_delete', 'true');
                 localStorage.setItem('omni_dont_ask_delete', 'true');
             }
             const cb = deleteConfirmCallback;
@@ -2304,7 +2307,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Window Global Bindings for OmniResearch.ai V2.5 UI & Inline Triggers ---
+    // --- Window Global Bindings for VEDORA AI V2.5 UI & Inline Triggers ---
     window.autoResizeTextarea = function(el) {
         if (!el) return;
         el.style.height = 'auto';

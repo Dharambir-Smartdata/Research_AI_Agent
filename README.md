@@ -1,4 +1,4 @@
-# 🌐 OmniResearch AI — Dual-Agent Intelligence, Autonomous Web Research & Document Code Execution
+# 🌐 VEDORA AI — Dual-Agent Intelligence, Autonomous Web Research & Document Code Execution
 
 An enterprise-grade, dual-agent AI research and document automation platform powered by **LangChain**, **LangGraph**, **Google Gemini**, **Playwright**, and **MCP (Model Context Protocol)**. Equipped with an ultra-premium, modern **Django Web Interface** featuring Dark & Light mode, full Conversation History persistence, an Artifacts Vault, multi-file drag-and-drop, interactive document previews, and automated Python script generation and execution.
 
