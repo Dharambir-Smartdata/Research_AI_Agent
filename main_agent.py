@@ -11,11 +11,9 @@ import re
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_agent
 from langchain.agents.middleware import SummarizationMiddleware
-
 # LangChain 1.x native memory
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.store.memory import InMemoryStore
-
 from browser_tools import BrowserAgent, get_browser_tools, get_document_tools
 from mcp_manager import MCPManager
 
@@ -48,7 +46,6 @@ RESEARCH_DIR = BASE_DIR / "research"
 REPORT_DIR = RESEARCH_DIR / "reports"
 REPORT_DIR.mkdir(parents=True, exist_ok=True)
 mcp = MCPManager(RESEARCH_DIR)
-
 
 async def initialize_agent():
 
@@ -322,11 +319,9 @@ FILE_RE = re.compile(r"([\w./\\-]+\.(?:pdf|docx|doc|md|txt|png|jpg|jpeg))", re.I
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
-
 def _extract_file(prompt: str) -> str | None:
     m = FILE_RE.search(prompt)
     return m.group(1) if m else None
-
 
 PAGE_VERBS = r"remove|delete|trim|drop|cut|extract|omit|exclude|revert|restore|undo|bring\s+back|recover|put\s+back|add|insert|swap|move|rotate|merge|combine|join|split|compress"
 
@@ -366,7 +361,6 @@ RESEARCH_EXPORT_RE = re.compile(
     r"^(?:please\s+)?save(?:\s+this|\s+the)?(?:\s+report|\s+research)?\s+as\s+(pdf|docx|word|md|markdown|txt)\b",
     re.IGNORECASE,
 )
-
 
 def is_document_intent(prompt: str, has_last_report: bool = False, has_active_doc: bool = False) -> bool:
     """Classify whether a user query represents document operations rather than web research."""

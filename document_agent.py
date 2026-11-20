@@ -101,10 +101,11 @@ DOC_TOOLS = [write_and_execute_script, run_saved_script, list_available_scripts]
 
 
 def create_document_agent(llm, checkpointer, store):
-    return create_agent(
+    agent = create_agent(
         model=llm,
         tools=DOC_TOOLS,
         system_prompt=DOC_CODE_PROMPT,
         checkpointer=checkpointer,
         store=store,
     )
+    return agent
