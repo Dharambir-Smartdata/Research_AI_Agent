@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseBadRequest, Http404
 from django.views.decorators.csrf import csrf_exempt
 
-from test_series.models import UPSC_SUBJECTS
+from test_series.models import UPSC_SUBJECTS, EXAM_SERIES_REGISTRY
 from test_series.admin_config import (
     load_admin_config,
     save_admin_config,
@@ -222,16 +222,45 @@ def get_admin_sessions_api(request):
 
 
 
+def get_exams_api(request):
+    """
+    GET /api/test-series/exams/
+    Returns list of all supported exam series (UPSC, State PCS, SSC, Banking) for dynamic switching.
+    """
+    exams_data = []
+    for eid, einfo in EXAM_SERIES_REGISTRY.items():
+        exams_data.append({
+            "id": einfo["id"],
+            "short_name": einfo["short_name"],
+            "name": einfo["name"],
+            "full_name": einfo["full_name"],
+            "tagline": einfo["tagline"],
+            "icon": einfo["icon"],
+            "marking_scheme": einfo["marking_scheme"],
+            "marks_per_correct": einfo["marks_per_correct"],
+            "negative_penalty": einfo["negative_penalty"],
+            "subject_count": len(einfo.get("subjects", {}))
+        })
+    return JsonResponse({
+        "status": "success",
+        "exams": exams_data
+    })
+
+
 def get_subjects_api(request):
     """
-    GET /api/test-series/upsc/subjects/
-    Returns list of UPSC subjects with metadata, topics, and indexed status.
+    GET /api/test-series/upsc/subjects/ or ?exam=State_PCS
+    Returns list of subjects for the selected exam series with metadata, topics, and indexed status.
     """
+    exam_id = request.GET.get("exam", "UPSC")
+    exam_info = EXAM_SERIES_REGISTRY.get(exam_id, EXAM_SERIES_REGISTRY["UPSC"])
+    exam_subjects = exam_info.get("subjects", UPSC_SUBJECTS)
+
     stats = get_subject_stats().get("subjects", {})
     manifest = load_manifest().get("ingested_subjects", {})
 
     subjects_list = []
-    for sid, sinfo in UPSC_SUBJECTS.items():
+    for sid, sinfo in exam_subjects.items():
         sub_stat = stats.get(sid, {})
         man_stat = manifest.get(sid, {})
         
@@ -254,8 +283,11 @@ def get_subjects_api(request):
 
     return JsonResponse({
         "status": "success",
-        "exam": "UPSC",
-        "category": "Civil Services Examination (CSE)",
+        "exam": exam_info["short_name"],
+        "exam_id": exam_info["id"],
+        "exam_full_name": exam_info["full_name"],
+        "tagline": exam_info["tagline"],
+        "marking_scheme": exam_info["marking_scheme"],
         "subjects": subjects_list
     })
 
@@ -310,6 +342,7 @@ def start_test_api(request, subject):
     difficulty = body.get("difficulty", "Medium")
     total_q = int(body.get("total_questions", 5))
     topic = body.get("topic")
+    exam = body.get("exam", "UPSC")
 
     try:
         result = asyncio.run(start_test_session(
@@ -317,7 +350,8 @@ def start_test_api(request, subject):
             subject=subject,
             difficulty=difficulty,
             total_questions=total_q,
-            topic=topic
+            topic=topic,
+            exam=exam
         ))
         return JsonResponse(result)
     except Exception as e:

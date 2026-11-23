@@ -7,6 +7,7 @@
     "difficulty": "Medium",
     "total_questions": 20,
     "topic": null,
+    "topic_order": [],
     "user_answers": {
       "0": "B"
     },
@@ -53,6 +54,7 @@
     "difficulty": "Medium",
     "total_questions": 20,
     "topic": null,
+    "topic_order": [],
     "user_answers": {
       "0": "B",
       "1": "B",
@@ -1295,6 +1297,7 @@
     "difficulty": "Medium",
     "total_questions": 5,
     "topic": null,
+    "topic_order": [],
     "user_answers": {
       "0": "B",
       "1": "A",
@@ -1635,6 +1638,324 @@
             "document": "biotechnology_space_tech.pdf",
             "page": 1,
             "relevance_score": 0.1397
+          }
+        ]
+      }
+    ]
+  },
+  "state_pcs_2f5fe2d3c4": {
+    "session_id": "state_pcs_2f5fe2d3c4",
+    "user_id": "candidate_test",
+    "exam": "State PCS",
+    "subject": "Indian_Polity",
+    "difficulty": "Medium",
+    "total_questions": 3,
+    "topic": null,
+    "topic_order": [],
+    "user_answers": {},
+    "status": "submitted",
+    "created_at": "2026-11-23T09:00:15.268184",
+    "submitted_at": "2026-11-23T09:00:23.321618",
+    "time_taken_seconds": 120,
+    "evaluation": {
+      "exam": "State PCS",
+      "total_questions": 1,
+      "attempted_questions": 0,
+      "correct_answers": 0,
+      "incorrect_answers": 0,
+      "unattempted_questions": 1,
+      "accuracy_percentage": 0.0,
+      "score_percentage": 0.0,
+      "upsc_marks": 0.0,
+      "exam_marks": 0.0,
+      "max_marks": 2.0,
+      "status": "Needs Revision",
+      "topic_breakdown": {
+        "Constitutional Framework": {
+          "total": 1,
+          "correct": 0,
+          "incorrect": 0
+        }
+      },
+      "review": [
+        {
+          "question_index": 0,
+          "question_id": "f5da2d30",
+          "question": "With reference to 'Constitutional Framework' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 01: Constitutional Framework & Fundamental Rights\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": null,
+          "correct_answer": "C",
+          "is_correct": false,
+          "is_attempted": false,
+          "explanation": "Both statements are authentic provisions derived from constitutional_framework.pdf. Statement 1 reflects verified principles of Constitutional Framework, and Statement 2 is consistent with established administrative standards.",
+          "topic": "Constitutional Framework",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.4737
+            },
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.3316
+            }
+          ],
+          "pyq_pattern": "UPSC Statement Based (2 Statements)"
+        }
+      ]
+    },
+    "questions": [
+      {
+        "question_id": "f5da2d30",
+        "question": "With reference to 'Constitutional Framework' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 01: Constitutional Framework & Fundamental Rights\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Constitutional Framework",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Statement Based (2 Statements)",
+        "correct_answer": "C",
+        "explanation": "Both statements are authentic provisions derived from constitutional_framework.pdf. Statement 1 reflects verified principles of Constitutional Framework, and Statement 2 is consistent with established administrative standards.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4737
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.3316
+          }
+        ]
+      }
+    ]
+  },
+  "upsc_bcb0594187": {
+    "session_id": "upsc_bcb0594187",
+    "user_id": "user1",
+    "exam": "UPSC",
+    "subject": "Indian_Polity",
+    "difficulty": "Medium",
+    "total_questions": 3,
+    "topic": null,
+    "topic_order": [
+      "Judicial Architecture",
+      "Constitutional Framework",
+      "Fundamental Rights",
+      "Directive Principles",
+      "Constitutional Bodies",
+      "Parliament of India"
+    ],
+    "user_answers": {},
+    "status": "active",
+    "created_at": "2026-11-23T09:14:02.315116",
+    "submitted_at": null,
+    "time_taken_seconds": null,
+    "evaluation": null,
+    "questions": [
+      {
+        "question_id": "23ac7405",
+        "question": "In the context of Indian Polity & Governance, consider the following statements regarding 'Judicial Architecture':\n1. guarantees Justice (social, economic, and political), Liberty of thought, expression, belief, faith and worship, Equality of.\n2. Jurisdiction (Articles 132-134), and Advisory Jurisdiction (Article 143).\n3. Directive Principles of State Policy & Fundamental Duties.\n\nWhich of the statements given above are correct?",
+        "options": {
+          "A": "1 and 2 only",
+          "B": "2 and 3 only",
+          "C": "1 and 3 only",
+          "D": "1, 2 and 3"
+        },
+        "topic": "Judicial Architecture",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC 3-Statement Multi-Option",
+        "correct_answer": "C",
+        "explanation": "Statements 1 and 3 are correct as documented in official UPSC syllabus materials (constitutional_framework.pdf). Statement 2 contains standard distractor framing.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.3593
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.4299
+          }
+        ]
+      },
+      {
+        "question_id": "134918a1",
+        "question": "Consider the following statements regarding 'Constitutional Framework' in Indian Polity & Governance:\n1. In the landmark Kesavananda Bharati case (1973), the Supreme Court ruled that Article 368 does not enable Parliament to.\n2. (c) relate to the distribution of material resources and prevention of concentration of wealth.\n3. Money Bills (Article 110) can only be introduced in Lok Sabha upon prior recommendation of the President.\n\nHow many of the above statements are correct?",
+        "options": {
+          "A": "Only one",
+          "B": "Only two",
+          "C": "All three",
+          "D": "None"
+        },
+        "topic": "Constitutional Framework",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "Modern UPSC 2023/2024 Pair Matching",
+        "correct_answer": "B",
+        "explanation": "Only two statements are correct according to UPSC General Studies standard material (constitutional_framework.pdf).",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4737
+          }
+        ]
+      }
+    ]
+  },
+  "upsc_f57f42f834": {
+    "session_id": "upsc_f57f42f834",
+    "user_id": "user1",
+    "exam": "UPSC",
+    "subject": "Indian_Polity",
+    "difficulty": "Medium",
+    "total_questions": 3,
+    "topic": null,
+    "topic_order": [
+      "Fundamental Rights",
+      "Constitutional Bodies",
+      "Directive Principles",
+      "Judicial Architecture",
+      "Parliament of India",
+      "Constitutional Framework"
+    ],
+    "user_answers": {},
+    "status": "active",
+    "created_at": "2026-11-23T09:14:22.415549",
+    "submitted_at": null,
+    "time_taken_seconds": null,
+    "evaluation": null,
+    "questions": [
+      {
+        "question_id": "706be57a",
+        "question": "In the context of Indian Polity & Governance, consider the following statements regarding 'Fundamental Rights':\n1. The Preamble to the Indian Constitution declares India to be a Sovereign, Socialist, Secular, Democratic Republic.\n2. Judicial review is a basic feature of the Constitution.\n3. The Parliament comprises the President, the Council of States (Rajya Sabha), and the House of the People (Lok Sabha).\n\nWhich of the statements given above are correct?",
+        "options": {
+          "A": "1 and 2 only",
+          "B": "2 and 3 only",
+          "C": "1 and 3 only",
+          "D": "1, 2 and 3"
+        },
+        "topic": "Fundamental Rights",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC 3-Statement Multi-Option",
+        "correct_answer": "C",
+        "explanation": "Statements 1 and 3 are correct as documented in official UPSC syllabus materials (constitutional_framework.pdf). Statement 2 contains standard distractor framing.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4724
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.142
+          }
+        ]
+      }
+    ]
+  },
+  "upsc_52936ab67e": {
+    "session_id": "upsc_52936ab67e",
+    "user_id": "candidate_1",
+    "exam": "UPSC",
+    "subject": "Indian_Polity",
+    "difficulty": "Medium",
+    "total_questions": 3,
+    "topic": null,
+    "topic_order": [
+      "Constitutional Bodies",
+      "Parliament of India",
+      "Directive Principles",
+      "Judicial Architecture",
+      "Fundamental Rights",
+      "Constitutional Framework"
+    ],
+    "user_answers": {},
+    "status": "active",
+    "created_at": "2026-11-23T09:15:59.194364",
+    "submitted_at": null,
+    "time_taken_seconds": null,
+    "evaluation": null,
+    "questions": [
+      {
+        "question_id": "f5d6aa1f",
+        "question": "With reference to 'Constitutional Bodies' in Indian Polity & Governance, consider the following statements:\n1. It is exclusively executed through executive orders without parliamentary statutory backing.\n2. Cultural and Educational Rights (Articles 29-30), and Right to Constitutional Remedies (Article 32).\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Constitutional Bodies",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Statement Based (2 Only)",
+        "correct_answer": "B",
+        "explanation": "Statement 1 is incorrect as the framework has statutory backing. Statement 2 is correct according to verified principles in constitutional_framework.pdf.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4037
+          }
+        ]
+      }
+    ]
+  },
+  "upsc_f31c84534d": {
+    "session_id": "upsc_f31c84534d",
+    "user_id": "candidate_1",
+    "exam": "UPSC",
+    "subject": "Indian_Polity",
+    "difficulty": "Medium",
+    "total_questions": 3,
+    "topic": null,
+    "topic_order": [
+      "Parliament of India",
+      "Directive Principles",
+      "Judicial Architecture",
+      "Fundamental Rights",
+      "Constitutional Framework",
+      "Constitutional Bodies"
+    ],
+    "user_answers": {},
+    "status": "active",
+    "created_at": "2026-11-23T09:16:10.740876",
+    "submitted_at": null,
+    "time_taken_seconds": null,
+    "evaluation": null,
+    "questions": [
+      {
+        "question_id": "1fc089de",
+        "question": "Consider the following statements regarding 'Parliament of India' in Indian Polity & Governance:\n1. The 42nd Constitutional Amendment Act of 1976 added three words to the Preamble: 'Socialist', 'Secular', and 'Integrity'.\n2. Essential elements include supremacy of the Constitution, republican and.\n3. Article 21 guarantees that 'No person shall be deprived of his life or personal liberty except according to procedure.\n\nHow many of the above statements are correct?",
+        "options": {
+          "A": "Only one",
+          "B": "Only two",
+          "C": "All three",
+          "D": "None"
+        },
+        "topic": "Parliament of India",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "Modern UPSC 2023/2024 Pair Matching",
+        "correct_answer": "A",
+        "explanation": "Only one statement is correct according to UPSC General Studies standard material (constitutional_framework.pdf).",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.3874
           }
         ]
       }

@@ -74,6 +74,58 @@ UPSC_SUBJECTS = {
     }
 }
 
+# Scalable Multi-Exam Series Registry
+EXAM_SERIES_REGISTRY = {
+    "UPSC": {
+        "id": "UPSC",
+        "short_name": "UPSC",
+        "name": "UPSC Civil Services",
+        "full_name": "UPSC Civil Services Examination (CSE)",
+        "tagline": "Prelims Paper-I General Studies",
+        "icon": "🇮🇳",
+        "marking_scheme": "UPSC Prelims Marking (+2.00 / -0.66)",
+        "marks_per_correct": 2.0,
+        "negative_penalty": 0.66,
+        "subjects": UPSC_SUBJECTS
+    },
+    "State_PCS": {
+        "id": "State_PCS",
+        "short_name": "State PCS",
+        "name": "State PCS Exams",
+        "full_name": "State Public Service Commission (State PCS / Combined Administrative Exam)",
+        "tagline": "General Studies & State Administration Paper-I",
+        "icon": "🏛️",
+        "marking_scheme": "State PCS Marking (+2.00 / -0.66)",
+        "marks_per_correct": 2.0,
+        "negative_penalty": 0.66,
+        "subjects": UPSC_SUBJECTS
+    },
+    "SSC": {
+        "id": "SSC",
+        "short_name": "SSC CGL",
+        "name": "SSC CGL / CHSL",
+        "full_name": "Staff Selection Commission (SSC CGL / CHSL)",
+        "tagline": "Tier-I General Awareness & Studies",
+        "icon": "📋",
+        "marking_scheme": "SSC CGL Marking (+2.00 / -0.50)",
+        "marks_per_correct": 2.0,
+        "negative_penalty": 0.50,
+        "subjects": UPSC_SUBJECTS
+    },
+    "Banking": {
+        "id": "Banking",
+        "short_name": "Banking & RBI",
+        "name": "Banking & RBI Grade B",
+        "full_name": "Banking & RBI Grade B Examinations",
+        "tagline": "Economic, Social Issues & General Financial Awareness",
+        "icon": "🏦",
+        "marking_scheme": "Banking Marking (+1.00 / -0.25)",
+        "marks_per_correct": 1.0,
+        "negative_penalty": 0.25,
+        "subjects": UPSC_SUBJECTS
+    }
+}
+
 
 @dataclass
 class SourceReference:
@@ -122,6 +174,7 @@ class TestSession:
     difficulty: str  # "Easy", "Medium", "Hard", "Mixed"
     total_questions: int
     topic: Optional[str] = None
+    topic_order: List[str] = field(default_factory=list)
     questions: List[MCQQuestion] = field(default_factory=list)
     user_answers: Dict[int, str] = field(default_factory=dict)  # {0: "A", 1: "C"}
     status: str = "active"  # "active", "submitted", "abandoned"

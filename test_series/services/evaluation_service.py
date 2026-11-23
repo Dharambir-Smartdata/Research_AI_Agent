@@ -71,7 +71,10 @@ def evaluate_test_session(session: TestSession) -> Dict[str, Any]:
     accuracy = round((correct / max(attempted, 1)) * 100, 1) if attempted > 0 else 0.0
     percentage = round((correct / max(total_q, 1)) * 100, 1)
 
+    exam_name = getattr(session, "exam", "UPSC") or "UPSC"
+
     return {
+        "exam": exam_name,
         "total_questions": total_q,
         "attempted_questions": attempted,
         "correct_answers": correct,
@@ -80,6 +83,7 @@ def evaluate_test_session(session: TestSession) -> Dict[str, Any]:
         "accuracy_percentage": accuracy,
         "score_percentage": percentage,
         "upsc_marks": raw_upsc_score,
+        "exam_marks": raw_upsc_score,
         "max_marks": max_marks,
         "status": "Qualified" if percentage >= pass_pct else "Needs Revision",
         "topic_breakdown": topic_stats,

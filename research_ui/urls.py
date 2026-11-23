@@ -13,7 +13,8 @@ urlpatterns = [
     path("test-series/admin/logout/", ts_routes.admin_logout_view, name="ts_admin_logout"),
     path("test-series/admin/", ts_routes.admin_dashboard_view, name="ts_admin_dashboard"),
 
-    # UPSC Test Series & RAG API endpoints
+    # UPSC & Multi-Exam Test Series & RAG API endpoints
+    path("api/test-series/exams/", ts_routes.get_exams_api, name="ts_exams"),
     path("api/test-series/config/", ts_routes.get_config_api, name="ts_config"),
     path("api/test-series/admin/config/update/", ts_routes.update_config_api, name="ts_admin_config_update"),
     path("api/test-series/admin/upload-pdf/", ts_routes.upload_pdf_api, name="ts_admin_upload_pdf"),

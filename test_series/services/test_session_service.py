@@ -4,6 +4,7 @@ Handles session state, answer tracking, secure answer hiding, and dynamic questi
 """
 import json
 import uuid
+import random
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, Optional
@@ -32,6 +33,7 @@ def _save_sessions_to_disk():
                 "difficulty": sess.difficulty,
                 "total_questions": sess.total_questions,
                 "topic": sess.topic,
+                "topic_order": getattr(sess, "topic_order", []),
                 "user_answers": sess.user_answers,
                 "status": sess.status,
                 "created_at": sess.created_at,
@@ -76,6 +78,7 @@ def _load_sessions_from_disk():
                 difficulty=d.get("difficulty", "Medium"),
                 total_questions=d.get("total_questions", 5),
                 topic=d.get("topic"),
+                topic_order=d.get("topic_order", []),
                 questions=q_objs,
                 user_answers={int(k): v for k, v in d.get("user_answers", {}).items()},
                 status=d.get("status", "active"),
@@ -97,21 +100,31 @@ async def start_test_session(
     subject: str,
     difficulty: str = "Medium",
     total_questions: int = 5,
-    topic: Optional[str] = None
+    topic: Optional[str] = None,
+    exam: str = "UPSC"
 ) -> Dict[str, Any]:
     """
-    Start a new test session and pre-generate the first question.
+    Start a new test session and dynamically generate the first randomized question.
     """
-    session_id = f"upsc_{uuid.uuid4().hex[:10]}"
+    exam_clean = (exam or "UPSC").replace(" ", "_")
+    session_id = f"{exam_clean.lower()}_{uuid.uuid4().hex[:10]}"
+
+    # Setup randomized topic ordering per test session
+    subj_info = UPSC_SUBJECTS.get(subject, {})
+    all_subj_topics = list(subj_info.get("topics", [subject.replace("_", " ")]))
+    random.shuffle(all_subj_topics)
+    topic_order = [topic] if topic else all_subj_topics
+    first_topic = topic_order[0]
     
     session = TestSession(
         session_id=session_id,
         user_id=user_id,
-        exam="UPSC",
+        exam=exam or "UPSC",
         subject=subject,
         difficulty=difficulty,
         total_questions=total_questions,
         topic=topic,
+        topic_order=topic_order,
         questions=[],
         user_answers={},
         status="active"
@@ -120,7 +133,7 @@ async def start_test_session(
     # Dynamically generate Question #1 via RAG pipeline
     q1 = await generate_upsc_mcq(
         subject=subject,
-        topic=topic,
+        topic=first_topic,
         difficulty=difficulty,
         previous_questions=[],
         q_index=0
@@ -134,6 +147,7 @@ async def start_test_session(
     return {
         "status": "success",
         "session_id": session_id,
+        "exam": session.exam,
         "subject": subject,
         "subject_name": UPSC_SUBJECTS.get(subject, {}).get("display_name", subject),
         "total_questions": total_questions,
@@ -178,9 +192,11 @@ async def get_or_generate_question(session_id: str, q_index: int) -> Dict[str, A
     while len(session.questions) <= q_index and len(session.questions) < session.total_questions:
         curr_idx = len(session.questions)
         prev_stems = [item.question for item in session.questions]
+        topics = session.topic_order if getattr(session, "topic_order", None) else [session.topic or session.subject.replace("_", " ")]
+        target_topic = session.topic if session.topic else topics[curr_idx % len(topics)]
         new_q = await generate_upsc_mcq(
             subject=session.subject,
-            topic=session.topic,
+            topic=target_topic,
             difficulty=session.difficulty,
             previous_questions=prev_stems,
             q_index=curr_idx

@@ -167,54 +167,22 @@
         <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 font-semibold">Admin Panel</span>
       </a>
 
-      <!-- Exam Modules Hierarchy -->
+      <!-- Exam Modules Hierarchy (Dynamic Multi-Exam Switcher) -->
       <div class="mt-1">
         <div class="px-2 mb-1.5 flex items-center justify-between">
           <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Exam Modules</span>
-          <span class="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-indigo-500/15 text-indigo-600 dark:text-indigo-400">1 Active</span>
+          <span id="activeExamModuleCountBadge" class="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-indigo-500/15 text-indigo-600 dark:text-indigo-400">4 Series</span>
         </div>
-        <div class="space-y-1 text-xs">
-          <!-- Active Module: UPSC -->
-          <button class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-indigo-600 text-white font-semibold shadow-xs text-left cursor-pointer">
-            <span class="flex items-center gap-2">
-              <span class="text-sm">🇮🇳</span>
-              <span>UPSC Civil Services</span>
-            </span>
-            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/20">8 Subj</span>
-          </button>
-          
-          <!-- Future Scalable Modules -->
-          <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-gray-400 dark:text-gray-500 text-left opacity-70">
-            <span class="flex items-center gap-2">
-              <span class="text-sm">🏛️</span>
-              <span>State PCS Exams</span>
-            </span>
-            <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-gray-200 dark:bg-white/[0.06]">Coming Soon</span>
-          </div>
-
-          <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-gray-400 dark:text-gray-500 text-left opacity-70">
-            <span class="flex items-center gap-2">
-              <span class="text-sm">📋</span>
-              <span>SSC CGL / CHSL</span>
-            </span>
-            <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-gray-200 dark:bg-white/[0.06]">Coming Soon</span>
-          </div>
-
-          <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-gray-400 dark:text-gray-500 text-left opacity-70">
-            <span class="flex items-center gap-2">
-              <span class="text-sm">🏦</span>
-              <span>Banking &amp; RBI Grade B</span>
-            </span>
-            <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-gray-200 dark:bg-white/[0.06]">Coming Soon</span>
-          </div>
+        <div id="sidebarExamModulesList" class="space-y-1 text-xs">
+          <!-- Populated dynamically via JS: UPSC, State PCS, SSC, Banking -->
         </div>
       </div>
 
       <!-- Quick Subject Jump List -->
-      <div class="mt-1">
+      <div class="mt-2">
         <div class="px-2 mb-1.5 flex items-center justify-between">
-          <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">UPSC Subjects</span>
-          <span class="text-[10px] font-mono text-gray-400">8</span>
+          <span id="sidebarSubjectSectionHeading" class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">UPSC Subjects</span>
+          <span id="sidebarSubjectCount" class="text-[10px] font-mono text-gray-400">8</span>
         </div>
         <nav id="sidebarSubjectList" class="space-y-0.5 text-xs">
           <!-- Populated dynamically via JS -->
@@ -238,9 +206,9 @@
 
       <div class="px-2 py-0.5 flex items-center justify-between">
         <div class="flex items-center gap-2 min-w-0">
-          <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center text-[9px] font-bold text-white shrink-0">U</div>
+          <div id="sidebarExamIconLetter" class="w-5 h-5 rounded-full bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center text-[9px] font-bold text-white shrink-0">U</div>
           <div class="min-w-0">
-            <div class="text-xs font-medium text-gray-800 dark:text-gray-200 truncate">UPSC RAG Engine</div>
+            <div id="sidebarRagEngineBadgeTitle" class="text-xs font-medium text-gray-800 dark:text-gray-200 truncate">UPSC RAG Engine</div>
             <div class="text-[9px] text-emerald-600 dark:text-emerald-400 font-mono">ChromaDB Vector Store</div>
           </div>
         </div>
@@ -271,7 +239,7 @@
           <div>
             <div class="flex items-center gap-2">
               <span class="font-display font-bold tracking-tight text-[15px] text-gray-900 dark:text-gray-100">VEDORA<span class="text-indigo-500 dark:text-indigo-400">.ai</span></span>
-              <span class="inline-flex items-center px-1.5 py-0.2 rounded-md text-[10px] font-mono font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border border-indigo-500/20">UPSC Test Series</span>
+              <span id="headerExamSeriesPill" class="inline-flex items-center px-1.5 py-0.2 rounded-md text-[10px] font-mono font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border border-indigo-500/20">UPSC Test Series</span>
             </div>
             <p class="text-[10px] text-gray-500 dark:text-gray-400 hidden sm:block">Subject-Wise Adaptive AI Mock Assessments &middot; Grounded via RAG Pipeline</p>
           </div>
@@ -285,7 +253,7 @@
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <span class="text-emerald-600 dark:text-emerald-400 font-medium">UPSC RAG Pipeline Ready</span>
+          <span id="headerPipelineBadge" class="text-emerald-600 dark:text-emerald-400 font-medium">UPSC RAG Pipeline Ready</span>
         </div>
       </div>
 
@@ -325,19 +293,19 @@
     <main class="flex-1 overflow-y-auto px-4 sm:px-8 py-6 flex flex-col relative z-10 pb-20">
       <div class="max-w-6xl w-full mx-auto space-y-7">
         
-        <!-- UPSC Module Hero Banner -->
+        <!-- Exam Module Hero Banner -->
         <div class="p-6 rounded-3xl bg-gradient-to-r from-indigo-900/40 via-purple-900/30 to-cyan-900/20 border border-indigo-500/30 shadow-lg relative overflow-hidden">
           <div class="relative z-10 space-y-2.5">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
-              <span>🇮🇳 UPSC Civil Services Examination (CSE)</span>
+              <span id="heroCategoryPill">🇮🇳 UPSC Civil Services Examination (CSE)</span>
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-              <span>Prelims Paper-I General Studies</span>
+              <span id="heroTaglinePill">Prelims Paper-I General Studies</span>
             </div>
             <h1 class="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight">
               Subject-Wise AI Test Series &middot; <span class="headline-gradient">RAG Grounded</span>
             </h1>
-            <p class="text-xs sm:text-sm text-gray-300 max-w-2xl leading-relaxed">
-              Every question is dynamically synthesized using an independent RAG pipeline over curated UPSC study materials and calibrated against official Previous Year Question (PYQ) patterns.
+            <p id="heroDescription" class="text-xs sm:text-sm text-gray-300 max-w-2xl leading-relaxed">
+              Every question is dynamically synthesized using an independent RAG pipeline over curated <span id="heroExamName">UPSC</span> study materials and calibrated against official Previous Year Question (PYQ) patterns.
             </p>
             <div class="pt-2 flex flex-wrap items-center gap-4 text-xs font-mono text-gray-300">
               <span class="flex items-center gap-1.5">
@@ -350,7 +318,7 @@
               </span>
               <span class="flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-purple-400"></span>
-                <span>UPSC Prelims Marking (+2.00 / -0.66)</span>
+                <span id="heroMarkingBadge">UPSC Prelims Marking (+2.00 / -0.66)</span>
               </span>
             </div>
           </div>
@@ -359,8 +327,8 @@
         <!-- Subject Cards Section Header -->
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="font-display text-lg font-bold text-gray-900 dark:text-white">UPSC General Studies Subjects</h2>
-            <p class="text-xs text-gray-500 dark:text-gray-400">Select any subject below to configure question count and launch test</p>
+            <h2 id="subjectGridTitle" class="font-display text-lg font-bold text-gray-900 dark:text-white">UPSC General Studies Subjects</h2>
+            <p id="subjectGridSubtitle" class="text-xs text-gray-500 dark:text-gray-400">Select any subject below to configure question count and launch test</p>
           </div>
           <a href="{% url 'research_ui:ts_admin_dashboard' %}" class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white dark:bg-[#16181d] hover:bg-gray-100 dark:hover:bg-[#1f2229] border border-gray-200/90 dark:border-white/[0.08] text-xs font-semibold text-gray-700 dark:text-gray-200 shadow-2xs transition-colors cursor-pointer" title="Admin PDF Ingestion &amp; Section MCQ Management">
             <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
@@ -434,7 +402,7 @@
         <div class="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-[11px] text-indigo-700 dark:text-indigo-300 flex items-start gap-2">
           <svg class="w-4 h-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           <div>
-            <strong>UPSC Exam Rules:</strong> Correct answers and explanations remain strictly hidden during the test. Questions are generated dynamically via RAG. Full scorecard &amp; citations are unlocked upon submission.
+            <strong id="modalExamRulesPrefix">UPSC Exam Rules:</strong> Correct answers and explanations remain strictly hidden during the test. Questions are generated dynamically via RAG. Full scorecard &amp; citations are unlocked upon submission.
           </div>
         </div>
       </div>
@@ -445,7 +413,7 @@
           Cancel
         </button>
         <button type="button" id="startTestBtn" onclick="launchTestSession()" class="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold shadow-md shadow-indigo-500/25 transition-all cursor-pointer">
-          <span>Start UPSC Test &rarr;</span>
+          <span id="startTestBtnText">Start UPSC Test &rarr;</span>
         </button>
       </div>
     </div>
@@ -459,7 +427,7 @@
         <span id="examSubjectIcon" class="text-xl">⚖️</span>
         <div>
           <h2 id="examSubjectTitle" class="font-display font-bold text-sm text-gray-900 dark:text-white">UPSC Indian Polity</h2>
-          <span class="text-[10px] text-gray-400 font-mono">Civil Services Prelims Paper-I</span>
+          <span id="examPaperSubtitle" class="text-[10px] text-gray-400 font-mono">Civil Services Prelims Paper-I</span>
         </div>
       </div>
 
@@ -521,7 +489,7 @@
         </button>
 
         <button id="examSubmitBtn" onclick="submitExam()" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md shadow-emerald-500/20 transition-all cursor-pointer">
-          Submit UPSC Test
+          <span id="examSubmitBtnText">Submit UPSC Test</span>
         </button>
       </div>
     </footer>
@@ -532,7 +500,7 @@
     <header class="h-14 border-b border-gray-200/80 dark:border-white/[0.08] px-4 sm:px-8 flex items-center justify-between bg-white/70 dark:bg-[#0c0d0f]/80 backdrop-blur-xl shrink-0">
       <div class="flex items-center gap-3">
         <span class="text-xl">🏆</span>
-        <h2 class="font-display font-bold text-base text-gray-900 dark:text-white">UPSC Test Series Scorecard &amp; Analysis</h2>
+        <h2 id="resultsModalTitle" class="font-display font-bold text-base text-gray-900 dark:text-white">UPSC Test Series Scorecard &amp; Analysis</h2>
       </div>
       <div class="flex items-center gap-3">
         <button onclick="closeResultsModal()" class="px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-colors cursor-pointer">
@@ -547,12 +515,12 @@
         <!-- Score Overview Card -->
         <div class="p-8 rounded-3xl bg-white dark:bg-[#16181d] border border-gray-200/80 dark:border-white/[0.08] shadow-sm text-center space-y-6">
           <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-semibold">
-            <span>UPSC Prelims Marking Scheme (+2.00 / -0.66)</span>
+            <span id="resultsMarkingSchemeText">UPSC Prelims Marking Scheme (+2.00 / -0.66)</span>
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
             <div class="p-4 rounded-2xl bg-gray-50 dark:bg-white/[0.03]">
-              <div class="text-xs text-gray-400">UPSC Marks</div>
+              <div id="resultsScoreTitle" class="text-xs text-gray-400">UPSC Marks</div>
               <div id="resUpscMarks" class="text-2xl font-bold font-display text-indigo-600 dark:text-indigo-400">+6.68</div>
               <div class="text-[10px] text-gray-400 mt-1">Out of <span id="resMaxMarks">10</span></div>
             </div>
@@ -572,7 +540,7 @@
             <div class="p-4 rounded-2xl bg-gray-50 dark:bg-white/[0.03]">
               <div class="text-xs text-gray-400">Result Status</div>
               <div id="resStatus" class="text-2xl font-bold font-display text-emerald-500">Qualified</div>
-              <div class="text-[10px] text-gray-400 mt-1">UPSC Cutoff Benchmark</div>
+              <div id="resultsCutoffLabel" class="text-[10px] text-gray-400 mt-1">UPSC Cutoff Benchmark</div>
             </div>
           </div>
         </div>
@@ -580,7 +548,7 @@
         <!-- Question by Question Review Header -->
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <div>
-            <h3 class="font-display font-bold text-lg text-gray-900 dark:text-white">Question-by-Question Review &amp; RAG Explanations</h3>
+            <h3 id="resultsReviewHeaderTitle" class="font-display font-bold text-lg text-gray-900 dark:text-white">Question-by-Question Review &amp; RAG Explanations</h3>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Scroll through each question to inspect correct answers, your selection, and grounded source references</p>
           </div>
           <div class="flex items-center gap-2">
@@ -705,26 +673,203 @@
       }
     };
 
-    // Global UPSC State
-    let upscSubjects = [];
+    // Scalable Multi-Exam Series Registry
+    const EXAM_SERIES_DEFINITIONS = {
+      "UPSC": {
+        id: "UPSC",
+        short_name: "UPSC",
+        name: "UPSC Civil Services",
+        full_name: "UPSC Civil Services Examination (CSE)",
+        tagline: "Prelims Paper-I General Studies",
+        icon: "🇮🇳",
+        marking_scheme: "UPSC Prelims Marking (+2.00 / -0.66)",
+        marks_per_correct: "+2.00",
+        negative_penalty: "-0.66",
+        subject_count: 8
+      },
+      "State_PCS": {
+        id: "State_PCS",
+        short_name: "State PCS",
+        name: "State PCS Exams",
+        full_name: "State Public Service Commission (State PCS / Combined Administrative Exam)",
+        tagline: "General Studies & State Administration Paper-I",
+        icon: "🏛️",
+        marking_scheme: "State PCS Marking (+2.00 / -0.66)",
+        marks_per_correct: "+2.00",
+        negative_penalty: "-0.66",
+        subject_count: 8
+      },
+      "SSC": {
+        id: "SSC",
+        short_name: "SSC CGL",
+        name: "SSC CGL / CHSL",
+        full_name: "Staff Selection Commission (SSC CGL / CHSL)",
+        tagline: "Tier-I General Awareness & Studies",
+        icon: "📋",
+        marking_scheme: "SSC CGL Marking (+2.00 / -0.50)",
+        marks_per_correct: "+2.00",
+        negative_penalty: "-0.50",
+        subject_count: 8
+      },
+      "Banking": {
+        id: "Banking",
+        short_name: "Banking & RBI",
+        name: "Banking & RBI Grade B",
+        full_name: "Banking & RBI Grade B Examinations",
+        tagline: "Economic, Social Issues & General Financial Awareness",
+        icon: "🏦",
+        marking_scheme: "Banking Marking (+1.00 / -0.25)",
+        marks_per_correct: "+1.00",
+        negative_penalty: "-0.25",
+        subject_count: 8
+      }
+    };
+
+    let currentExamId = localStorage.getItem('selected_exam_series') || 'UPSC';
+    let currentExam = EXAM_SERIES_DEFINITIONS[currentExamId] || EXAM_SERIES_DEFINITIONS["UPSC"];
+
+    // Global Subjects & Exam State
+    let currentExamSubjects = [];
     let activeSubject = null;
     let activeSession = null;
     let currentExamIndex = 0;
     let examTimerInterval = null;
     let examRemainingSecs = 600;
 
-    // Load UPSC Subjects from Backend
-    async function loadSubjects() {
+    // Switch Selected Exam Series Dynamically
+    window.switchExamSeries = function(examId) {
+      if (!EXAM_SERIES_DEFINITIONS[examId]) return;
+      currentExamId = examId;
+      currentExam = EXAM_SERIES_DEFINITIONS[examId];
       try {
-        const res = await fetch('/api/test-series/upsc/subjects/');
+        localStorage.setItem('selected_exam_series', examId);
+      } catch (e) {}
+
+      applyDynamicExamUI();
+      renderSidebarExamModules();
+      loadSubjects(examId);
+    };
+
+    function applyDynamicExamUI() {
+      // 1. Page Title
+      document.title = `VEDORA — ${currentExam.name} AI Test Series with RAG`;
+
+      // 2. Header
+      const headerPill = document.getElementById('headerExamSeriesPill');
+      if (headerPill) headerPill.textContent = `${currentExam.short_name} Test Series`;
+
+      const headerPipeline = document.getElementById('headerPipelineBadge');
+      if (headerPipeline) headerPipeline.textContent = `${currentExam.short_name} RAG Pipeline Ready`;
+
+      // 3. Hero Banner
+      const heroCategory = document.getElementById('heroCategoryPill');
+      if (heroCategory) heroCategory.textContent = `${currentExam.icon} ${currentExam.full_name}`;
+
+      const heroTagline = document.getElementById('heroTaglinePill');
+      if (heroTagline) heroTagline.textContent = currentExam.tagline;
+
+      const heroExamName = document.getElementById('heroExamName');
+      if (heroExamName) heroExamName.textContent = currentExam.short_name;
+
+      const heroMarking = document.getElementById('heroMarkingBadge');
+      if (heroMarking) heroMarking.textContent = currentExam.marking_scheme;
+
+      // 4. Sidebar headings & indicators
+      const sidebarHeading = document.getElementById('sidebarSubjectSectionHeading');
+      if (sidebarHeading) sidebarHeading.textContent = `${currentExam.short_name} Subjects`;
+
+      const sidebarRag = document.getElementById('sidebarRagEngineBadgeTitle');
+      if (sidebarRag) sidebarRag.textContent = `${currentExam.short_name} RAG Engine`;
+
+      const sidebarIconLetter = document.getElementById('sidebarExamIconLetter');
+      if (sidebarIconLetter) sidebarIconLetter.textContent = currentExam.short_name.charAt(0);
+
+      // 5. Subject Grid Section
+      const gridTitle = document.getElementById('subjectGridTitle');
+      if (gridTitle) gridTitle.textContent = `${currentExam.short_name} General Studies Subjects`;
+
+      const gridSubtitle = document.getElementById('subjectGridSubtitle');
+      if (gridSubtitle) gridSubtitle.textContent = `Select any subject below to configure question count and launch ${currentExam.short_name} test`;
+
+      // 6. Config Modal
+      const modalRules = document.getElementById('modalExamRulesPrefix');
+      if (modalRules) modalRules.textContent = `${currentExam.short_name} Exam Rules:`;
+
+      const startTestBtnText = document.getElementById('startTestBtnText');
+      if (startTestBtnText) startTestBtnText.innerHTML = `Start ${currentExam.short_name} Test &rarr;`;
+
+      // 7. Exam Runner
+      const examPaperSubtitle = document.getElementById('examPaperSubtitle');
+      if (examPaperSubtitle) examPaperSubtitle.textContent = currentExam.tagline;
+
+      const examSubmitBtnText = document.getElementById('examSubmitBtnText');
+      if (examSubmitBtnText) examSubmitBtnText.textContent = `Submit ${currentExam.short_name} Test`;
+
+      // 8. Results Modal
+      const resultsModalTitle = document.getElementById('resultsModalTitle');
+      if (resultsModalTitle) resultsModalTitle.textContent = `${currentExam.short_name} Test Series Scorecard & Analysis`;
+
+      const resultsMarking = document.getElementById('resultsMarkingSchemeText');
+      if (resultsMarking) resultsMarking.textContent = currentExam.marking_scheme;
+
+      const resultsScoreTitle = document.getElementById('resultsScoreTitle');
+      if (resultsScoreTitle) resultsScoreTitle.textContent = `${currentExam.short_name} Marks`;
+
+      const resultsCutoff = document.getElementById('resultsCutoffLabel');
+      if (resultsCutoff) resultsCutoff.textContent = `${currentExam.short_name} Cutoff Benchmark`;
+
+      const resultsReviewHeader = document.getElementById('resultsReviewHeaderTitle');
+      if (resultsReviewHeader) resultsReviewHeader.textContent = `Question-by-Question Review & ${currentExam.short_name} RAG Explanations`;
+    }
+
+    function renderSidebarExamModules() {
+      const container = document.getElementById('sidebarExamModulesList');
+      if (!container) return;
+      container.innerHTML = '';
+
+      Object.values(EXAM_SERIES_DEFINITIONS).forEach(exam => {
+        const isSelected = exam.id === currentExamId;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.onclick = () => switchExamSeries(exam.id);
+
+        if (isSelected) {
+          btn.className = "w-full flex items-center justify-between px-3 py-2 rounded-xl bg-indigo-600 text-white font-semibold shadow-xs text-left cursor-pointer transition-all";
+          btn.innerHTML = `
+            <span class="flex items-center gap-2">
+              <span class="text-sm">${exam.icon}</span>
+              <span>${exam.name}</span>
+            </span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/20 font-bold">Active</span>
+          `;
+        } else {
+          btn.className = "w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-white dark:bg-[#16181d] hover:bg-indigo-50 dark:hover:bg-[#1f2229] border border-gray-200/90 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 text-left transition-all cursor-pointer group";
+          btn.innerHTML = `
+            <span class="flex items-center gap-2">
+              <span class="text-sm">${exam.icon}</span>
+              <span class="group-hover:text-indigo-600 dark:group-hover:text-indigo-400 font-medium">${exam.name}</span>
+            </span>
+            <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06] text-gray-400 group-hover:bg-indigo-500/10 group-hover:text-indigo-500 transition-colors">Select</span>
+          `;
+        }
+        container.appendChild(btn);
+      });
+    }
+
+    // Load Subjects for active exam from Backend
+    async function loadSubjects(examId = currentExamId) {
+      try {
+        const res = await fetch(`/api/test-series/upsc/subjects/?exam=${encodeURIComponent(examId)}`);
         const data = await res.json();
         if (data.status === 'success') {
-          upscSubjects = data.subjects || [];
+          currentExamSubjects = data.subjects || [];
+          const countEl = document.getElementById('sidebarSubjectCount');
+          if (countEl) countEl.textContent = currentExamSubjects.length;
           renderSubjectCards();
           renderSidebarSubjects();
         }
       } catch (e) {
-        console.error("Failed to load UPSC subjects:", e);
+        console.error("Failed to load subjects:", e);
       }
     }
 
@@ -733,7 +878,7 @@
       if (!grid) return;
       grid.innerHTML = '';
 
-      upscSubjects.forEach(s => {
+      currentExamSubjects.forEach(s => {
         const card = document.createElement('div');
         card.className = "bento-card p-5 rounded-2xl bg-white dark:bg-[#16181d] border border-gray-200/80 dark:border-white/[0.08] hover:border-indigo-500/40 flex flex-col justify-between shadow-xs transition-all";
         
@@ -779,7 +924,7 @@
       if (!container) return;
       container.innerHTML = '';
 
-      upscSubjects.forEach(s => {
+      currentExamSubjects.forEach(s => {
         const item = document.createElement('button');
         item.className = "w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/[0.04] transition-colors cursor-pointer text-left";
         item.onclick = () => openConfigModal(s.id);
@@ -846,16 +991,16 @@
 
     // Config Modal
     window.openConfigModal = function(subjectId) {
-      activeSubject = upscSubjects.find(s => s.id === subjectId) || upscSubjects[0];
+      activeSubject = currentExamSubjects.find(s => s.id === subjectId) || currentExamSubjects[0];
       if (!activeSubject) return;
 
       document.getElementById('modalSubjectIcon').textContent = activeSubject.icon;
-      document.getElementById('modalSubjectTitle').textContent = activeSubject.display_name;
+      document.getElementById('modalSubjectTitle').textContent = `${currentExam.short_name} · ${activeSubject.display_name}`;
 
       renderQuestionCountOptions(activeSubject.id);
 
       const topicSelect = document.getElementById('topicSelect');
-      topicSelect.innerHTML = '<option value="">All Topics in Subject (Comprehensive)</option>';
+      topicSelect.innerHTML = `<option value="">All Topics in Subject (${currentExam.short_name} Comprehensive)</option>`;
       (activeSubject.topics || []).forEach(t => {
         const opt = document.createElement('option');
         opt.value = t;
@@ -909,7 +1054,8 @@
           body: JSON.stringify({
             difficulty: diff,
             total_questions: qCount,
-            topic: topic
+            topic: topic,
+            exam: currentExam.short_name
           })
         });
         const data = await res.json();
@@ -924,7 +1070,7 @@
         alert("Network error: " + e.message);
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<span>Start UPSC Test &rarr;</span>`;
+        btn.innerHTML = `<span id="startTestBtnText">Start ${currentExam.short_name} Test &rarr;</span>`;
       }
     };
 
@@ -936,7 +1082,9 @@
       examRemainingSecs = activeSession.total_questions * 120; // 2 mins per question
 
       document.getElementById('examSubjectIcon').textContent = activeSubject ? activeSubject.icon : '⚖️';
-      document.getElementById('examSubjectTitle').textContent = activeSession.subject_name;
+      document.getElementById('examSubjectTitle').textContent = `${currentExam.short_name} · ${activeSession.subject_name}`;
+      const examPaperSubtitle = document.getElementById('examPaperSubtitle');
+      if (examPaperSubtitle) examPaperSubtitle.textContent = currentExam.tagline;
       document.getElementById('examTotalQ').textContent = activeSession.total_questions;
 
       document.getElementById('examRunnerModal').classList.remove('hidden');
@@ -968,7 +1116,7 @@
       currentExamIndex = qIndex;
 
       document.getElementById('examCurrentQ').textContent = qIndex + 1;
-      document.getElementById('examTopicTag').textContent = questionObj.topic || 'UPSC GS-1';
+      document.getElementById('examTopicTag').textContent = questionObj.topic || `${currentExam.short_name} GS`;
       document.getElementById('examDifficultyTag').textContent = questionObj.difficulty || 'Standard';
       document.getElementById('examQuestionText').textContent = questionObj.question;
 
@@ -1093,7 +1241,7 @@
     };
 
     window.submitExam = async function() {
-      if (!confirm("Are you ready to submit your UPSC test?")) return;
+      if (!confirm(`Are you ready to submit your ${currentExam.short_name} test?`)) return;
       if (examTimerInterval) clearInterval(examTimerInterval);
 
       const submitBtn = document.getElementById('examSubmitBtn');
@@ -1117,13 +1265,15 @@
         alert("Failed to submit test: " + e.message);
       } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = "Submit UPSC Test";
+        submitBtn.textContent = `Submit ${currentExam.short_name} Test`;
       }
     };
 
     // Results Display
     function showResultsScorecard(evalData) {
-      document.getElementById('resUpscMarks').textContent = (evalData.upsc_marks >= 0 ? `+${evalData.upsc_marks}` : evalData.upsc_marks);
+      const examName = evalData.exam || currentExam.short_name;
+      const marksVal = (evalData.upsc_marks !== undefined ? evalData.upsc_marks : evalData.exam_marks);
+      document.getElementById('resUpscMarks').textContent = (marksVal >= 0 ? `+${marksVal}` : marksVal);
       document.getElementById('resMaxMarks').textContent = evalData.max_marks;
       document.getElementById('resAccuracy').textContent = `${evalData.accuracy_percentage}%`;
       document.getElementById('resCorrect').textContent = evalData.correct_answers;
@@ -1132,6 +1282,21 @@
       document.getElementById('resAttempted').textContent = evalData.attempted_questions;
       document.getElementById('resTotal').textContent = evalData.total_questions;
       document.getElementById('resStatus').textContent = evalData.status;
+
+      const titleEl = document.getElementById('resultsModalTitle');
+      if (titleEl) titleEl.textContent = `${examName} Test Series Scorecard & Analysis`;
+
+      const markingEl = document.getElementById('resultsMarkingSchemeText');
+      if (markingEl) markingEl.textContent = `${examName} Marking Scheme (${currentExam.marks_per_correct} / ${currentExam.negative_penalty})`;
+
+      const scoreTitleEl = document.getElementById('resultsScoreTitle');
+      if (scoreTitleEl) scoreTitleEl.textContent = `${examName} Marks`;
+
+      const cutoffEl = document.getElementById('resultsCutoffLabel');
+      if (cutoffEl) cutoffEl.textContent = `${examName} Cutoff Benchmark`;
+
+      const reviewHeaderEl = document.getElementById('resultsReviewHeaderTitle');
+      if (reviewHeaderEl) reviewHeaderEl.textContent = `Question-by-Question Review & ${examName} RAG Explanations`;
 
       const reviewBadge = document.getElementById('reviewCountBadge');
       if (reviewBadge) {
@@ -1151,8 +1316,8 @@
         }`;
 
         let statusBadge = r.is_correct 
-          ? '<span class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-semibold text-[10px]">✓ Correct (+2.00)</span>'
-          : (r.is_attempted ? '<span class="px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400 font-semibold text-[10px]">✗ Incorrect (-0.66)</span>' : '<span class="px-2.5 py-0.5 rounded-full bg-gray-200 dark:bg-white/[0.08] text-gray-400 text-[10px]">Unattempted (0.00)</span>');
+          ? `<span class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-semibold text-[10px]">✓ Correct (${currentExam.marks_per_correct})</span>`
+          : (r.is_attempted ? `<span class="px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400 font-semibold text-[10px]">✗ Incorrect (${currentExam.negative_penalty})</span>` : '<span class="px-2.5 py-0.5 rounded-full bg-gray-200 dark:bg-white/[0.08] text-gray-400 text-[10px]">Unattempted (0.00)</span>');
 
         item.innerHTML = `
           <div class="flex items-center justify-between">
@@ -1174,7 +1339,7 @@
           </div>
 
           <div class="p-3.5 rounded-xl bg-gray-50/70 dark:bg-white/[0.03] text-xs space-y-1.5 border border-gray-100 dark:border-white/[0.04]">
-            <div class="font-semibold text-gray-900 dark:text-white">UPSC Verified Explanation:</div>
+            <div class="font-semibold text-gray-900 dark:text-white">${examName} Verified Explanation:</div>
             <p class="text-gray-600 dark:text-gray-300 leading-relaxed">${r.explanation}</p>
             ${(r.source_references && r.source_references.length > 0) ? `
               <div class="pt-2 flex items-center gap-2 text-[10px] text-gray-400 font-mono">
@@ -1274,7 +1439,9 @@
 
     // On Load Init
     document.addEventListener('DOMContentLoaded', () => {
-      loadSubjects();
+      applyDynamicExamUI();
+      renderSidebarExamModules();
+      loadSubjects(currentExamId);
       loadTestConfig();
     });
   </script>
