@@ -217,8 +217,20 @@
       </div>
     </div>
 
-    <!-- Bottom Sidebar Section: Vault & User Profile -->
-    <div class="p-3.5 border-t border-gray-200/80 dark:border-white/[0.07] space-y-2.5 bg-gray-100/40 dark:bg-white/[0.01]">
+    <!-- Bottom Sidebar Section: Test Series, Vault & User Profile -->
+    <div class="p-3.5 border-t border-gray-200/80 dark:border-white/[0.07] space-y-2 bg-gray-100/40 dark:bg-white/[0.01]">
+      <a href="{% url 'research_ui:test_series' %}" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-white/70 dark:bg-[#16181d] hover:bg-indigo-50 dark:hover:bg-indigo-500/10 border border-gray-200/80 dark:border-white/[0.07] hover:border-indigo-500/30 text-sm text-gray-700 dark:text-gray-200 transition-all cursor-pointer group">
+        <span class="flex items-center gap-2.5 font-medium">
+          <span class="w-6 h-6 rounded-lg bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </span>
+          <span>Test Series</span>
+        </span>
+        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 font-mono">New</span>
+      </a>
+
       <button onclick="toggleVaultDrawer(true)" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-white/70 dark:bg-[#16181d] hover:bg-indigo-50 dark:hover:bg-indigo-500/10 border border-gray-200/80 dark:border-white/[0.07] hover:border-indigo-500/30 text-sm text-gray-700 dark:text-gray-200 transition-all cursor-pointer group">
         <span class="flex items-center gap-2.5 font-medium">
           <span class="w-6 h-6 rounded-lg bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -290,7 +302,7 @@
         </div>
       </div>
 
-      <!-- Right: Theme Switcher (Dark / Obsidian / Light) + Vault Button -->
+      <!-- Right: Theme Switcher (Dark / Obsidian / Light) + Switch to Test Series -->
       <div class="flex items-center gap-2">
         <!-- Theme Mode Cycle Button -->
         <button onclick="cycleTheme()" id="themeCycleBtn" title="Switch Theme: Obsidian / Midnight / Light" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-gray-100/90 dark:bg-[#16181d] hover:bg-gray-200/80 dark:hover:bg-[#1f2229] border border-gray-200/90 dark:border-white/[0.08] text-xs font-medium text-gray-600 dark:text-gray-300 transition-colors cursor-pointer">
@@ -300,14 +312,20 @@
           <span id="themeLabel" class="hidden sm:inline text-[11px]">Midnight</span>
         </button>
 
-        <!-- Vault Button -->
-        <button onclick="toggleVaultDrawer(true)" class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-semibold shadow-sm shadow-indigo-500/25 transition-all cursor-pointer">
-          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-          </svg>
-          <span>Vault</span>
-          <span id="headerVaultBadge" class="px-1.5 py-0.2 rounded-full bg-white/20 text-[11px] font-mono">{{ vault_count|default:"0" }}</span>
-        </button>
+        <!-- Switch to Test Series (Redirects to new page) -->
+        <a href="{% url 'research_ui:test_series' %}" id="testSeriesSwitch" title="Switch to Test Series" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100/90 dark:bg-[#16181d] hover:bg-indigo-50/80 dark:hover:bg-indigo-500/10 border border-gray-200/90 dark:border-white/[0.08] hover:border-indigo-500/30 text-xs font-medium text-gray-700 dark:text-gray-200 transition-all cursor-pointer group shadow-xs">
+          <div class="flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span class="font-medium text-xs">Test Series</span>
+          </div>
+          <!-- Toggle Switch Element -->
+          <div class="w-7 h-4 bg-gray-300 dark:bg-white/20 group-hover:bg-indigo-600 rounded-full p-0.5 flex items-center transition-colors">
+            <div class="w-3 h-3 bg-white rounded-full shadow-xs transform group-hover:translate-x-3 transition-transform duration-200 ease-in-out"></div>
+          </div>
+        </a>
+        <span id="headerVaultBadge" class="hidden">{{ vault_count|default:"0" }}</span>
       </div>
     </header>
 

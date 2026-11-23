@@ -1,0 +1,1643 @@
+{
+  "upsc_ce886b0b1d": {
+    "session_id": "upsc_ce886b0b1d",
+    "user_id": "candidate_1",
+    "exam": "UPSC",
+    "subject": "Indian_Polity",
+    "difficulty": "Medium",
+    "total_questions": 20,
+    "topic": null,
+    "user_answers": {
+      "0": "B"
+    },
+    "status": "active",
+    "created_at": "2026-11-23T06:44:38.926661",
+    "submitted_at": null,
+    "time_taken_seconds": null,
+    "evaluation": null,
+    "questions": [
+      {
+        "question_id": "bfda29d6",
+        "question": "With reference to 'Constitutional Framework' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 01: Constitutional Framework & Fundamental Rights\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Constitutional Framework",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Statement Based (2 Statements)",
+        "correct_answer": "C",
+        "explanation": "Both statements are authentic provisions derived from constitutional_framework.pdf. Statement 1 reflects verified principles of Constitutional Framework, and Statement 2 is consistent with established administrative standards.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4737
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.3316
+          }
+        ]
+      }
+    ]
+  },
+  "upsc_7fc16ab22f": {
+    "session_id": "upsc_7fc16ab22f",
+    "user_id": "candidate_1",
+    "exam": "UPSC",
+    "subject": "Indian_Polity",
+    "difficulty": "Medium",
+    "total_questions": 20,
+    "topic": null,
+    "user_answers": {
+      "0": "B",
+      "1": "B",
+      "2": "C",
+      "3": "A",
+      "4": "C",
+      "5": "B",
+      "6": "B",
+      "7": "B",
+      "8": "C",
+      "9": "A",
+      "11": "C",
+      "12": "C",
+      "13": "A",
+      "14": "D",
+      "15": "C",
+      "16": "B",
+      "17": "A",
+      "18": "C",
+      "19": "C"
+    },
+    "status": "submitted",
+    "created_at": "2026-11-23T06:48:39.854916",
+    "submitted_at": "2026-11-23T06:50:33.442136",
+    "time_taken_seconds": 109,
+    "evaluation": {
+      "total_questions": 20,
+      "attempted_questions": 19,
+      "correct_answers": 5,
+      "incorrect_answers": 14,
+      "unattempted_questions": 1,
+      "accuracy_percentage": 26.3,
+      "score_percentage": 25.0,
+      "upsc_marks": 0.76,
+      "max_marks": 40.0,
+      "status": "Needs Revision",
+      "topic_breakdown": {
+        "Constitutional Framework": {
+          "total": 4,
+          "correct": 2,
+          "incorrect": 2
+        },
+        "Fundamental Rights": {
+          "total": 4,
+          "correct": 1,
+          "incorrect": 3
+        },
+        "Directive Principles": {
+          "total": 3,
+          "correct": 0,
+          "incorrect": 3
+        },
+        "Parliament of India": {
+          "total": 3,
+          "correct": 1,
+          "incorrect": 2
+        },
+        "Judicial Architecture": {
+          "total": 3,
+          "correct": 0,
+          "incorrect": 2
+        },
+        "Constitutional Bodies": {
+          "total": 3,
+          "correct": 1,
+          "incorrect": 2
+        }
+      },
+      "review": [
+        {
+          "question_index": 0,
+          "question_id": "89f4172f",
+          "question": "With reference to 'Constitutional Framework' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 01: Constitutional Framework & Fundamental Rights\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "B",
+          "correct_answer": "C",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Both statements are authentic provisions derived from constitutional_framework.pdf. Statement 1 reflects verified principles of Constitutional Framework, and Statement 2 is consistent with established administrative standards.",
+          "topic": "Constitutional Framework",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.4737
+            },
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.3316
+            }
+          ],
+          "pyq_pattern": "UPSC Statement Based (2 Statements)"
+        },
+        {
+          "question_index": 1,
+          "question_id": "b77ce067",
+          "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Fundamental Rights'?",
+          "options": {
+            "A": "UPSC Civil Services - Indian Polity & Governance",
+            "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+            "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+            "D": "It was repealed by the 44th Constitutional Amendment Act."
+          },
+          "user_answer": "B",
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Statement A accurately captures the substantive principle as documented in constitutional_framework.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+          "topic": "Fundamental Rights",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.4724
+            },
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.142
+            }
+          ],
+          "pyq_pattern": "UPSC Conceptual Best-Fit"
+        },
+        {
+          "question_index": 2,
+          "question_id": "e83082c0",
+          "question": "Regarding 'Directive Principles', consider the following assertions:\n1. UPSC Civil Services - Indian Polity & Governance\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "C",
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Statement 1 is correct based on constitutional_framework.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+          "topic": "Directive Principles",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.3508
+            },
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.1767
+            }
+          ],
+          "pyq_pattern": "UPSC Elimination Based"
+        },
+        {
+          "question_index": 3,
+          "question_id": "1c7ab886",
+          "question": "With reference to 'Parliament of India' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 02: Union Legislature & Judicial Architecture\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "A",
+          "correct_answer": "C",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Both statements are authentic provisions derived from parliamentary_governance.pdf. Statement 1 reflects verified principles of Parliament of India, and Statement 2 is consistent with established administrative standards.",
+          "topic": "Parliament of India",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.5382
+            },
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.3874
+            }
+          ],
+          "pyq_pattern": "UPSC Statement Based (2 Statements)"
+        },
+        {
+          "question_index": 4,
+          "question_id": "57f91942",
+          "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Judicial Architecture'?",
+          "options": {
+            "A": "UPSC Civil Services - Indian Polity & Governance",
+            "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+            "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+            "D": "It was repealed by the 44th Constitutional Amendment Act."
+          },
+          "user_answer": "C",
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Statement A accurately captures the substantive principle as documented in parliamentary_governance.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+          "topic": "Judicial Architecture",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.4299
+            },
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.3593
+            }
+          ],
+          "pyq_pattern": "UPSC Conceptual Best-Fit"
+        },
+        {
+          "question_index": 5,
+          "question_id": "473b0c0d",
+          "question": "Regarding 'Constitutional Bodies', consider the following assertions:\n1. UPSC Civil Services - Indian Polity & Governance\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "B",
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Statement 1 is correct based on parliamentary_governance.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+          "topic": "Constitutional Bodies",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.351
+            },
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.4037
+            }
+          ],
+          "pyq_pattern": "UPSC Elimination Based"
+        },
+        {
+          "question_index": 6,
+          "question_id": "2357005c",
+          "question": "With reference to 'Constitutional Framework' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 01: Constitutional Framework & Fundamental Rights\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "B",
+          "correct_answer": "C",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Both statements are authentic provisions derived from constitutional_framework.pdf. Statement 1 reflects verified principles of Constitutional Framework, and Statement 2 is consistent with established administrative standards.",
+          "topic": "Constitutional Framework",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.4737
+            },
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.3316
+            }
+          ],
+          "pyq_pattern": "UPSC Statement Based (2 Statements)"
+        },
+        {
+          "question_index": 7,
+          "question_id": "4e73a2e9",
+          "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Fundamental Rights'?",
+          "options": {
+            "A": "UPSC Civil Services - Indian Polity & Governance",
+            "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+            "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+            "D": "It was repealed by the 44th Constitutional Amendment Act."
+          },
+          "user_answer": "B",
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Statement A accurately captures the substantive principle as documented in constitutional_framework.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+          "topic": "Fundamental Rights",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.4724
+            },
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.142
+            }
+          ],
+          "pyq_pattern": "UPSC Conceptual Best-Fit"
+        },
+        {
+          "question_index": 8,
+          "question_id": "1e12b73a",
+          "question": "Regarding 'Directive Principles', consider the following assertions:\n1. UPSC Civil Services - Indian Polity & Governance\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "C",
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Statement 1 is correct based on constitutional_framework.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+          "topic": "Directive Principles",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.3508
+            },
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.1767
+            }
+          ],
+          "pyq_pattern": "UPSC Elimination Based"
+        },
+        {
+          "question_index": 9,
+          "question_id": "762c686d",
+          "question": "With reference to 'Parliament of India' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 02: Union Legislature & Judicial Architecture\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "A",
+          "correct_answer": "C",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Both statements are authentic provisions derived from parliamentary_governance.pdf. Statement 1 reflects verified principles of Parliament of India, and Statement 2 is consistent with established administrative standards.",
+          "topic": "Parliament of India",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.5382
+            },
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.3874
+            }
+          ],
+          "pyq_pattern": "UPSC Statement Based (2 Statements)"
+        },
+        {
+          "question_index": 10,
+          "question_id": "7eacfcf9",
+          "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Judicial Architecture'?",
+          "options": {
+            "A": "UPSC Civil Services - Indian Polity & Governance",
+            "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+            "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+            "D": "It was repealed by the 44th Constitutional Amendment Act."
+          },
+          "user_answer": null,
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": false,
+          "explanation": "Statement A accurately captures the substantive principle as documented in parliamentary_governance.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+          "topic": "Judicial Architecture",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.4299
+            },
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.3593
+            }
+          ],
+          "pyq_pattern": "UPSC Conceptual Best-Fit"
+        },
+        {
+          "question_index": 11,
+          "question_id": "f969f94b",
+          "question": "Regarding 'Constitutional Bodies', consider the following assertions:\n1. UPSC Civil Services - Indian Polity & Governance\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "C",
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Statement 1 is correct based on parliamentary_governance.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+          "topic": "Constitutional Bodies",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.351
+            },
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.4037
+            }
+          ],
+          "pyq_pattern": "UPSC Elimination Based"
+        },
+        {
+          "question_index": 12,
+          "question_id": "32fadbce",
+          "question": "With reference to 'Constitutional Framework' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 01: Constitutional Framework & Fundamental Rights\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "C",
+          "correct_answer": "C",
+          "is_correct": true,
+          "is_attempted": true,
+          "explanation": "Both statements are authentic provisions derived from constitutional_framework.pdf. Statement 1 reflects verified principles of Constitutional Framework, and Statement 2 is consistent with established administrative standards.",
+          "topic": "Constitutional Framework",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.4737
+            },
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.3316
+            }
+          ],
+          "pyq_pattern": "UPSC Statement Based (2 Statements)"
+        },
+        {
+          "question_index": 13,
+          "question_id": "40a673f5",
+          "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Fundamental Rights'?",
+          "options": {
+            "A": "UPSC Civil Services - Indian Polity & Governance",
+            "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+            "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+            "D": "It was repealed by the 44th Constitutional Amendment Act."
+          },
+          "user_answer": "A",
+          "correct_answer": "A",
+          "is_correct": true,
+          "is_attempted": true,
+          "explanation": "Statement A accurately captures the substantive principle as documented in constitutional_framework.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+          "topic": "Fundamental Rights",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.4724
+            },
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.142
+            }
+          ],
+          "pyq_pattern": "UPSC Conceptual Best-Fit"
+        },
+        {
+          "question_index": 14,
+          "question_id": "f6f4adb4",
+          "question": "Regarding 'Directive Principles', consider the following assertions:\n1. UPSC Civil Services - Indian Polity & Governance\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "D",
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Statement 1 is correct based on constitutional_framework.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+          "topic": "Directive Principles",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.3508
+            },
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.1767
+            }
+          ],
+          "pyq_pattern": "UPSC Elimination Based"
+        },
+        {
+          "question_index": 15,
+          "question_id": "3916f1cb",
+          "question": "With reference to 'Parliament of India' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 02: Union Legislature & Judicial Architecture\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "C",
+          "correct_answer": "C",
+          "is_correct": true,
+          "is_attempted": true,
+          "explanation": "Both statements are authentic provisions derived from parliamentary_governance.pdf. Statement 1 reflects verified principles of Parliament of India, and Statement 2 is consistent with established administrative standards.",
+          "topic": "Parliament of India",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.5382
+            },
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.3874
+            }
+          ],
+          "pyq_pattern": "UPSC Statement Based (2 Statements)"
+        },
+        {
+          "question_index": 16,
+          "question_id": "3c91af0b",
+          "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Judicial Architecture'?",
+          "options": {
+            "A": "UPSC Civil Services - Indian Polity & Governance",
+            "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+            "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+            "D": "It was repealed by the 44th Constitutional Amendment Act."
+          },
+          "user_answer": "B",
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Statement A accurately captures the substantive principle as documented in parliamentary_governance.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+          "topic": "Judicial Architecture",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.4299
+            },
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.3593
+            }
+          ],
+          "pyq_pattern": "UPSC Conceptual Best-Fit"
+        },
+        {
+          "question_index": 17,
+          "question_id": "33b2f9e3",
+          "question": "Regarding 'Constitutional Bodies', consider the following assertions:\n1. UPSC Civil Services - Indian Polity & Governance\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "A",
+          "correct_answer": "A",
+          "is_correct": true,
+          "is_attempted": true,
+          "explanation": "Statement 1 is correct based on parliamentary_governance.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+          "topic": "Constitutional Bodies",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.351
+            },
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.4037
+            }
+          ],
+          "pyq_pattern": "UPSC Elimination Based"
+        },
+        {
+          "question_index": 18,
+          "question_id": "6fc9e181",
+          "question": "With reference to 'Constitutional Framework' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 01: Constitutional Framework & Fundamental Rights\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "C",
+          "correct_answer": "C",
+          "is_correct": true,
+          "is_attempted": true,
+          "explanation": "Both statements are authentic provisions derived from constitutional_framework.pdf. Statement 1 reflects verified principles of Constitutional Framework, and Statement 2 is consistent with established administrative standards.",
+          "topic": "Constitutional Framework",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.4737
+            },
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.3316
+            }
+          ],
+          "pyq_pattern": "UPSC Statement Based (2 Statements)"
+        },
+        {
+          "question_index": 19,
+          "question_id": "2c93784d",
+          "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Fundamental Rights'?",
+          "options": {
+            "A": "UPSC Civil Services - Indian Polity & Governance",
+            "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+            "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+            "D": "It was repealed by the 44th Constitutional Amendment Act."
+          },
+          "user_answer": "C",
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Statement A accurately captures the substantive principle as documented in constitutional_framework.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+          "topic": "Fundamental Rights",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "constitutional_framework.pdf",
+              "page": 1,
+              "relevance_score": 0.4724
+            },
+            {
+              "document": "parliamentary_governance.pdf",
+              "page": 1,
+              "relevance_score": 0.142
+            }
+          ],
+          "pyq_pattern": "UPSC Conceptual Best-Fit"
+        }
+      ]
+    },
+    "questions": [
+      {
+        "question_id": "89f4172f",
+        "question": "With reference to 'Constitutional Framework' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 01: Constitutional Framework & Fundamental Rights\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Constitutional Framework",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Statement Based (2 Statements)",
+        "correct_answer": "C",
+        "explanation": "Both statements are authentic provisions derived from constitutional_framework.pdf. Statement 1 reflects verified principles of Constitutional Framework, and Statement 2 is consistent with established administrative standards.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4737
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.3316
+          }
+        ]
+      },
+      {
+        "question_id": "b77ce067",
+        "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Fundamental Rights'?",
+        "options": {
+          "A": "UPSC Civil Services - Indian Polity & Governance",
+          "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+          "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+          "D": "It was repealed by the 44th Constitutional Amendment Act."
+        },
+        "topic": "Fundamental Rights",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Conceptual Best-Fit",
+        "correct_answer": "A",
+        "explanation": "Statement A accurately captures the substantive principle as documented in constitutional_framework.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4724
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.142
+          }
+        ]
+      },
+      {
+        "question_id": "e83082c0",
+        "question": "Regarding 'Directive Principles', consider the following assertions:\n1. UPSC Civil Services - Indian Polity & Governance\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Directive Principles",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Elimination Based",
+        "correct_answer": "A",
+        "explanation": "Statement 1 is correct based on constitutional_framework.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.3508
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.1767
+          }
+        ]
+      },
+      {
+        "question_id": "1c7ab886",
+        "question": "With reference to 'Parliament of India' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 02: Union Legislature & Judicial Architecture\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Parliament of India",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Statement Based (2 Statements)",
+        "correct_answer": "C",
+        "explanation": "Both statements are authentic provisions derived from parliamentary_governance.pdf. Statement 1 reflects verified principles of Parliament of India, and Statement 2 is consistent with established administrative standards.",
+        "source_references": [
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.5382
+          },
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.3874
+          }
+        ]
+      },
+      {
+        "question_id": "57f91942",
+        "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Judicial Architecture'?",
+        "options": {
+          "A": "UPSC Civil Services - Indian Polity & Governance",
+          "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+          "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+          "D": "It was repealed by the 44th Constitutional Amendment Act."
+        },
+        "topic": "Judicial Architecture",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Conceptual Best-Fit",
+        "correct_answer": "A",
+        "explanation": "Statement A accurately captures the substantive principle as documented in parliamentary_governance.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+        "source_references": [
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.4299
+          },
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.3593
+          }
+        ]
+      },
+      {
+        "question_id": "473b0c0d",
+        "question": "Regarding 'Constitutional Bodies', consider the following assertions:\n1. UPSC Civil Services - Indian Polity & Governance\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Constitutional Bodies",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Elimination Based",
+        "correct_answer": "A",
+        "explanation": "Statement 1 is correct based on parliamentary_governance.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+        "source_references": [
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.351
+          },
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4037
+          }
+        ]
+      },
+      {
+        "question_id": "2357005c",
+        "question": "With reference to 'Constitutional Framework' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 01: Constitutional Framework & Fundamental Rights\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Constitutional Framework",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Statement Based (2 Statements)",
+        "correct_answer": "C",
+        "explanation": "Both statements are authentic provisions derived from constitutional_framework.pdf. Statement 1 reflects verified principles of Constitutional Framework, and Statement 2 is consistent with established administrative standards.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4737
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.3316
+          }
+        ]
+      },
+      {
+        "question_id": "4e73a2e9",
+        "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Fundamental Rights'?",
+        "options": {
+          "A": "UPSC Civil Services - Indian Polity & Governance",
+          "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+          "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+          "D": "It was repealed by the 44th Constitutional Amendment Act."
+        },
+        "topic": "Fundamental Rights",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Conceptual Best-Fit",
+        "correct_answer": "A",
+        "explanation": "Statement A accurately captures the substantive principle as documented in constitutional_framework.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4724
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.142
+          }
+        ]
+      },
+      {
+        "question_id": "1e12b73a",
+        "question": "Regarding 'Directive Principles', consider the following assertions:\n1. UPSC Civil Services - Indian Polity & Governance\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Directive Principles",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Elimination Based",
+        "correct_answer": "A",
+        "explanation": "Statement 1 is correct based on constitutional_framework.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.3508
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.1767
+          }
+        ]
+      },
+      {
+        "question_id": "762c686d",
+        "question": "With reference to 'Parliament of India' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 02: Union Legislature & Judicial Architecture\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Parliament of India",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Statement Based (2 Statements)",
+        "correct_answer": "C",
+        "explanation": "Both statements are authentic provisions derived from parliamentary_governance.pdf. Statement 1 reflects verified principles of Parliament of India, and Statement 2 is consistent with established administrative standards.",
+        "source_references": [
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.5382
+          },
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.3874
+          }
+        ]
+      },
+      {
+        "question_id": "7eacfcf9",
+        "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Judicial Architecture'?",
+        "options": {
+          "A": "UPSC Civil Services - Indian Polity & Governance",
+          "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+          "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+          "D": "It was repealed by the 44th Constitutional Amendment Act."
+        },
+        "topic": "Judicial Architecture",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Conceptual Best-Fit",
+        "correct_answer": "A",
+        "explanation": "Statement A accurately captures the substantive principle as documented in parliamentary_governance.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+        "source_references": [
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.4299
+          },
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.3593
+          }
+        ]
+      },
+      {
+        "question_id": "f969f94b",
+        "question": "Regarding 'Constitutional Bodies', consider the following assertions:\n1. UPSC Civil Services - Indian Polity & Governance\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Constitutional Bodies",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Elimination Based",
+        "correct_answer": "A",
+        "explanation": "Statement 1 is correct based on parliamentary_governance.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+        "source_references": [
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.351
+          },
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4037
+          }
+        ]
+      },
+      {
+        "question_id": "32fadbce",
+        "question": "With reference to 'Constitutional Framework' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 01: Constitutional Framework & Fundamental Rights\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Constitutional Framework",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Statement Based (2 Statements)",
+        "correct_answer": "C",
+        "explanation": "Both statements are authentic provisions derived from constitutional_framework.pdf. Statement 1 reflects verified principles of Constitutional Framework, and Statement 2 is consistent with established administrative standards.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4737
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.3316
+          }
+        ]
+      },
+      {
+        "question_id": "40a673f5",
+        "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Fundamental Rights'?",
+        "options": {
+          "A": "UPSC Civil Services - Indian Polity & Governance",
+          "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+          "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+          "D": "It was repealed by the 44th Constitutional Amendment Act."
+        },
+        "topic": "Fundamental Rights",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Conceptual Best-Fit",
+        "correct_answer": "A",
+        "explanation": "Statement A accurately captures the substantive principle as documented in constitutional_framework.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4724
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.142
+          }
+        ]
+      },
+      {
+        "question_id": "f6f4adb4",
+        "question": "Regarding 'Directive Principles', consider the following assertions:\n1. UPSC Civil Services - Indian Polity & Governance\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Directive Principles",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Elimination Based",
+        "correct_answer": "A",
+        "explanation": "Statement 1 is correct based on constitutional_framework.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.3508
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.1767
+          }
+        ]
+      },
+      {
+        "question_id": "3916f1cb",
+        "question": "With reference to 'Parliament of India' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 02: Union Legislature & Judicial Architecture\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Parliament of India",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Statement Based (2 Statements)",
+        "correct_answer": "C",
+        "explanation": "Both statements are authentic provisions derived from parliamentary_governance.pdf. Statement 1 reflects verified principles of Parliament of India, and Statement 2 is consistent with established administrative standards.",
+        "source_references": [
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.5382
+          },
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.3874
+          }
+        ]
+      },
+      {
+        "question_id": "3c91af0b",
+        "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Judicial Architecture'?",
+        "options": {
+          "A": "UPSC Civil Services - Indian Polity & Governance",
+          "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+          "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+          "D": "It was repealed by the 44th Constitutional Amendment Act."
+        },
+        "topic": "Judicial Architecture",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Conceptual Best-Fit",
+        "correct_answer": "A",
+        "explanation": "Statement A accurately captures the substantive principle as documented in parliamentary_governance.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+        "source_references": [
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.4299
+          },
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.3593
+          }
+        ]
+      },
+      {
+        "question_id": "33b2f9e3",
+        "question": "Regarding 'Constitutional Bodies', consider the following assertions:\n1. UPSC Civil Services - Indian Polity & Governance\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Constitutional Bodies",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Elimination Based",
+        "correct_answer": "A",
+        "explanation": "Statement 1 is correct based on parliamentary_governance.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+        "source_references": [
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.351
+          },
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4037
+          }
+        ]
+      },
+      {
+        "question_id": "6fc9e181",
+        "question": "With reference to 'Constitutional Framework' in Indian Polity & Governance, consider the following statements:\n1. UPSC Civil Services - Indian Polity & Governance\n2. Module 01: Constitutional Framework & Fundamental Rights\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Constitutional Framework",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Statement Based (2 Statements)",
+        "correct_answer": "C",
+        "explanation": "Both statements are authentic provisions derived from constitutional_framework.pdf. Statement 1 reflects verified principles of Constitutional Framework, and Statement 2 is consistent with established administrative standards.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4737
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.3316
+          }
+        ]
+      },
+      {
+        "question_id": "2c93784d",
+        "question": "In the context of Indian governance and Indian Polity & Governance, which one of the following statements best characterizes the operational mandate of 'Fundamental Rights'?",
+        "options": {
+          "A": "UPSC Civil Services - Indian Polity & Governance",
+          "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+          "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+          "D": "It was repealed by the 44th Constitutional Amendment Act."
+        },
+        "topic": "Fundamental Rights",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Conceptual Best-Fit",
+        "correct_answer": "A",
+        "explanation": "Statement A accurately captures the substantive principle as documented in constitutional_framework.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+        "source_references": [
+          {
+            "document": "constitutional_framework.pdf",
+            "page": 1,
+            "relevance_score": 0.4724
+          },
+          {
+            "document": "parliamentary_governance.pdf",
+            "page": 1,
+            "relevance_score": 0.142
+          }
+        ]
+      }
+    ]
+  },
+  "upsc_fd155e8d9f": {
+    "session_id": "upsc_fd155e8d9f",
+    "user_id": "candidate_1",
+    "exam": "UPSC",
+    "subject": "Science_and_Technology",
+    "difficulty": "Medium",
+    "total_questions": 5,
+    "topic": null,
+    "user_answers": {
+      "0": "B",
+      "1": "A",
+      "2": "B",
+      "3": "A",
+      "4": "C"
+    },
+    "status": "submitted",
+    "created_at": "2026-11-23T07:09:27.140244",
+    "submitted_at": "2026-11-23T07:09:54.316630",
+    "time_taken_seconds": 19,
+    "evaluation": {
+      "total_questions": 5,
+      "attempted_questions": 5,
+      "correct_answers": 1,
+      "incorrect_answers": 4,
+      "unattempted_questions": 0,
+      "accuracy_percentage": 20.0,
+      "score_percentage": 20.0,
+      "upsc_marks": -0.64,
+      "max_marks": 10.0,
+      "status": "Needs Revision",
+      "topic_breakdown": {
+        "Biotechnology & Gene Editing": {
+          "total": 1,
+          "correct": 0,
+          "incorrect": 1
+        },
+        "ISRO Launch Vehicles & Lunar Missions": {
+          "total": 1,
+          "correct": 1,
+          "incorrect": 0
+        },
+        "Quantum Computing & National Quantum Mission": {
+          "total": 1,
+          "correct": 0,
+          "incorrect": 1
+        },
+        "Emerging Tech, AI & 5G/6G Networks": {
+          "total": 1,
+          "correct": 0,
+          "incorrect": 1
+        },
+        "Nanotechnology & Advanced Materials": {
+          "total": 1,
+          "correct": 0,
+          "incorrect": 1
+        }
+      },
+      "review": [
+        {
+          "question_index": 0,
+          "question_id": "4d39abcf",
+          "question": "With reference to 'Biotechnology & Gene Editing' in Science & Technology, consider the following statements:\n1. UPSC Civil Services - Science & Technology\n2. Module 01: Biotechnology, Gene Editing & Space Exploration\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "B",
+          "correct_answer": "C",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Both statements are authentic provisions derived from biotechnology_space_tech.pdf. Statement 1 reflects verified principles of Biotechnology & Gene Editing, and Statement 2 is consistent with established administrative standards.",
+          "topic": "Biotechnology & Gene Editing",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "biotechnology_space_tech.pdf",
+              "page": 1,
+              "relevance_score": 0.3385
+            },
+            {
+              "document": "emerging_technologies_ai_quantum.pdf",
+              "page": 1,
+              "relevance_score": 0.0697
+            }
+          ],
+          "pyq_pattern": "UPSC Statement Based (2 Statements)"
+        },
+        {
+          "question_index": 1,
+          "question_id": "5e5c727c",
+          "question": "In the context of Indian governance and Science & Technology, which one of the following statements best characterizes the operational mandate of 'ISRO Launch Vehicles & Lunar Missions'?",
+          "options": {
+            "A": "UPSC Civil Services - Science & Technology",
+            "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+            "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+            "D": "It was repealed by the 44th Constitutional Amendment Act."
+          },
+          "user_answer": "A",
+          "correct_answer": "A",
+          "is_correct": true,
+          "is_attempted": true,
+          "explanation": "Statement A accurately captures the substantive principle as documented in biotechnology_space_tech.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+          "topic": "ISRO Launch Vehicles & Lunar Missions",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "biotechnology_space_tech.pdf",
+              "page": 1,
+              "relevance_score": 0.617
+            },
+            {
+              "document": "emerging_technologies_ai_quantum.pdf",
+              "page": 1,
+              "relevance_score": 0.0119
+            }
+          ],
+          "pyq_pattern": "UPSC Conceptual Best-Fit"
+        },
+        {
+          "question_index": 2,
+          "question_id": "5333cef9",
+          "question": "Regarding 'Quantum Computing & National Quantum Mission', consider the following assertions:\n1. UPSC Civil Services - Science & Technology\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "B",
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Statement 1 is correct based on emerging_technologies_ai_quantum.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+          "topic": "Quantum Computing & National Quantum Mission",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "emerging_technologies_ai_quantum.pdf",
+              "page": 1,
+              "relevance_score": 0.5077
+            },
+            {
+              "document": "biotechnology_space_tech.pdf",
+              "page": 1,
+              "relevance_score": 0.1811
+            }
+          ],
+          "pyq_pattern": "UPSC Elimination Based"
+        },
+        {
+          "question_index": 3,
+          "question_id": "2224df40",
+          "question": "With reference to 'Emerging Tech, AI & 5G/6G Networks' in Science & Technology, consider the following statements:\n1. UPSC Civil Services - Science & Technology\n2. Module 02: Quantum Computing, Artificial Intelligence & Nanomaterials\n\nWhich of the statements given above is/are correct?",
+          "options": {
+            "A": "1 only",
+            "B": "2 only",
+            "C": "Both 1 and 2",
+            "D": "Neither 1 nor 2"
+          },
+          "user_answer": "A",
+          "correct_answer": "C",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Both statements are authentic provisions derived from emerging_technologies_ai_quantum.pdf. Statement 1 reflects verified principles of Emerging Tech, AI & 5G/6G Networks, and Statement 2 is consistent with established administrative standards.",
+          "topic": "Emerging Tech, AI & 5G/6G Networks",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "emerging_technologies_ai_quantum.pdf",
+              "page": 1,
+              "relevance_score": 0.365
+            },
+            {
+              "document": "biotechnology_space_tech.pdf",
+              "page": 1,
+              "relevance_score": 0.1647
+            }
+          ],
+          "pyq_pattern": "UPSC Statement Based (2 Statements)"
+        },
+        {
+          "question_index": 4,
+          "question_id": "4a6cd08b",
+          "question": "In the context of Indian governance and Science & Technology, which one of the following statements best characterizes the operational mandate of 'Nanotechnology & Advanced Materials'?",
+          "options": {
+            "A": "UPSC Civil Services - Science & Technology",
+            "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+            "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+            "D": "It was repealed by the 44th Constitutional Amendment Act."
+          },
+          "user_answer": "C",
+          "correct_answer": "A",
+          "is_correct": false,
+          "is_attempted": true,
+          "explanation": "Statement A accurately captures the substantive principle as documented in emerging_technologies_ai_quantum.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+          "topic": "Nanotechnology & Advanced Materials",
+          "difficulty": "Medium",
+          "source_references": [
+            {
+              "document": "emerging_technologies_ai_quantum.pdf",
+              "page": 1,
+              "relevance_score": 0.3962
+            },
+            {
+              "document": "biotechnology_space_tech.pdf",
+              "page": 1,
+              "relevance_score": 0.1397
+            }
+          ],
+          "pyq_pattern": "UPSC Conceptual Best-Fit"
+        }
+      ]
+    },
+    "questions": [
+      {
+        "question_id": "4d39abcf",
+        "question": "With reference to 'Biotechnology & Gene Editing' in Science & Technology, consider the following statements:\n1. UPSC Civil Services - Science & Technology\n2. Module 01: Biotechnology, Gene Editing & Space Exploration\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Biotechnology & Gene Editing",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Statement Based (2 Statements)",
+        "correct_answer": "C",
+        "explanation": "Both statements are authentic provisions derived from biotechnology_space_tech.pdf. Statement 1 reflects verified principles of Biotechnology & Gene Editing, and Statement 2 is consistent with established administrative standards.",
+        "source_references": [
+          {
+            "document": "biotechnology_space_tech.pdf",
+            "page": 1,
+            "relevance_score": 0.3385
+          },
+          {
+            "document": "emerging_technologies_ai_quantum.pdf",
+            "page": 1,
+            "relevance_score": 0.0697
+          }
+        ]
+      },
+      {
+        "question_id": "5e5c727c",
+        "question": "In the context of Indian governance and Science & Technology, which one of the following statements best characterizes the operational mandate of 'ISRO Launch Vehicles & Lunar Missions'?",
+        "options": {
+          "A": "UPSC Civil Services - Science & Technology",
+          "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+          "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+          "D": "It was repealed by the 44th Constitutional Amendment Act."
+        },
+        "topic": "ISRO Launch Vehicles & Lunar Missions",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Conceptual Best-Fit",
+        "correct_answer": "A",
+        "explanation": "Statement A accurately captures the substantive principle as documented in biotechnology_space_tech.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+        "source_references": [
+          {
+            "document": "biotechnology_space_tech.pdf",
+            "page": 1,
+            "relevance_score": 0.617
+          },
+          {
+            "document": "emerging_technologies_ai_quantum.pdf",
+            "page": 1,
+            "relevance_score": 0.0119
+          }
+        ]
+      },
+      {
+        "question_id": "5333cef9",
+        "question": "Regarding 'Quantum Computing & National Quantum Mission', consider the following assertions:\n1. UPSC Civil Services - Science & Technology\n2. It requires mandatory prior concurrence of the Finance Commission before implementation.\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Quantum Computing & National Quantum Mission",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Elimination Based",
+        "correct_answer": "A",
+        "explanation": "Statement 1 is correct based on emerging_technologies_ai_quantum.pdf. Statement 2 is incorrect as no prior concurrence from the Finance Commission is constitutionally mandated for this specific procedure.",
+        "source_references": [
+          {
+            "document": "emerging_technologies_ai_quantum.pdf",
+            "page": 1,
+            "relevance_score": 0.5077
+          },
+          {
+            "document": "biotechnology_space_tech.pdf",
+            "page": 1,
+            "relevance_score": 0.1811
+          }
+        ]
+      },
+      {
+        "question_id": "2224df40",
+        "question": "With reference to 'Emerging Tech, AI & 5G/6G Networks' in Science & Technology, consider the following statements:\n1. UPSC Civil Services - Science & Technology\n2. Module 02: Quantum Computing, Artificial Intelligence & Nanomaterials\n\nWhich of the statements given above is/are correct?",
+        "options": {
+          "A": "1 only",
+          "B": "2 only",
+          "C": "Both 1 and 2",
+          "D": "Neither 1 nor 2"
+        },
+        "topic": "Emerging Tech, AI & 5G/6G Networks",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Statement Based (2 Statements)",
+        "correct_answer": "C",
+        "explanation": "Both statements are authentic provisions derived from emerging_technologies_ai_quantum.pdf. Statement 1 reflects verified principles of Emerging Tech, AI & 5G/6G Networks, and Statement 2 is consistent with established administrative standards.",
+        "source_references": [
+          {
+            "document": "emerging_technologies_ai_quantum.pdf",
+            "page": 1,
+            "relevance_score": 0.365
+          },
+          {
+            "document": "biotechnology_space_tech.pdf",
+            "page": 1,
+            "relevance_score": 0.1647
+          }
+        ]
+      },
+      {
+        "question_id": "4a6cd08b",
+        "question": "In the context of Indian governance and Science & Technology, which one of the following statements best characterizes the operational mandate of 'Nanotechnology & Advanced Materials'?",
+        "options": {
+          "A": "UPSC Civil Services - Science & Technology",
+          "B": "It is exclusively executed through executive orders without statutory parliamentary backing.",
+          "C": "It remains entirely non-justiciable and exempt from Supreme Court review.",
+          "D": "It was repealed by the 44th Constitutional Amendment Act."
+        },
+        "topic": "Nanotechnology & Advanced Materials",
+        "difficulty": "Medium",
+        "pyq_pattern_used": "UPSC Conceptual Best-Fit",
+        "correct_answer": "A",
+        "explanation": "Statement A accurately captures the substantive principle as documented in emerging_technologies_ai_quantum.pdf (Page 1). Statements B, C, and D represent common distractor claims refuted by statutory law.",
+        "source_references": [
+          {
+            "document": "emerging_technologies_ai_quantum.pdf",
+            "page": 1,
+            "relevance_score": 0.3962
+          },
+          {
+            "document": "biotechnology_space_tech.pdf",
+            "page": 1,
+            "relevance_score": 0.1397
+          }
+        ]
+      }
+    ]
+  }
+}

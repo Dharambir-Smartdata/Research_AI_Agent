@@ -1693,7 +1693,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .replace(/^(?:EDITED|REMOVED|SIGNED|CONVERTED|MERGED|SAVED):\s*.*$/gim, '')
                 .replace(/\[(?:Download|View|File|Click)[^\]]*\]\([^)]*\)/gi, '')
                 .replace(/\[.*?\]\((?:uploads\/|\/api\/uploads\/|http)[^)]*\)/gi, '')
-                .replace(/(?:You can download[^.\n]*|Download the[^.\n]*|Download link:?)[^.\n]*\.?/gi, '')
+                .replace(/^\s*Download link:\s*.*$/gim, '')
                 .replace(/(?:uploads\/|\buploads[\\/])/g, '')
                 .replace(/^(?:The modified file has been saved as:?|Saved as:?|Output file:?)\s*.*$/gim, '')
                 .trim();

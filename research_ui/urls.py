@@ -1,10 +1,37 @@
 from django.urls import path
 from . import views
+from test_series import routes as ts_routes
 
 app_name = "research_ui"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("test-series/", views.test_series_view, name="test_series"),
+    
+    # Admin Portal Views & Auth
+    path("test-series/admin/login/", ts_routes.admin_login_view, name="ts_admin_login"),
+    path("test-series/admin/logout/", ts_routes.admin_logout_view, name="ts_admin_logout"),
+    path("test-series/admin/", ts_routes.admin_dashboard_view, name="ts_admin_dashboard"),
+
+    # UPSC Test Series & RAG API endpoints
+    path("api/test-series/config/", ts_routes.get_config_api, name="ts_config"),
+    path("api/test-series/admin/config/update/", ts_routes.update_config_api, name="ts_admin_config_update"),
+    path("api/test-series/admin/upload-pdf/", ts_routes.upload_pdf_api, name="ts_admin_upload_pdf"),
+    path("api/test-series/admin/clear-subject/", ts_routes.clear_subject_api, name="ts_admin_clear_subject"),
+    path("api/test-series/admin/sessions/", ts_routes.get_admin_sessions_api, name="ts_admin_sessions"),
+
+    path("api/test-series/upsc/subjects/", ts_routes.get_subjects_api, name="ts_upsc_subjects"),
+    path("api/test-series/upsc/<str:subject>/", ts_routes.get_subject_detail_api, name="ts_upsc_subject_detail"),
+    path("api/test-series/upsc/<str:subject>/start/", ts_routes.start_test_api, name="ts_upsc_start"),
+    path("api/test-series/session/<str:session_id>/question/<int:q_index>/", ts_routes.get_question_api, name="ts_get_question"),
+    path("api/test-series/session/<str:session_id>/next-question/", ts_routes.next_question_api, name="ts_next_question"),
+    path("api/test-series/session/<str:session_id>/answer/", ts_routes.record_answer_api, name="ts_record_answer"),
+    path("api/test-series/session/<str:session_id>/submit/", ts_routes.submit_test_api, name="ts_submit_test"),
+    path("api/test-series/session/<str:session_id>/results/", ts_routes.get_results_api, name="ts_get_results"),
+    path("api/test-series/session/<str:session_id>/review/", ts_routes.get_results_api, name="ts_get_review"),
+    path("api/test-series/ingest/status/", ts_routes.get_ingest_status_api, name="ts_ingest_status"),
+    path("api/test-series/ingest/run/", ts_routes.trigger_ingest_api, name="ts_ingest_run"),
+
     path("api/chat/", views.chat_api, name="chat_api"),
     path("api/reports/", views.reports_api, name="reports_api"),
     path(

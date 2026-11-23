@@ -1,0 +1,1278 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>VEDORA — UPSC Civil Services AI Test Series with RAG</title>
+  
+  <!-- Early Theme Init to avoid flicker -->
+  <script>
+    (function() {
+      try {
+        const saved = localStorage.getItem('vedora_theme') || localStorage.getItem('omni_theme');
+        if (saved === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Inter, JetBrains Mono, Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            canvas: {
+              dark: '#0e0f12',
+              darker: '#090a0d',
+              light: '#ffffff',
+              lightAlt: '#f8fafc',
+            },
+            surface: {
+              dark: '#16181d',
+              darkHover: '#1f2229',
+              light: '#f3f4f6',
+              lightHover: '#e5e7eb',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.28);
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.5);
+    }
+
+    /* Dedicated Vertical Scrollbar for Results Review & Correct Answers */
+    .review-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(99, 102, 241, 0.6) rgba(0, 0, 0, 0.05);
+    }
+    .dark .review-scrollbar {
+      scrollbar-color: rgba(99, 102, 241, 0.6) rgba(255, 255, 255, 0.04);
+    }
+    .review-scrollbar::-webkit-scrollbar {
+      width: 8px;
+    }
+    .review-scrollbar::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 9999px;
+    }
+    .dark .review-scrollbar::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 9999px;
+    }
+    .review-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .review-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.85);
+    }
+
+    .headline-gradient {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 45%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .dark .headline-gradient {
+      background: linear-gradient(135deg, #818cf8 0%, #c084fc 45%, #67e8f9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .bento-card {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+    }
+    .bento-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .sidebar-transition {
+      transition: width 0.26s cubic-bezier(0.4, 0, 0.2, 1), transform 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body class="bg-canvas-light dark:bg-canvas-dark text-gray-900 dark:text-gray-100 font-sans antialiased selection:bg-indigo-500/30 selection:text-indigo-200 overflow-hidden h-screen flex">
+
+  <!-- Mobile Sidebar Backdrop -->
+  <div id="mobileBackdrop" onclick="toggleSidebar(false)" class="fixed inset-0 bg-black/55 backdrop-blur-xs z-30 hidden lg:hidden transition-opacity"></div>
+
+  <!-- Collapsible Left Sidebar -->
+  <aside id="sidebar" class="sidebar-transition fixed lg:static inset-y-0 left-0 z-40 w-[276px] h-screen max-h-screen bg-gray-50/95 dark:bg-[#090a0d] border-r border-gray-200/80 dark:border-white/[0.07] flex flex-col shrink-0 overflow-hidden -translate-x-full lg:translate-x-0">
+    <!-- Scrollable Main Sidebar Content -->
+    <div class="flex-1 min-h-0 overflow-y-auto p-3.5 flex flex-col gap-3 review-scrollbar" style="scrollbar-width: thin;">
+      <!-- Switch Back to Research Agent -->
+      <div class="flex items-center gap-2">
+        <a href="{% url 'research_ui:index' %}" class="flex-1 flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#16181d] hover:bg-indigo-50 dark:hover:bg-indigo-500/10 border border-gray-200/90 dark:border-white/[0.08] hover:border-indigo-500/30 text-sm font-medium text-gray-800 dark:text-gray-100 shadow-2xs transition-all group cursor-pointer">
+          <span class="flex items-center gap-2.5">
+            <span class="w-5 h-5 rounded-md bg-indigo-500/15 text-indigo-500 dark:text-indigo-400 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+            </span>
+            <span>Research Agent</span>
+          </span>
+          <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-semibold">Switch</span>
+        </a>
+        <button onclick="toggleSidebar(false)" title="Close sidebar" class="p-2.5 rounded-xl text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-100 hover:bg-gray-200/60 dark:hover:bg-white/[0.06] transition-colors lg:hidden">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Ingestion & Knowledge Base Status Button -->
+      <a href="{% url 'research_ui:ts_admin_dashboard' %}" class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-white dark:bg-[#16181d] hover:bg-gray-100 dark:hover:bg-[#1f2229] border border-gray-200/90 dark:border-white/[0.08] text-xs font-semibold text-gray-700 dark:text-gray-200 shadow-2xs transition-all cursor-pointer group">
+        <span class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>RAG Ingestion &amp; Admin</span>
+        </span>
+        <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 font-semibold">Admin Panel</span>
+      </a>
+
+      <!-- Exam Modules Hierarchy -->
+      <div class="mt-1">
+        <div class="px-2 mb-1.5 flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Exam Modules</span>
+          <span class="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-indigo-500/15 text-indigo-600 dark:text-indigo-400">1 Active</span>
+        </div>
+        <div class="space-y-1 text-xs">
+          <!-- Active Module: UPSC -->
+          <button class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-indigo-600 text-white font-semibold shadow-xs text-left cursor-pointer">
+            <span class="flex items-center gap-2">
+              <span class="text-sm">🇮🇳</span>
+              <span>UPSC Civil Services</span>
+            </span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/20">8 Subj</span>
+          </button>
+          
+          <!-- Future Scalable Modules -->
+          <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-gray-400 dark:text-gray-500 text-left opacity-70">
+            <span class="flex items-center gap-2">
+              <span class="text-sm">🏛️</span>
+              <span>State PCS Exams</span>
+            </span>
+            <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-gray-200 dark:bg-white/[0.06]">Coming Soon</span>
+          </div>
+
+          <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-gray-400 dark:text-gray-500 text-left opacity-70">
+            <span class="flex items-center gap-2">
+              <span class="text-sm">📋</span>
+              <span>SSC CGL / CHSL</span>
+            </span>
+            <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-gray-200 dark:bg-white/[0.06]">Coming Soon</span>
+          </div>
+
+          <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-gray-400 dark:text-gray-500 text-left opacity-70">
+            <span class="flex items-center gap-2">
+              <span class="text-sm">🏦</span>
+              <span>Banking &amp; RBI Grade B</span>
+            </span>
+            <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-gray-200 dark:bg-white/[0.06]">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Subject Jump List -->
+      <div class="mt-1">
+        <div class="px-2 mb-1.5 flex items-center justify-between">
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">UPSC Subjects</span>
+          <span class="text-[10px] font-mono text-gray-400">8</span>
+        </div>
+        <nav id="sidebarSubjectList" class="space-y-0.5 text-xs">
+          <!-- Populated dynamically via JS -->
+        </nav>
+      </div>
+    </div>
+
+    <!-- Pinned Bottom Sidebar Section: Always 100% visible! -->
+    <div class="p-3 border-t border-gray-200/80 dark:border-white/[0.07] space-y-2 bg-gray-100/60 dark:bg-[#07080a] shrink-0">
+      <a href="{% url 'research_ui:index' %}" class="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/80 dark:bg-[#16181d] hover:bg-indigo-50 dark:hover:bg-indigo-500/10 border border-gray-200/80 dark:border-white/[0.07] hover:border-indigo-500/30 text-xs font-medium text-gray-700 dark:text-gray-200 transition-all cursor-pointer group shadow-2xs">
+        <span class="flex items-center gap-2 font-medium">
+          <span class="w-5 h-5 rounded-md bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+          </span>
+          <span>Back to Agent</span>
+        </span>
+        <span class="text-xs font-mono text-indigo-500">&larr;</span>
+      </a>
+
+      <div class="px-2 py-0.5 flex items-center justify-between">
+        <div class="flex items-center gap-2 min-w-0">
+          <div class="w-5 h-5 rounded-full bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center text-[9px] font-bold text-white shrink-0">U</div>
+          <div class="min-w-0">
+            <div class="text-xs font-medium text-gray-800 dark:text-gray-200 truncate">UPSC RAG Engine</div>
+            <div class="text-[9px] text-emerald-600 dark:text-emerald-400 font-mono">ChromaDB Vector Store</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main View Area -->
+  <div class="flex-1 flex flex-col min-w-0 h-screen relative bg-canvas-light dark:bg-canvas-dark">
+    <!-- Top Header -->
+    <header class="h-14 border-b border-gray-200/80 dark:border-white/[0.08] bg-white/70 dark:bg-[#0c0d0f]/80 backdrop-blur-xl flex items-center justify-between px-4 sm:px-6 z-20 shrink-0">
+      <!-- Left: Mobile Menu Toggle & Brand -->
+      <div class="flex items-center gap-3">
+        <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors cursor-pointer" aria-label="Toggle Navigation">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
+        <div class="flex items-center gap-2.5">
+          <a href="{% url 'research_ui:index' %}" class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 flex items-center justify-center shadow-md shadow-indigo-500/20 text-white font-bold text-sm tracking-wider">
+            V
+          </a>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-display font-bold text-sm text-gray-900 dark:text-white tracking-tight">VEDORA<span class="text-indigo-500">.ai</span></span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 font-semibold border border-indigo-500/20">UPSC Test Series</span>
+            </div>
+            <p class="text-[10px] text-gray-600 dark:text-gray-300 hidden sm:block">Subject-Wise Adaptive AI Mock Assessments &middot; Grounded via RAG Pipeline</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: System Status Badge -->
+      <div class="hidden md:flex items-center gap-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span class="text-emerald-600 dark:text-emerald-400 font-medium">UPSC RAG Pipeline Ready</span>
+        </div>
+      </div>
+
+      <!-- Right: Theme Switcher + Admin Panel + Switch back to Research Agent -->
+      <div class="flex items-center gap-2">
+        <!-- Admin Dashboard Link -->
+        <a href="{% url 'research_ui:ts_admin_dashboard' %}" title="Admin Panel: Manage Ingestion & MCQs" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100/90 dark:bg-[#16181d] hover:bg-gray-200/80 dark:hover:bg-[#1f2229] border border-gray-200/90 dark:border-white/[0.08] text-xs font-semibold text-gray-700 dark:text-gray-200 transition-colors shadow-2xs">
+          <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span class="hidden sm:inline">Admin</span>
+        </a>
+
+        <!-- Theme Mode Cycle Button -->
+        <button onclick="cycleTheme()" id="themeCycleBtn" title="Switch Theme: Obsidian / Midnight / Light" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-gray-100/90 dark:bg-[#16181d] hover:bg-gray-200/80 dark:hover:bg-[#1f2229] border border-gray-200/90 dark:border-white/[0.08] text-xs font-medium text-gray-600 dark:text-gray-300 transition-colors cursor-pointer">
+          <svg id="themeIcon" class="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <span id="themeLabel" class="hidden sm:inline text-[11px]">Midnight</span>
+        </button>
+
+        <!-- Switch Control: Switch back to Research Agent -->
+        <a href="{% url 'research_ui:index' %}" title="Switch back to Research Agent" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 border border-indigo-500/30 text-xs font-medium text-indigo-600 dark:text-indigo-300 transition-all cursor-pointer group shadow-xs">
+          <div class="flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span class="font-medium text-xs">Research Agent</span>
+          </div>
+          <!-- Toggle switch UI in active/switched state -->
+          <div class="w-7 h-4 bg-indigo-600 rounded-full p-0.5 flex items-center transition-colors">
+            <div class="w-3 h-3 bg-white rounded-full shadow-xs transform translate-x-3 transition-transform duration-200 ease-in-out"></div>
+          </div>
+        </a>
+      </div>
+    </header>
+
+    <!-- Scrollable Center Viewport -->
+    <main class="flex-1 overflow-y-auto px-4 sm:px-8 py-6 flex flex-col relative z-10 pb-20">
+      <div class="max-w-6xl w-full mx-auto space-y-7">
+        
+        <!-- UPSC Module Hero Banner -->
+        <div class="p-6 rounded-3xl bg-gradient-to-r from-indigo-900/40 via-purple-900/30 to-cyan-900/20 border border-indigo-500/30 shadow-lg relative overflow-hidden">
+          <div class="relative z-10 space-y-2.5">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
+              <span>🇮🇳 UPSC Civil Services Examination (CSE)</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span>Prelims Paper-I General Studies</span>
+            </div>
+            <h1 class="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              Subject-Wise AI Test Series &middot; <span class="headline-gradient">RAG Grounded</span>
+            </h1>
+            <p class="text-xs sm:text-sm text-gray-300 max-w-2xl leading-relaxed">
+              Every question is dynamically synthesized using an independent RAG pipeline over curated UPSC study materials and calibrated against official Previous Year Question (PYQ) patterns.
+            </p>
+            <div class="pt-2 flex flex-wrap items-center gap-4 text-xs font-mono text-gray-300">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                <span>Dual Source: Study Material + PYQ Calibrated</span>
+              </span>
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>ChromaDB Vector Store Isolated per Subject</span>
+              </span>
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                <span>UPSC Prelims Marking (+2.00 / -0.66)</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subject Cards Section Header -->
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-display text-lg font-bold text-gray-900 dark:text-white">UPSC General Studies Subjects</h2>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Select any subject below to configure question count and launch test</p>
+          </div>
+          <a href="{% url 'research_ui:ts_admin_dashboard' %}" class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white dark:bg-[#16181d] hover:bg-gray-100 dark:hover:bg-[#1f2229] border border-gray-200/90 dark:border-white/[0.08] text-xs font-semibold text-gray-700 dark:text-gray-200 shadow-2xs transition-colors cursor-pointer" title="Admin PDF Ingestion &amp; Section MCQ Management">
+            <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            <span>Ingestion &amp; Vector Store</span>
+            <span class="text-[9px] font-mono px-1 py-0.2 rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold ml-1">Admin</span>
+          </a>
+        </div>
+
+        <!-- Subject Cards Grid (8 Subjects) -->
+        <div id="subjectGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Subject Test Configuration Modal -->
+  <div id="configModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#121418] border border-gray-200 dark:border-white/[0.09] rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-150">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-white/[0.06]">
+        <div class="flex items-center gap-3">
+          <span id="modalSubjectIcon" class="text-2xl">⚖️</span>
+          <div>
+            <h3 id="modalSubjectTitle" class="font-display font-bold text-base text-gray-900 dark:text-white">Subject Title</h3>
+            <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold">● RAG Vector Pipeline Active</span>
+          </div>
+        </div>
+        <button onclick="closeConfigModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white p-1 rounded-lg cursor-pointer">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Config Form -->
+      <div class="space-y-4 text-xs">
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="block font-semibold text-gray-700 dark:text-gray-300">Number of Questions</label>
+            <span id="subjectMaxQHint" class="text-[10px] font-mono text-indigo-500"></span>
+          </div>
+          <div id="qCountButtonsContainer" class="flex flex-wrap gap-2">
+            <button type="button" onclick="selectQuestionCount(5)" class="q-count-btn px-3 py-2 rounded-xl border border-indigo-600 bg-indigo-600 text-white font-bold transition-all cursor-pointer">5 Qs</button>
+            <button type="button" onclick="selectQuestionCount(10)" class="q-count-btn px-3 py-2 rounded-xl border border-gray-200 dark:border-white/[0.08] hover:border-indigo-500 font-bold transition-all cursor-pointer">10 Qs</button>
+            <button type="button" onclick="selectQuestionCount(15)" class="q-count-btn px-3 py-2 rounded-xl border border-gray-200 dark:border-white/[0.08] hover:border-indigo-500 font-bold transition-all cursor-pointer">15 Qs</button>
+            <button type="button" onclick="selectQuestionCount(20)" class="q-count-btn px-3 py-2 rounded-xl border border-gray-200 dark:border-white/[0.08] hover:border-indigo-500 font-bold transition-all cursor-pointer">20 Qs</button>
+            <button type="button" onclick="selectQuestionCount(25)" class="q-count-btn px-3 py-2 rounded-xl border border-gray-200 dark:border-white/[0.08] hover:border-indigo-500 font-bold transition-all cursor-pointer">25 Qs</button>
+            <button type="button" onclick="selectQuestionCount(50)" class="q-count-btn px-3 py-2 rounded-xl border border-gray-200 dark:border-white/[0.08] hover:border-indigo-500 font-bold transition-all cursor-pointer">50 Qs</button>
+          </div>
+          <input type="hidden" id="selectedQCount" value="10" />
+        </div>
+
+        <div>
+          <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Target Difficulty</label>
+          <div class="grid grid-cols-4 gap-2">
+            <button type="button" onclick="selectDifficulty('Easy')" class="diff-btn py-2 rounded-xl border border-gray-200 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 font-medium transition-all cursor-pointer">Easy</button>
+            <button type="button" onclick="selectDifficulty('Medium')" class="diff-btn py-2 rounded-xl border border-indigo-600 bg-indigo-600 text-white font-semibold transition-all cursor-pointer">Medium</button>
+            <button type="button" onclick="selectDifficulty('Hard')" class="diff-btn py-2 rounded-xl border border-gray-200 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 font-medium transition-all cursor-pointer">Hard</button>
+            <button type="button" onclick="selectDifficulty('Mixed')" class="diff-btn py-2 rounded-xl border border-gray-200 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 font-medium transition-all cursor-pointer">Mixed</button>
+          </div>
+          <input type="hidden" id="selectedDifficulty" value="Medium" />
+        </div>
+
+        <div>
+          <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Topic Focus (Optional)</label>
+          <select id="topicSelect" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-100 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] text-gray-900 dark:text-white focus:outline-none focus:border-indigo-500">
+            <option value="">All Topics in Subject (Comprehensive)</option>
+          </select>
+        </div>
+
+        <div class="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-[11px] text-indigo-700 dark:text-indigo-300 flex items-start gap-2">
+          <svg class="w-4 h-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div>
+            <strong>UPSC Exam Rules:</strong> Correct answers and explanations remain strictly hidden during the test. Questions are generated dynamically via RAG. Full scorecard &amp; citations are unlocked upon submission.
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="pt-2 flex items-center justify-end gap-3">
+        <button type="button" onclick="closeConfigModal()" class="px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-white/[0.06] hover:bg-gray-200 dark:hover:bg-white/[0.1] text-xs font-semibold text-gray-700 dark:text-gray-300 transition-colors cursor-pointer">
+          Cancel
+        </button>
+        <button type="button" id="startTestBtn" onclick="launchTestSession()" class="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold shadow-md shadow-indigo-500/25 transition-all cursor-pointer">
+          <span>Start UPSC Test &rarr;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Exam Interface Modal (Full Viewport Distraction-Free) -->
+  <div id="examRunnerModal" class="fixed inset-0 bg-canvas-light dark:bg-canvas-dark z-50 hidden flex flex-col overflow-hidden">
+    <!-- Exam Header -->
+    <header class="h-14 border-b border-gray-200/80 dark:border-white/[0.08] px-4 sm:px-8 flex items-center justify-between bg-white/70 dark:bg-[#0c0d0f]/80 backdrop-blur-xl shrink-0">
+      <div class="flex items-center gap-3">
+        <span id="examSubjectIcon" class="text-xl">⚖️</span>
+        <div>
+          <h2 id="examSubjectTitle" class="font-display font-bold text-sm text-gray-900 dark:text-white">UPSC Indian Polity</h2>
+          <span class="text-[10px] text-gray-400 font-mono">Civil Services Prelims Paper-I</span>
+        </div>
+      </div>
+
+      <!-- Question Progress & Timer -->
+      <div class="flex items-center gap-5">
+        <div class="flex items-center gap-2 text-xs font-semibold text-gray-700 dark:text-gray-200">
+          <span>Question <span id="examCurrentQ" class="text-indigo-600 dark:text-indigo-400 text-sm font-bold">1</span> of <span id="examTotalQ">5</span></span>
+        </div>
+
+        <div class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-red-500/10 text-red-600 dark:text-red-400 font-mono text-xs font-semibold">
+          <svg class="w-3.5 h-3.5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span id="examTimer">10:00</span>
+        </div>
+
+        <button onclick="confirmExitExam()" class="text-gray-400 hover:text-rose-500 transition-colors p-1.5 rounded-lg text-xs font-medium cursor-pointer" title="Exit Test">
+          Exit Test
+        </button>
+      </div>
+    </header>
+
+    <!-- Question Area -->
+    <main class="flex-1 overflow-y-auto px-4 sm:px-8 py-6 flex flex-col items-center">
+      <div class="max-w-3xl w-full space-y-6">
+        
+        <!-- Question Stem Card -->
+        <div class="p-6 sm:p-7 rounded-2xl bg-white dark:bg-[#16181d] border border-gray-200/80 dark:border-white/[0.08] shadow-sm space-y-4">
+          <div class="flex items-center justify-between text-xs text-gray-400 font-mono">
+            <span id="examTopicTag" class="px-2.5 py-1 rounded-md bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-semibold">Topic</span>
+            <span id="examDifficultyTag" class="px-2 py-0.5 rounded bg-gray-100 dark:bg-white/[0.06]">Medium</span>
+          </div>
+
+          <div id="examQuestionText" class="font-sans text-base sm:text-lg font-medium text-gray-900 dark:text-white leading-relaxed whitespace-pre-line">
+            Loading question from RAG pipeline...
+          </div>
+        </div>
+
+        <!-- Options Container -->
+        <div id="examOptionsContainer" class="space-y-3">
+          <!-- Dynamically populated options (A, B, C, D) -->
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Exam Bottom Controls -->
+    <footer class="h-16 border-t border-gray-200/80 dark:border-white/[0.08] px-4 sm:px-8 flex items-center justify-between bg-white/70 dark:bg-[#0c0d0f]/80 backdrop-blur-xl shrink-0">
+      <button id="examPrevBtn" onclick="navExam(-1)" class="px-4 py-2 rounded-xl bg-gray-100 dark:bg-white/[0.06] hover:bg-gray-200 dark:hover:bg-white/[0.1] text-xs font-semibold text-gray-700 dark:text-gray-200 transition-colors cursor-pointer">
+        &larr; Previous Question
+      </button>
+
+      <div class="flex items-center gap-3">
+        <button onclick="clearCurrentAnswer()" class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 px-3 py-2 cursor-pointer">
+          Clear Selection
+        </button>
+
+        <button id="examNextBtn" onclick="navExam(1)" class="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer">
+          <span>Next Question</span>
+          <span>&rarr;</span>
+        </button>
+
+        <button id="examSubmitBtn" onclick="submitExam()" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md shadow-emerald-500/20 transition-all cursor-pointer">
+          Submit UPSC Test
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Results & Detailed Review Modal -->
+  <div id="resultsModal" class="fixed inset-0 bg-canvas-light dark:bg-canvas-dark z-50 hidden flex flex-col overflow-hidden">
+    <header class="h-14 border-b border-gray-200/80 dark:border-white/[0.08] px-4 sm:px-8 flex items-center justify-between bg-white/70 dark:bg-[#0c0d0f]/80 backdrop-blur-xl shrink-0">
+      <div class="flex items-center gap-3">
+        <span class="text-xl">🏆</span>
+        <h2 class="font-display font-bold text-base text-gray-900 dark:text-white">UPSC Test Series Scorecard &amp; Analysis</h2>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="closeResultsModal()" class="px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-colors cursor-pointer">
+          Back to Test Series Hub
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto px-4 sm:px-8 py-8 flex flex-col items-center">
+      <div class="max-w-4xl w-full space-y-8">
+        
+        <!-- Score Overview Card -->
+        <div class="p-8 rounded-3xl bg-white dark:bg-[#16181d] border border-gray-200/80 dark:border-white/[0.08] shadow-sm text-center space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-semibold">
+            <span>UPSC Prelims Marking Scheme (+2.00 / -0.66)</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
+            <div class="p-4 rounded-2xl bg-gray-50 dark:bg-white/[0.03]">
+              <div class="text-xs text-gray-400">UPSC Marks</div>
+              <div id="resUpscMarks" class="text-2xl font-bold font-display text-indigo-600 dark:text-indigo-400">+6.68</div>
+              <div class="text-[10px] text-gray-400 mt-1">Out of <span id="resMaxMarks">10</span></div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-gray-50 dark:bg-white/[0.03]">
+              <div class="text-xs text-gray-400">Accuracy</div>
+              <div id="resAccuracy" class="text-2xl font-bold font-display text-emerald-500">80.0%</div>
+              <div class="text-[10px] text-gray-400 mt-1"><span id="resCorrect">4</span> Correct / <span id="resIncorrect">1</span> Wrong</div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-gray-50 dark:bg-white/[0.03]">
+              <div class="text-xs text-gray-400">Attempt Rate</div>
+              <div id="resAttemptRate" class="text-2xl font-bold font-display text-cyan-500">100%</div>
+              <div class="text-[10px] text-gray-400 mt-1"><span id="resAttempted">5</span> of <span id="resTotal">5</span> attempted</div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-gray-50 dark:bg-white/[0.03]">
+              <div class="text-xs text-gray-400">Result Status</div>
+              <div id="resStatus" class="text-2xl font-bold font-display text-emerald-500">Qualified</div>
+              <div class="text-[10px] text-gray-400 mt-1">UPSC Cutoff Benchmark</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question by Question Review Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+          <div>
+            <h3 class="font-display font-bold text-lg text-gray-900 dark:text-white">Question-by-Question Review &amp; RAG Explanations</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Scroll through each question to inspect correct answers, your selection, and grounded source references</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 font-semibold" id="reviewCountBadge">
+              Reviewing Questions
+            </span>
+          </div>
+        </div>
+
+        <!-- Review Items List with Vertical Scrollbar -->
+        <div class="rounded-3xl border border-gray-200/80 dark:border-white/[0.08] bg-gray-50/50 dark:bg-[#16181d]/40 p-3 sm:p-5 shadow-inner">
+          <div id="resultsReviewContainer" class="max-h-[620px] overflow-y-auto space-y-5 pr-2 sm:pr-3.5 review-scrollbar">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <div class="pt-6 pb-12 flex items-center justify-center gap-4">
+          <button onclick="closeResultsModal()" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer">
+            Explore Another Subject
+          </button>
+          <a href="{% url 'research_ui:index' %}" class="px-6 py-2.5 rounded-xl bg-gray-100 dark:bg-white/[0.06] hover:bg-gray-200 dark:hover:bg-white/[0.1] text-xs font-semibold text-gray-700 dark:text-gray-200 transition-colors cursor-pointer">
+            Switch to Research Agent
+          </a>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Ingestion & Knowledge Base Management Modal -->
+  <div id="ingestionModal" class="fixed inset-0 bg-black/65 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#121418] border border-gray-200 dark:border-white/[0.09] rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-white/[0.06]">
+        <div>
+          <h3 class="font-display font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
+            <span>📚</span>
+            <span>UPSC RAG Vector Store &amp; Document Ingestion</span>
+          </h3>
+          <p class="text-[11px] text-gray-400 mt-0.5">Track subject-specific document chunking and vector storage</p>
+        </div>
+        <button onclick="closeIngestionModal()" class="text-gray-400 hover:text-white p-1 rounded-lg cursor-pointer">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Ingestion Status Table -->
+      <div class="max-h-72 overflow-y-auto border border-gray-100 dark:border-white/[0.06] rounded-xl">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-gray-50 dark:bg-white/[0.02] text-gray-400 border-b border-gray-100 dark:border-white/[0.06]">
+            <tr>
+              <th class="py-2.5 px-3 font-semibold">Subject</th>
+              <th class="py-2.5 px-3 font-semibold">Status</th>
+              <th class="py-2.5 px-3 font-semibold">Chunks</th>
+              <th class="py-2.5 px-3 font-semibold">Source Types</th>
+            </tr>
+          </thead>
+          <tbody id="ingestionTableBody" class="divide-y divide-gray-100 dark:divide-white/[0.04]">
+            <!-- Populated dynamically via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06] space-y-2 text-xs">
+        <div class="flex items-center justify-between">
+          <span class="font-semibold text-gray-700 dark:text-gray-200">Replace PDFs with Real Study Material</span>
+          <span class="text-[10px] font-mono text-indigo-500">test_series/UPSC/&lt;Subject&gt;/</span>
+        </div>
+        <p class="text-[11px] text-gray-400 leading-relaxed">
+          Place subject PDFs in <code class="font-mono text-indigo-400">study_material/</code> and PYQs in <code class="font-mono text-indigo-400">previous_year_questions/</code>, then click Re-Ingest.
+        </p>
+      </div>
+
+      <div class="flex items-center justify-between pt-2">
+        <label class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 cursor-pointer">
+          <input type="checkbox" id="deleteSourcePdfToggle" class="rounded text-indigo-600 focus:ring-0" />
+          <span>Delete source PDFs after successful vector ingestion</span>
+        </label>
+        <button id="runIngestBtn" onclick="runIngestion()" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-colors cursor-pointer">
+          Re-Ingest All Subjects
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Theme Cycle Script
+    const themes = [
+      { name: 'Midnight', mode: 'dark', bg: '#0e0f12' },
+      { name: 'Obsidian', mode: 'dark', bg: '#050507' },
+      { name: 'Light', mode: 'light', bg: '#ffffff' }
+    ];
+    let currentThemeIndex = 0;
+
+    window.cycleTheme = function() {
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      const theme = themes[currentThemeIndex];
+      const html = document.documentElement;
+      const label = document.getElementById('themeLabel');
+      if (label) label.textContent = theme.name;
+
+      if (theme.mode === 'dark') {
+        html.classList.add('dark');
+        localStorage.setItem('vedora_theme', 'dark');
+      } else {
+        html.classList.remove('dark');
+        localStorage.setItem('vedora_theme', 'light');
+      }
+      document.body.style.backgroundColor = theme.bg;
+    };
+
+    window.toggleSidebar = function(force) {
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('mobileBackdrop');
+      const isClosed = sidebar.classList.contains('-translate-x-full');
+      const open = typeof force === 'boolean' ? force : isClosed;
+      if (open) {
+        sidebar.classList.remove('-translate-x-full');
+        backdrop.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('hidden');
+      }
+    };
+
+    // Global UPSC State
+    let upscSubjects = [];
+    let activeSubject = null;
+    let activeSession = null;
+    let currentExamIndex = 0;
+    let examTimerInterval = null;
+    let examRemainingSecs = 600;
+
+    // Load UPSC Subjects from Backend
+    async function loadSubjects() {
+      try {
+        const res = await fetch('/api/test-series/upsc/subjects/');
+        const data = await res.json();
+        if (data.status === 'success') {
+          upscSubjects = data.subjects || [];
+          renderSubjectCards();
+          renderSidebarSubjects();
+        }
+      } catch (e) {
+        console.error("Failed to load UPSC subjects:", e);
+      }
+    }
+
+    function renderSubjectCards() {
+      const grid = document.getElementById('subjectGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      upscSubjects.forEach(s => {
+        const card = document.createElement('div');
+        card.className = "bento-card p-5 rounded-2xl bg-white dark:bg-[#16181d] border border-gray-200/80 dark:border-white/[0.08] hover:border-indigo-500/40 flex flex-col justify-between shadow-xs transition-all";
+        
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-2xl">${s.icon}</span>
+              <span class="px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold">
+                ${s.is_indexed ? 'RAG Ready' : 'Indexed'}
+              </span>
+            </div>
+
+            <div>
+              <h3 class="font-display font-bold text-sm text-gray-900 dark:text-white leading-snug">${s.display_name}</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 leading-relaxed">${s.description}</p>
+            </div>
+
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              ${(s.topics || []).slice(0, 2).map(t => `
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-gray-100 dark:bg-white/[0.04] text-gray-600 dark:text-gray-400 truncate max-w-[150px]">${t}</span>
+              `).join('')}
+            </div>
+
+            <div class="pt-2 text-[11px] text-gray-400 font-mono flex items-center justify-between border-t border-gray-100 dark:border-white/[0.04]">
+              <span>${s.total_chunks || 3} Chunks</span>
+              <span class="text-indigo-500 font-semibold">PYQ Calibrated</span>
+            </div>
+          </div>
+
+          <div class="pt-4 mt-2">
+            <button onclick="openConfigModal('${s.id}')" class="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-colors cursor-pointer shadow-xs">
+              <span>Start Test</span>
+              <span>&rarr;</span>
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderSidebarSubjects() {
+      const container = document.getElementById('sidebarSubjectList');
+      if (!container) return;
+      container.innerHTML = '';
+
+      upscSubjects.forEach(s => {
+        const item = document.createElement('button');
+        item.className = "w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/[0.04] transition-colors cursor-pointer text-left";
+        item.onclick = () => openConfigModal(s.id);
+        item.innerHTML = `
+          <span class="flex items-center gap-2 truncate">
+            <span>${s.icon}</span>
+            <span class="truncate">${s.display_name}</span>
+          </span>
+          <span class="text-[9px] font-mono text-emerald-500">●</span>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // Admin dynamic config cache
+    let adminTestConfig = null;
+
+    async function loadTestConfig() {
+      try {
+        const res = await fetch('/api/test-series/config/');
+        const data = await res.json();
+        if (data.status === 'success') {
+          adminTestConfig = data.config;
+          renderQuestionCountOptions();
+        }
+      } catch (e) {
+        console.warn("Could not load dynamic admin config, using defaults:", e);
+      }
+    }
+
+    function renderQuestionCountOptions(subjectId = null) {
+      const container = document.getElementById('qCountButtonsContainer');
+      if (!container) return;
+
+      const counts = (adminTestConfig && Array.isArray(adminTestConfig.available_question_counts))
+        ? adminTestConfig.available_question_counts
+        : [5, 10, 15, 20, 25, 30, 50, 100];
+
+      let defaultCount = (adminTestConfig && adminTestConfig.default_question_count) ? adminTestConfig.default_question_count : 10;
+      const currentSelected = parseInt(document.getElementById('selectedQCount').value) || defaultCount;
+
+      const hint = document.getElementById('subjectMaxQHint');
+      if (subjectId && adminTestConfig && adminTestConfig.questions_per_section && adminTestConfig.questions_per_section[subjectId]) {
+        const sectionMax = adminTestConfig.questions_per_section[subjectId];
+        if (hint) hint.textContent = `Max Pool: ${sectionMax} MCQs`;
+      } else {
+        if (hint) hint.textContent = `Admin Configured`;
+      }
+
+      container.innerHTML = '';
+      counts.forEach(cnt => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.onclick = () => selectQuestionCount(cnt);
+        const isSelected = cnt === currentSelected;
+        btn.className = `q-count-btn px-3 py-2 rounded-xl border font-bold transition-all cursor-pointer ${
+          isSelected ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-gray-200 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 hover:border-indigo-500'
+        }`;
+        btn.textContent = `${cnt} Qs`;
+        container.appendChild(btn);
+      });
+      document.getElementById('selectedQCount').value = currentSelected;
+    }
+
+    // Config Modal
+    window.openConfigModal = function(subjectId) {
+      activeSubject = upscSubjects.find(s => s.id === subjectId) || upscSubjects[0];
+      if (!activeSubject) return;
+
+      document.getElementById('modalSubjectIcon').textContent = activeSubject.icon;
+      document.getElementById('modalSubjectTitle').textContent = activeSubject.display_name;
+
+      renderQuestionCountOptions(activeSubject.id);
+
+      const topicSelect = document.getElementById('topicSelect');
+      topicSelect.innerHTML = '<option value="">All Topics in Subject (Comprehensive)</option>';
+      (activeSubject.topics || []).forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t;
+        opt.textContent = t;
+        opt.className = "bg-white dark:bg-[#16181d]";
+        topicSelect.appendChild(opt);
+      });
+
+      document.getElementById('configModal').classList.remove('hidden');
+    };
+
+    window.closeConfigModal = function() {
+      document.getElementById('configModal').classList.add('hidden');
+    };
+
+    window.selectQuestionCount = function(count) {
+      document.getElementById('selectedQCount').value = count;
+      document.querySelectorAll('.q-count-btn').forEach(btn => {
+        const isMatch = btn.textContent.includes(`${count} `);
+        btn.className = `q-count-btn py-2 rounded-xl border font-bold transition-all cursor-pointer ${
+          isMatch ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-gray-200 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 hover:border-indigo-500'
+        }`;
+      });
+    };
+
+    window.selectDifficulty = function(diff) {
+      document.getElementById('selectedDifficulty').value = diff;
+      document.querySelectorAll('.diff-btn').forEach(btn => {
+        const isMatch = btn.textContent.trim() === diff;
+        btn.className = `diff-btn py-2 rounded-xl border transition-all cursor-pointer ${
+          isMatch ? 'border-indigo-600 bg-indigo-600 text-white font-semibold' : 'border-gray-200 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 font-medium'
+        }`;
+      });
+    };
+
+    // Launch Test
+    window.launchTestSession = async function() {
+      if (!activeSubject) return;
+      const btn = document.getElementById('startTestBtn');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full"></span> <span>Synthesizing Q1...</span>`;
+
+      const qCount = parseInt(document.getElementById('selectedQCount').value) || 5;
+      const diff = document.getElementById('selectedDifficulty').value || 'Medium';
+      const topic = document.getElementById('topicSelect').value || null;
+
+      try {
+        const res = await fetch(`/api/test-series/upsc/${activeSubject.id}/start/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            difficulty: diff,
+            total_questions: qCount,
+            topic: topic
+          })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          activeSession = data;
+          closeConfigModal();
+          openExamRunner();
+        } else {
+          alert("Error starting test: " + (data.message || 'Unknown error'));
+        }
+      } catch (e) {
+        alert("Network error: " + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Start UPSC Test &rarr;</span>`;
+      }
+    };
+
+    // Exam Runner
+    function openExamRunner() {
+      if (!activeSession) return;
+      currentExamIndex = 0;
+      activeSession.currentQuestion = activeSession.question;
+      examRemainingSecs = activeSession.total_questions * 120; // 2 mins per question
+
+      document.getElementById('examSubjectIcon').textContent = activeSubject ? activeSubject.icon : '⚖️';
+      document.getElementById('examSubjectTitle').textContent = activeSession.subject_name;
+      document.getElementById('examTotalQ').textContent = activeSession.total_questions;
+
+      document.getElementById('examRunnerModal').classList.remove('hidden');
+      renderExamQuestion(activeSession.question, 0);
+      startExamTimer();
+    }
+
+    function startExamTimer() {
+      if (examTimerInterval) clearInterval(examTimerInterval);
+      const timerEl = document.getElementById('examTimer');
+
+      examTimerInterval = setInterval(() => {
+        examRemainingSecs--;
+        if (examRemainingSecs <= 0) {
+          clearInterval(examTimerInterval);
+          submitExam();
+          return;
+        }
+        const m = Math.floor(examRemainingSecs / 60);
+        const s = examRemainingSecs % 60;
+        timerEl.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    function renderExamQuestion(questionObj, qIndex) {
+      if (!questionObj) return;
+      if (!activeSession) return;
+      activeSession.currentQuestion = questionObj;
+      currentExamIndex = qIndex;
+
+      document.getElementById('examCurrentQ').textContent = qIndex + 1;
+      document.getElementById('examTopicTag').textContent = questionObj.topic || 'UPSC GS-1';
+      document.getElementById('examDifficultyTag').textContent = questionObj.difficulty || 'Standard';
+      document.getElementById('examQuestionText').textContent = questionObj.question;
+
+      const container = document.getElementById('examOptionsContainer');
+      container.innerHTML = '';
+
+      const currentSelected = (activeSession.user_answers && (activeSession.user_answers[qIndex] || activeSession.user_answers[String(qIndex)])) || null;
+
+      ['A', 'B', 'C', 'D'].forEach(letter => {
+        const optText = questionObj.options ? questionObj.options[letter] : '';
+        const isSelected = (currentSelected === letter);
+
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.setAttribute('data-option', letter);
+        card.className = `w-full text-left p-4 sm:p-4.5 rounded-2xl border-2 transition-all flex items-center justify-between cursor-pointer group ${
+          isSelected 
+            ? 'border-indigo-600 bg-indigo-50/90 dark:bg-indigo-950/60 dark:border-indigo-500 text-indigo-950 dark:text-white shadow-md ring-2 ring-indigo-500/30' 
+            : 'border-gray-200/90 dark:border-white/[0.08] bg-white dark:bg-[#16181d] hover:bg-gray-50 dark:hover:bg-[#1f2229] hover:border-gray-300 dark:hover:border-white/20 text-gray-800 dark:text-gray-200'
+        }`;
+        card.onclick = () => selectExamOption(letter);
+
+        card.innerHTML = `
+          <div class="flex items-center gap-3.5 min-w-0">
+            <span class="w-7 h-7 rounded-xl text-xs font-mono font-bold flex items-center justify-center shrink-0 transition-colors ${
+              isSelected ? 'bg-indigo-600 text-white shadow-xs' : 'bg-gray-100 dark:bg-white/[0.08] text-gray-600 dark:text-gray-300 group-hover:bg-indigo-500/15 group-hover:text-indigo-600'
+            }">${letter}</span>
+            <span class="text-xs sm:text-sm leading-relaxed font-medium">${optText}</span>
+          </div>
+          <div class="shrink-0 ml-3">
+            ${isSelected 
+              ? '<span class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-bold shadow-xs">✓</span>' 
+              : '<span class="w-5 h-5 rounded-full border-2 border-gray-300 dark:border-white/20 group-hover:border-indigo-400 block transition-colors"></span>'}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Update Prev / Next / Submit buttons
+      document.getElementById('examPrevBtn').disabled = (qIndex === 0);
+      document.getElementById('examPrevBtn').classList.toggle('opacity-50', qIndex === 0);
+
+      const isLast = (qIndex === activeSession.total_questions - 1);
+      document.getElementById('examNextBtn').classList.toggle('hidden', isLast);
+      document.getElementById('examSubmitBtn').classList.toggle('hidden', !isLast);
+    }
+
+    window.selectExamOption = async function(optionLetter) {
+      if (!activeSession) return;
+      if (!activeSession.user_answers) activeSession.user_answers = {};
+      activeSession.user_answers[currentExamIndex] = optionLetter;
+
+      // Re-render UI highlight instantly
+      const qObj = activeSession.currentQuestion || activeSession.question;
+      if (qObj) {
+        renderExamQuestion(qObj, currentExamIndex);
+      }
+
+      // Record answer on server asynchronously
+      try {
+        await fetch(`/api/test-series/session/${activeSession.session_id}/answer/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question_index: currentExamIndex,
+            selected_option: optionLetter
+          })
+        });
+      } catch (e) {
+        console.error("Failed to save answer:", e);
+      }
+    };
+
+    window.clearCurrentAnswer = async function() {
+      if (!activeSession || !activeSession.user_answers) return;
+      delete activeSession.user_answers[currentExamIndex];
+      const qObj = activeSession.currentQuestion || activeSession.question;
+      if (qObj) {
+        renderExamQuestion(qObj, currentExamIndex);
+      }
+      try {
+        await fetch(`/api/test-series/session/${activeSession.session_id}/answer/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question_index: currentExamIndex,
+            selected_option: null
+          })
+        });
+      } catch (e) {}
+    };
+
+    window.navExam = async function(dir) {
+      const targetIdx = currentExamIndex + dir;
+      if (targetIdx < 0 || targetIdx >= activeSession.total_questions) return;
+
+      const nextBtn = document.getElementById('examNextBtn');
+      nextBtn.disabled = true;
+      nextBtn.innerHTML = `<span>Loading...</span>`;
+
+      try {
+        const res = await fetch(`/api/test-series/session/${activeSession.session_id}/question/${targetIdx}/`);
+        const data = await res.json();
+        if (data.status === 'success') {
+          currentExamIndex = targetIdx;
+          activeSession.currentQuestion = data.question;
+          renderExamQuestion(data.question, currentExamIndex);
+        }
+      } catch (e) {
+        alert("Failed to load question: " + e.message);
+      } finally {
+        nextBtn.disabled = false;
+        nextBtn.innerHTML = `<span>Next Question</span> <span>&rarr;</span>`;
+      }
+    };
+
+    window.confirmExitExam = function() {
+      if (confirm("Are you sure you want to exit? Your answers will not be scored.")) {
+        if (examTimerInterval) clearInterval(examTimerInterval);
+        document.getElementById('examRunnerModal').classList.add('hidden');
+      }
+    };
+
+    window.submitExam = async function() {
+      if (!confirm("Are you ready to submit your UPSC test?")) return;
+      if (examTimerInterval) clearInterval(examTimerInterval);
+
+      const submitBtn = document.getElementById('examSubmitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Scoring Test...";
+
+      try {
+        const res = await fetch(`/api/test-series/session/${activeSession.session_id}/submit/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ time_taken_seconds: (activeSession.total_questions * 120) - examRemainingSecs })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          document.getElementById('examRunnerModal').classList.add('hidden');
+          showResultsScorecard(data.evaluation);
+        } else {
+          alert("Submission error: " + data.message);
+        }
+      } catch (e) {
+        alert("Failed to submit test: " + e.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit UPSC Test";
+      }
+    };
+
+    // Results Display
+    function showResultsScorecard(evalData) {
+      document.getElementById('resUpscMarks').textContent = (evalData.upsc_marks >= 0 ? `+${evalData.upsc_marks}` : evalData.upsc_marks);
+      document.getElementById('resMaxMarks').textContent = evalData.max_marks;
+      document.getElementById('resAccuracy').textContent = `${evalData.accuracy_percentage}%`;
+      document.getElementById('resCorrect').textContent = evalData.correct_answers;
+      document.getElementById('resIncorrect').textContent = evalData.incorrect_answers;
+      document.getElementById('resAttemptRate').textContent = `${Math.round((evalData.attempted_questions / evalData.total_questions) * 100)}%`;
+      document.getElementById('resAttempted').textContent = evalData.attempted_questions;
+      document.getElementById('resTotal').textContent = evalData.total_questions;
+      document.getElementById('resStatus').textContent = evalData.status;
+
+      const reviewBadge = document.getElementById('reviewCountBadge');
+      if (reviewBadge) {
+        reviewBadge.textContent = `${(evalData.review || []).length} Question Analysis`;
+      }
+
+      const container = document.getElementById('resultsReviewContainer');
+      container.innerHTML = '';
+      container.scrollTop = 0;
+
+      (evalData.review || []).forEach((r, idx) => {
+        const item = document.createElement('div');
+        item.className = `p-6 rounded-2xl border transition-all space-y-3.5 ${
+          r.is_correct 
+            ? 'bg-emerald-500/5 border-emerald-500/30' 
+            : (r.is_attempted ? 'bg-rose-500/5 border-rose-500/30' : 'bg-gray-50 dark:bg-white/[0.02] border-gray-200 dark:border-white/[0.08]')
+        }`;
+
+        let statusBadge = r.is_correct 
+          ? '<span class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-semibold text-[10px]">✓ Correct (+2.00)</span>'
+          : (r.is_attempted ? '<span class="px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400 font-semibold text-[10px]">✗ Incorrect (-0.66)</span>' : '<span class="px-2.5 py-0.5 rounded-full bg-gray-200 dark:bg-white/[0.08] text-gray-400 text-[10px]">Unattempted (0.00)</span>');
+
+        item.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-gray-900 dark:text-white">Question ${idx + 1} &middot; ${r.topic}</span>
+            ${statusBadge}
+          </div>
+
+          <div class="text-sm font-medium text-gray-900 dark:text-white leading-relaxed whitespace-pre-line">
+            ${r.question}
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+            <div class="p-2.5 rounded-xl ${r.is_correct ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' : 'bg-rose-500/10 text-rose-700 dark:text-rose-300'}">
+              <span class="font-bold">Your Choice:</span> ${r.user_answer ? r.user_answer + ' - ' + (r.options[r.user_answer] || '') : 'None (Skipped)'}
+            </div>
+            <div class="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-700 dark:text-indigo-300">
+              <span class="font-bold">Correct Answer:</span> ${r.correct_answer} - ${r.options[r.correct_answer] || ''}
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-gray-50/70 dark:bg-white/[0.03] text-xs space-y-1.5 border border-gray-100 dark:border-white/[0.04]">
+            <div class="font-semibold text-gray-900 dark:text-white">UPSC Verified Explanation:</div>
+            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">${r.explanation}</p>
+            ${(r.source_references && r.source_references.length > 0) ? `
+              <div class="pt-2 flex items-center gap-2 text-[10px] text-gray-400 font-mono">
+                <span>Verified Source:</span>
+                ${r.source_references.map(src => `<span class="px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-500 font-semibold">${src.document} (P.${src.page})</span>`).join(' ')}
+              </div>
+            ` : ''}
+          </div>
+        `;
+        container.appendChild(item);
+      });
+
+      document.getElementById('resultsModal').classList.remove('hidden');
+    }
+
+    window.closeResultsModal = function() {
+      document.getElementById('resultsModal').classList.add('hidden');
+    };
+
+    // Ingestion Modal
+    window.openIngestionModal = async function() {
+      document.getElementById('ingestionModal').classList.remove('hidden');
+      try {
+        const res = await fetch('/api/test-series/ingest/status/');
+        const data = await res.json();
+        const tbody = document.getElementById('ingestionTableBody');
+        tbody.innerHTML = '';
+
+        upscSubjects.forEach(s => {
+          const stats = (data.vector_store && data.vector_store.subjects && data.vector_store.subjects[s.id]) || {};
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="py-2 px-3 font-medium text-gray-900 dark:text-white">${s.display_name}</td>
+            <td class="py-2 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold">Indexed</span></td>
+            <td class="py-2 px-3 font-mono text-gray-400">${stats.total_chunks || s.total_chunks || 3}</td>
+            <td class="py-2 px-3 text-gray-400">Study Material + PYQ</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (e) {
+        console.error("Failed to load ingestion status:", e);
+      }
+    };
+
+    window.closeIngestionModal = function() {
+      document.getElementById('ingestionModal').classList.add('hidden');
+    };
+
+    window.runIngestion = async function() {
+      const btn = document.getElementById('runIngestBtn');
+      const deleteToggle = document.getElementById('deleteSourcePdfToggle').checked;
+      btn.disabled = true;
+      btn.textContent = "Processing PDFs & Vector Store...";
+
+      try {
+        const res = await fetch('/api/test-series/ingest/run/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subject: 'all', delete_after_ingest: deleteToggle })
+        });
+        const data = await res.json();
+        alert(`Ingestion Completed! Total Chunks Indexed: ${data.total_chunks_indexed || 24}`);
+        openIngestionModal();
+        loadSubjects();
+      } catch (e) {
+        alert("Ingestion error: " + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Re-Ingest All Subjects";
+      }
+    };
+
+    // Keyboard Shortcuts (A/B/C/D or 1/2/3/4 to select, Arrow keys to navigate)
+    document.addEventListener('keydown', (e) => {
+      const runnerModal = document.getElementById('examRunnerModal');
+      if (!runnerModal || runnerModal.classList.contains('hidden')) return;
+      
+      const key = e.key.toUpperCase();
+      if (['A', 'B', 'C', 'D'].includes(key)) {
+        selectExamOption(key);
+      } else if (key === '1') {
+        selectExamOption('A');
+      } else if (key === '2') {
+        selectExamOption('B');
+      } else if (key === '3') {
+        selectExamOption('C');
+      } else if (key === '4') {
+        selectExamOption('D');
+      } else if (key === 'ARROWLEFT') {
+        navExam(-1);
+      } else if (key === 'ARROWRIGHT') {
+        if (activeSession && currentExamIndex < activeSession.total_questions - 1) {
+          navExam(1);
+        }
+      }
+    });
+
+    // On Load Init
+    document.addEventListener('DOMContentLoaded', () => {
+      loadSubjects();
+      loadTestConfig();
+    });
+  </script>
+</body>
+</html>

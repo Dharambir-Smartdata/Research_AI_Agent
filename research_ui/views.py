@@ -25,14 +25,35 @@ from main_agent import (
     is_document_intent,
     _get_latest_upload_file,
 )
-from mediator_agent import route_query
 
 # Global singleton agent instances with asyncio lock
 _agent_instance = None
+_doc_agent_instance = None
 _checkpointer = None
 _store = None
-_doc_agent_instance = None
 _agent_lock = asyncio.Lock()
+
+
+async def get_or_create_doc_agent():
+    """Lazily initialize the Document Operations Agent."""
+    global _doc_agent_instance, _checkpointer, _store
+    if _doc_agent_instance is not None:
+        return _doc_agent_instance
+
+    if _checkpointer is None:
+        from langgraph.checkpoint.memory import InMemorySaver
+        _checkpointer = InMemorySaver()
+    if _store is None:
+        from langgraph.store.memory import InMemoryStore
+        _store = InMemoryStore()
+
+    from document_agent import create_document_agent
+    _doc_agent_instance = create_document_agent(
+        llm=llm,
+        checkpointer=_checkpointer,
+        store=_store,
+    )
+    return _doc_agent_instance
 
 CONVERSATIONS_FILE = RESEARCH_DIR / "conversations.json"
 
@@ -74,28 +95,6 @@ async def get_or_create_agent():
         return _agent_instance
 
 
-async def get_or_create_doc_agent():
-    """Lazily initialize the Document Operations Agent when needed."""
-    global _doc_agent_instance, _checkpointer, _store
-    if _doc_agent_instance is not None:
-        return _doc_agent_instance
-
-    if _checkpointer is None:
-        from langgraph.checkpoint.memory import InMemorySaver
-        _checkpointer = InMemorySaver()
-    if _store is None:
-        from langgraph.store.memory import InMemoryStore
-        _store = InMemoryStore()
-
-    from document_agent import create_document_agent
-    _doc_agent_instance = create_document_agent(
-        llm=llm,
-        checkpointer=_checkpointer,
-        store=_store,
-    )
-    return _doc_agent_instance
-
-
 def index(request):
     """Main dashboard page."""
     reports_count = len(_get_reports_list())
@@ -111,6 +110,23 @@ def index(request):
         "vault_count": vault_count,
     }
     return render(request, "research_ui/index.html", context)
+
+
+def test_series_view(request):
+    """Test Series dashboard page."""
+    reports_count = len(_get_reports_list())
+    uploads_count = 0
+    if UPLOAD_DIR.exists():
+        uploads_count = sum(1 for f in UPLOAD_DIR.glob("*") if f.is_file() and not f.name.startswith("."))
+    vault_count = reports_count + uploads_count
+
+    context = {
+        "model_name": MODEL,
+        "research_dir": str(RESEARCH_DIR),
+        "upload_dir": str(UPLOAD_DIR),
+        "vault_count": vault_count,
+    }
+    return render(request, "research_ui/test_series.html", context)
 
 
 def _get_reports_list():
@@ -568,26 +584,22 @@ async def chat_api(request):
     conv_record = convs.get(conv_id, {})
     active_doc = conv_record.get("active_document") or (data.get("active_document") or "").strip() or None
 
-    # Mediator agent dynamically routes between document_agent and main_agent
-    selected_agent = await route_query(
-        llm=llm,
-        prompt=prompt,
-        active_document=active_doc,
-        attached_files=file_paths or ([file_path] if file_path else []),
-        has_last_report=bool(last_report),
-    )
-    is_doc_task = (selected_agent == "document_agent")
-
     target_doc = None
+    if file_path:
+        target_doc = file_path
+    elif active_doc and _find_file_safely(active_doc):
+        target_doc = active_doc
+    else:
+        target_doc = _get_latest_upload_file()
+
+    is_doc_task = bool(
+        file_paths
+        or file_path
+        or is_document_intent(prompt, bool(last_report), bool(active_doc))
+    )
+
     try:
         if is_doc_task:
-            if file_path:
-                target_doc = file_path
-            elif active_doc and _find_file_safely(active_doc):
-                target_doc = active_doc
-            else:
-                target_doc = _get_latest_upload_file()
-
             if not target_doc:
                 response_text = "No active document found in this session. Please upload a document or attach a file first to perform document operations."
             else:
@@ -604,7 +616,12 @@ async def chat_api(request):
                 response_text = _extract_text(response["messages"][-1].content)
         else:
             agent = await get_or_create_agent()
-            response_text = await ask_gemini(prompt, agent, last_report, thread_id=f"research-{conv_id}")
+            response_text = await ask_gemini(
+                prompt=prompt,
+                agent=agent,
+                last_report=last_report,
+                thread_id=f"research-{conv_id}",
+            )
 
         # Check if this was a save confirmation
         stripped = response_text.lstrip()
@@ -640,6 +657,8 @@ async def chat_api(request):
                     doc_path = candidate_path
                     doc_filename = Path(doc_path).name
                     break
+
+        is_doc_task = is_doc_result or is_document_intent(prompt, bool(last_report), bool(active_doc))
 
         if not is_doc_result and is_doc_task:
             found_docs = re.findall(
@@ -809,12 +828,12 @@ def favicon_view(request):
 @csrf_exempt
 async def reset_api(request):
     """Safely cleanup and reset the agent instance for a clean state."""
-    global _agent_instance, _checkpointer, _store, _doc_agent_instance
+    global _agent_instance, _doc_agent_instance, _checkpointer, _store
     async with _agent_lock:
         if _agent_instance is not None:
             await _safe_cleanup()
         _agent_instance = None
+        _doc_agent_instance = None
         _checkpointer = None
         _store = None
-        _doc_agent_instance = None
     return JsonResponse({"status": "success", "message": "Agent session reset successfully."})

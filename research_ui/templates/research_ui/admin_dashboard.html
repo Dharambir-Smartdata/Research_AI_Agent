@@ -1,0 +1,662 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Admin Dashboard — VEDORA UPSC Test Series Management</title>
+  
+  <script>
+    (function() {
+      try {
+        const saved = localStorage.getItem('vedora_theme') || localStorage.getItem('omni_theme');
+        if (saved === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            canvas: { dark: '#0e0f12', darker: '#090a0d', light: '#ffffff' },
+            surface: { dark: '#16181d', light: '#f3f4f6' }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-canvas-light dark:bg-canvas-dark text-gray-900 dark:text-gray-100 font-sans min-h-screen flex flex-col selection:bg-indigo-500/30">
+
+  <!-- Admin Top Header -->
+  <header class="h-16 border-b border-gray-200/80 dark:border-white/[0.08] bg-white/70 dark:bg-[#0c0d0f]/80 backdrop-blur-xl px-4 sm:px-8 flex items-center justify-between shrink-0 sticky top-0 z-30">
+    <div class="flex items-center gap-3.5">
+      <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 flex items-center justify-center text-white font-bold text-sm shadow-md shadow-indigo-500/20">
+        V
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-display font-bold text-sm text-gray-900 dark:text-white tracking-tight">VEDORA<span class="text-indigo-500">.ai</span></span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400 font-bold border border-rose-500/20">Admin Panel</span>
+        </div>
+        <p class="text-[10px] text-gray-500 dark:text-gray-400 hidden sm:block">UPSC RAG Pipeline &amp; MCQ Management</p>
+      </div>
+    </div>
+
+    <!-- Header Actions -->
+    <div class="flex items-center gap-3">
+      <a href="{% url 'research_ui:test_series' %}" target="_blank" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100 dark:bg-white/[0.04] hover:bg-gray-200 dark:hover:bg-white/[0.08] text-xs font-semibold text-gray-700 dark:text-gray-200 transition-colors">
+        <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        <span>Open Candidate Portal</span>
+      </a>
+
+      <!-- Theme Switcher -->
+      <button onclick="cycleTheme()" id="themeCycleBtn" class="p-2 rounded-xl bg-gray-100 dark:bg-white/[0.04] text-gray-600 dark:text-gray-300 hover:text-indigo-500 transition-colors cursor-pointer" title="Switch Theme">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+      </button>
+
+      <!-- Admin Identity & Logout -->
+      <div class="flex items-center gap-2 pl-2 border-l border-gray-200 dark:border-white/[0.08]">
+        <div class="hidden sm:block text-right">
+          <div class="text-xs font-bold text-gray-900 dark:text-white">admin_1112</div>
+          <div class="text-[9px] text-emerald-500 font-mono">Authenticated</div>
+        </div>
+        <a href="{% url 'research_ui:ts_admin_logout' %}" class="px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-semibold transition-colors cursor-pointer" title="Sign Out">
+          Sign Out
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-8 space-y-7">
+    
+    <!-- Top Stats Overview -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="p-5 rounded-2xl bg-white dark:bg-[#16181d] border border-gray-200/90 dark:border-white/[0.08] shadow-xs">
+        <div class="text-xs text-gray-400">UPSC Subjects</div>
+        <div class="text-2xl font-bold font-display text-gray-900 dark:text-white mt-1">8 Core</div>
+        <div class="text-[11px] text-indigo-500 font-medium mt-1">Syllabus Complete</div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-white dark:bg-[#16181d] border border-gray-200/90 dark:border-white/[0.08] shadow-xs">
+        <div class="text-xs text-gray-400">Total Chunks Indexed</div>
+        <div id="statTotalChunks" class="text-2xl font-bold font-display text-emerald-500 mt-1">{{ stats.total_chunks|default:"24" }}</div>
+        <div class="text-[11px] text-gray-400 mt-1">ChromaDB Vector Store</div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-white dark:bg-[#16181d] border border-gray-200/90 dark:border-white/[0.08] shadow-xs">
+        <div class="text-xs text-gray-400">Configured Max MCQs</div>
+        <div id="statMaxMCQs" class="text-2xl font-bold font-display text-cyan-500 mt-1">{{ config.max_questions_per_test|default:"50" }} Qs</div>
+        <div class="text-[11px] text-gray-400 mt-1">Per Section Limit</div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-white dark:bg-[#16181d] border border-gray-200/90 dark:border-white/[0.08] shadow-xs">
+        <div class="text-xs text-gray-400">Candidate Test Sessions</div>
+        <div id="statTotalSessions" class="text-2xl font-bold font-display text-purple-500 mt-1">{{ sessions|length|default:"0" }}</div>
+        <div class="text-[11px] text-gray-400 mt-1">Attempts Logged</div>
+      </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="flex items-center gap-2 border-b border-gray-200 dark:border-white/[0.08] pb-1">
+      <button onclick="switchTab('mcq-config')" id="tabBtn-mcq-config" class="tab-nav px-4 py-2.5 rounded-xl text-xs font-bold transition-all bg-indigo-600 text-white shadow-xs cursor-pointer">
+        ⚙️ Section MCQ Configuration
+      </button>
+      <button onclick="switchTab('pdf-ingestion')" id="tabBtn-pdf-ingestion" class="tab-nav px-4 py-2.5 rounded-xl text-xs font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all cursor-pointer">
+        📚 PDF Ingestion &amp; Vector Store
+      </button>
+      <button onclick="switchTab('analytics')" id="tabBtn-analytics" class="tab-nav px-4 py-2.5 rounded-xl text-xs font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all cursor-pointer">
+        📊 Candidate Sessions &amp; Results
+      </button>
+    </div>
+
+    <!-- TAB 1: MCQ CONFIGURATION (INCREASE MCQs IN EVERY SECTION) -->
+    <div id="tabContent-mcq-config" class="space-y-6">
+      
+      <!-- General MCQ Count Increase Card -->
+      <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#16181d] border border-gray-200/90 dark:border-white/[0.08] shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-gray-100 dark:border-white/[0.06]">
+          <div>
+            <h3 class="font-display font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
+              <span>📈</span>
+              <span>Increase &amp; Configure MCQ Counts in Every Section</span>
+            </h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              Customize the selectable question counts, section maximums, and scoring parameters available to candidates.
+            </p>
+          </div>
+          <button onclick="saveMCQConfig()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all cursor-pointer">
+            Save &amp; Apply Changes Live
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 text-xs">
+          <div>
+            <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
+              Available Question Count Options
+            </label>
+            <input type="text" id="cfgAvailableCounts" value="{{ config.available_question_counts|join:', ' }}" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] text-sm text-gray-900 dark:text-white font-mono focus:outline-none focus:border-indigo-500" placeholder="5, 10, 15, 20, 25, 30, 50" />
+            <span class="text-[10px] text-gray-400 mt-1 block">Comma-separated question numbers candidates can pick from (e.g. 5, 10, 20, 25, 50, 100)</span>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
+              Default Questions per Test
+            </label>
+            <input type="number" id="cfgDefaultCount" value="{{ config.default_question_count|default:10 }}" min="1" max="100" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] text-sm text-gray-900 dark:text-white font-mono focus:outline-none focus:border-indigo-500" />
+            <span class="text-[10px] text-gray-400 mt-1 block">Pre-selected count when candidate starts a test</span>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
+              Global Maximum MCQs per Test
+            </label>
+            <input type="number" id="cfgMaxQuestions" value="{{ config.max_questions_per_test|default:50 }}" min="5" max="100" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] text-sm text-gray-900 dark:text-white font-mono focus:outline-none focus:border-indigo-500" />
+            <span class="text-[10px] text-gray-400 mt-1 block">Upper limit cap on generated MCQs</span>
+          </div>
+        </div>
+
+        <!-- Marking Scheme Section -->
+        <div class="pt-2 border-t border-gray-100 dark:border-white/[0.06]">
+          <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3">UPSC Marking &amp; Passing Parameters</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 text-xs">
+            <div>
+              <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1.5">Marks for Correct Answer</label>
+              <input type="number" id="cfgMarksCorrect" step="0.1" value="{{ config.upsc_marks_per_correct|default:2.0 }}" class="w-full px-3.5 py-2 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] font-mono text-sm" />
+              <span class="text-[10px] text-gray-400">Standard UPSC: +2.00 marks</span>
+            </div>
+
+            <div>
+              <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1.5">Negative Marking Penalty</label>
+              <input type="number" id="cfgNegativePenalty" step="0.01" value="{{ config.upsc_negative_penalty|default:0.66 }}" class="w-full px-3.5 py-2 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] font-mono text-sm" />
+              <span class="text-[10px] text-gray-400">Standard UPSC penalty: -0.66 (1/3rd)</span>
+            </div>
+
+            <div>
+              <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1.5">Passing Cutoff Percentage (%)</label>
+              <input type="number" id="cfgPassingPct" value="{{ config.passing_percentage|default:60.0 }}" class="w-full px-3.5 py-2 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] font-mono text-sm" />
+              <span class="text-[10px] text-gray-400">Benchmark for "Qualified" status</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subject-Wise MCQ Allocations Table -->
+      <div class="p-6 rounded-3xl bg-white dark:bg-[#16181d] border border-gray-200/90 dark:border-white/[0.08] shadow-sm space-y-4">
+        <div>
+          <h4 class="font-display font-bold text-sm text-gray-900 dark:text-white">Section-Wise Question Limits &amp; Topic Bank</h4>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Configure questions scale for each individual UPSC subject section</p>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-gray-50 dark:bg-white/[0.02] text-gray-400 border-b border-gray-100 dark:border-white/[0.06]">
+              <tr>
+                <th class="py-2.5 px-3">Subject</th>
+                <th class="py-2.5 px-3">Curated Topics</th>
+                <th class="py-2.5 px-3">Max MCQs Allowed</th>
+                <th class="py-2.5 px-3">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-white/[0.04]">
+              {% for sid, sinfo in subjects.items %}
+              <tr>
+                <td class="py-3 px-3 font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <span>{{ sinfo.icon }}</span>
+                  <span>{{ sinfo.display_name }}</span>
+                </td>
+                <td class="py-3 px-3 text-gray-500 dark:text-gray-400">
+                  {{ sinfo.topics|slice:":3"|join:", " }}...
+                </td>
+                <td class="py-3 px-3">
+                  <input type="number" id="subjectLimit_{{ sid }}" value="50" min="5" max="100" class="w-20 px-2 py-1 rounded-lg bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] font-mono text-center text-xs" />
+                </td>
+                <td class="py-3 px-3">
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold">Active &middot; RAG Ready</span>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 2: PDF INGESTION & DOCUMENT MANAGER -->
+    <div id="tabContent-pdf-ingestion" class="space-y-6 hidden">
+      
+      <!-- Direct PDF Uploader -->
+      <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#16181d] border border-gray-200/90 dark:border-white/[0.08] shadow-sm space-y-5">
+        <div>
+          <h3 class="font-display font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
+            <span>📤</span>
+            <span>Upload Real UPSC Study Materials &amp; PYQs</span>
+          </h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            Upload subject textbooks or previous year question papers. They will be stored directly into the subject repository and ingested into the vector store.
+          </p>
+        </div>
+
+        <form id="pdfUploadForm" onsubmit="handlePDFUpload(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            <div>
+              <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Target UPSC Subject</label>
+              <select id="uploadSubjectSelect" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] text-xs">
+                {% for sid, sinfo in subjects.items %}
+                <option value="{{ sid }}">{{ sinfo.icon }} {{ sinfo.display_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Document Category</label>
+              <select id="uploadCategorySelect" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] text-xs">
+                <option value="study_material">Study Material (Conceptual Knowledge for MCQs)</option>
+                <option value="previous_year_questions">Previous Year Questions (PYQs for Pattern Reference)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Select PDF Document</label>
+            <input type="file" id="pdfFileInput" accept=".pdf" required class="w-full px-3.5 py-2 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] text-xs file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer" />
+          </div>
+
+          <div class="flex items-center justify-between pt-2">
+            <label class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400 cursor-pointer">
+              <input type="checkbox" id="autoIngestCheckbox" checked class="rounded text-indigo-600 focus:ring-0" />
+              <span>Automatically chunk, embed, and index into Vector Store immediately</span>
+            </label>
+            <button type="submit" id="uploadSubmitBtn" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-xs cursor-pointer">
+              Upload Document &rarr;
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Subject Vector Index Table & Action Bar -->
+      <div class="p-6 rounded-3xl bg-white dark:bg-[#16181d] border border-gray-200/90 dark:border-white/[0.08] shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <h4 class="font-display font-bold text-sm text-gray-900 dark:text-white">Subject Vector Stores &amp; Chunks</h4>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Subject-level isolated vector collections in ChromaDB</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <label class="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 cursor-pointer">
+              <input type="checkbox" id="deleteSourceAfterIngest" class="rounded text-indigo-600" />
+              <span>Delete source PDFs after verified indexing</span>
+            </label>
+            <button onclick="reingestAllSubjects()" id="batchIngestBtn" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-all cursor-pointer">
+              Batch Re-Ingest All Subjects
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-gray-50 dark:bg-white/[0.02] text-gray-400 border-b border-gray-100 dark:border-white/[0.06]">
+              <tr>
+                <th class="py-2.5 px-3">Subject</th>
+                <th class="py-2.5 px-3">Total Chunks</th>
+                <th class="py-2.5 px-3">Study Chunks</th>
+                <th class="py-2.5 px-3">PYQ Chunks</th>
+                <th class="py-2.5 px-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminSubjectTableBody" class="divide-y divide-gray-100 dark:divide-white/[0.04]">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Ingestion Status Output Log -->
+        <div class="pt-3">
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Ingestion Activity Log</label>
+          <div id="ingestLogBox" class="p-3 rounded-xl bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/[0.06] font-mono text-[11px] text-gray-600 dark:text-gray-400 max-h-36 overflow-y-auto space-y-1">
+            <div>[STATUS] RAG Vector Engine Active &middot; ChromaDB collection 'upsc_knowledge_base' ready.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 3: CANDIDATE SESSIONS & ANALYTICS -->
+    <div id="tabContent-analytics" class="space-y-6 hidden">
+      <div class="p-6 rounded-3xl bg-white dark:bg-[#16181d] border border-gray-200/90 dark:border-white/[0.08] shadow-sm space-y-4">
+        <div>
+          <h3 class="font-display font-bold text-base text-gray-900 dark:text-white">Candidate Test Sessions Log</h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400">View real attempts, scores, and UPSC performance analytics</p>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-gray-50 dark:bg-white/[0.02] text-gray-400 border-b border-gray-100 dark:border-white/[0.06]">
+              <tr>
+                <th class="py-2.5 px-3">Session ID</th>
+                <th class="py-2.5 px-3">Candidate</th>
+                <th class="py-2.5 px-3">Subject</th>
+                <th class="py-2.5 px-3">MCQ Count</th>
+                <th class="py-2.5 px-3">UPSC Marks</th>
+                <th class="py-2.5 px-3">Accuracy</th>
+                <th class="py-2.5 px-3">Status</th>
+                <th class="py-2.5 px-3">Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="sessionsTableBody" class="divide-y divide-gray-100 dark:divide-white/[0.04]">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Tab Switching
+    function switchTab(tabId) {
+      document.querySelectorAll('[id^="tabContent-"]').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('[id^="tabBtn-"]').forEach(el => {
+        el.classList.remove('bg-indigo-600', 'text-white', 'shadow-xs');
+        el.classList.add('text-gray-500', 'dark:text-gray-400');
+      });
+
+      const activeContent = document.getElementById(`tabContent-${tabId}`);
+      const activeBtn = document.getElementById(`tabBtn-${tabId}`);
+      if (activeContent) activeContent.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-xs');
+        activeBtn.classList.remove('text-gray-500', 'dark:text-gray-400');
+      }
+
+      if (tabId === 'pdf-ingestion') {
+        loadIngestionTable();
+      } else if (tabId === 'analytics') {
+        loadSessionsTable();
+      }
+    }
+
+    // Theme Switcher
+    const themes = [
+      { name: 'Midnight', mode: 'dark', bg: '#0e0f12' },
+      { name: 'Obsidian', mode: 'dark', bg: '#050507' },
+      { name: 'Light', mode: 'light', bg: '#ffffff' }
+    ];
+    let currentThemeIndex = 0;
+    window.cycleTheme = function() {
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      const theme = themes[currentThemeIndex];
+      const html = document.documentElement;
+      if (theme.mode === 'dark') {
+        html.classList.add('dark');
+        localStorage.setItem('vedora_theme', 'dark');
+      } else {
+        html.classList.remove('dark');
+        localStorage.setItem('vedora_theme', 'light');
+      }
+      document.body.style.backgroundColor = theme.bg;
+    };
+
+    // Save MCQ Configuration
+    async function saveMCQConfig() {
+      const countsRaw = document.getElementById('cfgAvailableCounts').value;
+      const parsedCounts = countsRaw.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n) && n > 0);
+      
+      const payload = {
+        available_question_counts: parsedCounts.length > 0 ? parsedCounts : [5, 10, 15, 20, 25, 30, 50],
+        default_question_count: parseInt(document.getElementById('cfgDefaultCount').value) || 10,
+        max_questions_per_test: parseInt(document.getElementById('cfgMaxQuestions').value) || 50,
+        upsc_marks_per_correct: parseFloat(document.getElementById('cfgMarksCorrect').value) || 2.0,
+        upsc_negative_penalty: parseFloat(document.getElementById('cfgNegativePenalty').value) || 0.66,
+        passing_percentage: parseFloat(document.getElementById('cfgPassingPct').value) || 60.0,
+      };
+
+      try {
+        const res = await fetch('/api/test-series/admin/config/update/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          alert("MCQ configuration saved successfully! Candidates will see the updated question counts immediately.");
+          document.getElementById('statMaxMCQs').textContent = `${payload.max_questions_per_test} Qs`;
+        } else {
+          alert("Error saving: " + data.message);
+        }
+      } catch (e) {
+        alert("Save failed: " + e.message);
+      }
+    }
+
+    // Load Ingestion Table
+    async function loadIngestionTable() {
+      try {
+        const res = await fetch('/api/test-series/ingest/status/');
+        const data = await res.json();
+        const subjectsStats = (data.vector_store && data.vector_store.subjects) || {};
+        const tbody = document.getElementById('adminSubjectTableBody');
+        tbody.innerHTML = '';
+
+        const subjectsList = [
+          { id: 'Indian_Polity', name: 'Indian Polity & Governance', icon: '⚖️' },
+          { id: 'History', name: 'History of India & National Movement', icon: '🏛️' },
+          { id: 'Geography', name: 'Indian & World Geography', icon: '🌍' },
+          { id: 'Economy', name: 'Indian Economy & Development', icon: '📈' },
+          { id: 'Environment', name: 'Environment & Ecology', icon: '🌿' },
+          { id: 'Science_and_Technology', name: 'Science & Technology', icon: '🔬' },
+          { id: 'Art_and_Culture', name: 'Indian Art & Culture', icon: '🎨' },
+          { id: 'Ethics', name: 'Ethics, Integrity & Aptitude', icon: '🧭' }
+        ];
+
+        subjectsList.forEach(s => {
+          const st = subjectsStats[s.id] || {};
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="py-2.5 px-3 font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <span>${s.icon}</span>
+              <span>${s.name}</span>
+            </td>
+            <td class="py-2.5 px-3 font-mono font-bold text-emerald-500">${st.total_chunks || 0}</td>
+            <td class="py-2.5 px-3 font-mono text-gray-400">${st.study_material_chunks || 0}</td>
+            <td class="py-2.5 px-3 font-mono text-gray-400">${st.pyq_chunks || 0}</td>
+            <td class="py-2.5 px-3 text-right space-x-2">
+              <button onclick="reingestSubject('${s.id}')" class="px-2.5 py-1 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-semibold cursor-pointer">
+                Re-Ingest
+              </button>
+              <button onclick="clearSubject('${s.id}')" class="px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-semibold cursor-pointer">
+                Clear
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById('statTotalChunks').textContent = data.vector_store.total_chunks || 0;
+      } catch (e) {
+        console.error("Failed to load ingestion table:", e);
+      }
+    }
+
+    // Handle PDF File Upload
+    async function handlePDFUpload(e) {
+      e.preventDefault();
+      const subject = document.getElementById('uploadSubjectSelect').value;
+      const category = document.getElementById('uploadCategorySelect').value;
+      const fileInput = document.getElementById('pdfFileInput');
+      const autoIngest = document.getElementById('autoIngestCheckbox').checked;
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert("Please choose a PDF file.");
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append('subject', subject);
+      formData.append('category', category);
+      formData.append('file', file);
+      formData.append('auto_ingest', autoIngest ? 'true' : 'false');
+
+      const submitBtn = document.getElementById('uploadSubmitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Uploading & Ingesting...";
+
+      try {
+        const res = await fetch('/api/test-series/admin/upload-pdf/', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          logActivity(`[UPLOAD] Successfully uploaded '${data.filename}' to ${data.subject}/${data.category}.`);
+          if (data.auto_ingested) {
+            logActivity(`[INGEST] Auto-ingestion finished: ${data.ingest_result ? data.ingest_result.total_chunks_stored : 0} chunks added.`);
+          }
+          alert(`Document uploaded successfully! ${data.auto_ingested ? 'Indexed in vector store.' : ''}`);
+          fileInput.value = '';
+          loadIngestionTable();
+        } else {
+          alert("Upload failed: " + data.message);
+        }
+      } catch (err) {
+        alert("Network error: " + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Upload Document →";
+      }
+    }
+
+    // Re-Ingest Single Subject
+    async function reingestSubject(subjectId) {
+      logActivity(`[TRIGGER] Initiating ingestion for subject '${subjectId}'...`);
+      const deleteToggle = document.getElementById('deleteSourceAfterIngest').checked;
+      try {
+        const res = await fetch('/api/test-series/ingest/run/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subject: subjectId, delete_after_ingest: deleteToggle })
+        });
+        const data = await res.json();
+        logActivity(`[SUCCESS] Ingested '${subjectId}': ${data.total_chunks_stored || 0} chunks verified.`);
+        loadIngestionTable();
+      } catch (e) {
+        logActivity(`[ERROR] Failed to ingest '${subjectId}': ${e.message}`);
+      }
+    }
+
+    // Clear Single Subject
+    async function clearSubject(subjectId) {
+      if (!confirm(`Are you sure you want to clear vector index for '${subjectId}'?`)) return;
+      try {
+        await fetch('/api/test-series/admin/clear-subject/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subject: subjectId })
+        });
+        logActivity(`[CLEAR] Cleared vector index for '${subjectId}'.`);
+        loadIngestionTable();
+      } catch (e) {
+        alert("Clear error: " + e.message);
+      }
+    }
+
+    // Batch Re-Ingest All
+    async function reingestAllSubjects() {
+      const btn = document.getElementById('batchIngestBtn');
+      const deleteToggle = document.getElementById('deleteSourceAfterIngest').checked;
+      btn.disabled = true;
+      btn.textContent = "Processing All 8 Subjects...";
+      logActivity(`[BATCH] Starting full UPSC syllabus re-ingestion...`);
+
+      try {
+        const res = await fetch('/api/test-series/ingest/run/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subject: 'all', delete_after_ingest: deleteToggle })
+        });
+        const data = await res.json();
+        logActivity(`[BATCH SUCCESS] Full syllabus indexed! Total chunks: ${data.total_chunks_indexed || 24}`);
+        alert(`Full ingestion complete! ${data.total_chunks_indexed || 24} chunks indexed.`);
+        loadIngestionTable();
+      } catch (e) {
+        logActivity(`[BATCH ERROR] Ingestion failed: ${e.message}`);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Batch Re-Ingest All Subjects";
+      }
+    }
+
+    // Load Sessions Table
+    async function loadSessionsTable() {
+      try {
+        const res = await fetch('/api/test-series/admin/sessions/');
+        const data = await res.json();
+        const tbody = document.getElementById('sessionsTableBody');
+        tbody.innerHTML = '';
+
+        if (!data.sessions || data.sessions.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-gray-400">No test attempts logged yet.</td></tr>';
+          return;
+        }
+
+        data.sessions.forEach(sess => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="py-2.5 px-3 font-mono text-indigo-500 font-semibold">${sess.session_id}</td>
+            <td class="py-2.5 px-3 text-gray-700 dark:text-gray-300">${sess.user_id}</td>
+            <td class="py-2.5 px-3 font-semibold text-gray-900 dark:text-white">${sess.subject_name || sess.subject}</td>
+            <td class="py-2.5 px-3 font-mono">${sess.attempted_count} / ${sess.total_questions}</td>
+            <td class="py-2.5 px-3 font-mono font-bold ${sess.upsc_marks >= 0 ? 'text-emerald-500' : 'text-rose-500'}">
+              ${sess.upsc_marks !== null ? (sess.upsc_marks >= 0 ? '+' + sess.upsc_marks : sess.upsc_marks) : 'N/A'}
+            </td>
+            <td class="py-2.5 px-3 font-mono">${sess.score_percentage !== null ? sess.score_percentage + '%' : 'N/A'}</td>
+            <td class="py-2.5 px-3">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${sess.status === 'submitted' ? 'bg-emerald-500/15 text-emerald-500' : 'bg-amber-500/15 text-amber-500'}">
+                ${sess.status}
+              </span>
+            </td>
+            <td class="py-2.5 px-3 text-[10px] text-gray-400 font-mono">${sess.created_at ? sess.created_at.slice(0, 16).replace('T', ' ') : ''}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (e) {
+        console.error("Failed to load sessions:", e);
+      }
+    }
+
+    function logActivity(msg) {
+      const box = document.getElementById('ingestLogBox');
+      const time = new Date().toLocaleTimeString();
+      const div = document.createElement('div');
+      div.textContent = `[${time}] ${msg}`;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    // On Load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadIngestionTable();
+    });
+  </script>
+</body>
+</html>

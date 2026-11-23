@@ -1,0 +1,77 @@
+{
+  "ingested_subjects": {
+    "Indian_Polity": {
+      "subject": "Indian_Polity",
+      "total_chunks": 3,
+      "processed_files_count": 3,
+      "failed_files_count": 0,
+      "deleted_after_ingest": false,
+      "verified": true,
+      "ingested_at": "2026-11-23T06:38:27.479011"
+    },
+    "History": {
+      "subject": "History",
+      "total_chunks": 3,
+      "processed_files_count": 3,
+      "failed_files_count": 0,
+      "deleted_after_ingest": false,
+      "verified": true,
+      "ingested_at": "2026-11-23T06:38:27.725155"
+    },
+    "Geography": {
+      "subject": "Geography",
+      "total_chunks": 3,
+      "processed_files_count": 3,
+      "failed_files_count": 0,
+      "deleted_after_ingest": false,
+      "verified": true,
+      "ingested_at": "2026-11-23T06:38:27.909753"
+    },
+    "Economy": {
+      "subject": "Economy",
+      "total_chunks": 3,
+      "processed_files_count": 3,
+      "failed_files_count": 0,
+      "deleted_after_ingest": false,
+      "verified": true,
+      "ingested_at": "2026-11-23T06:38:28.032799"
+    },
+    "Environment": {
+      "subject": "Environment",
+      "total_chunks": 3,
+      "processed_files_count": 3,
+      "failed_files_count": 0,
+      "deleted_after_ingest": false,
+      "verified": true,
+      "ingested_at": "2026-11-23T06:38:28.299686"
+    },
+    "Science_and_Technology": {
+      "subject": "Science_and_Technology",
+      "total_chunks": 3,
+      "processed_files_count": 3,
+      "failed_files_count": 0,
+      "deleted_after_ingest": false,
+      "verified": true,
+      "ingested_at": "2026-11-23T06:38:28.507066"
+    },
+    "Art_and_Culture": {
+      "subject": "Art_and_Culture",
+      "total_chunks": 3,
+      "processed_files_count": 3,
+      "failed_files_count": 0,
+      "deleted_after_ingest": false,
+      "verified": true,
+      "ingested_at": "2026-11-23T06:38:28.654448"
+    },
+    "Ethics": {
+      "subject": "Ethics",
+      "total_chunks": 3,
+      "processed_files_count": 3,
+      "failed_files_count": 0,
+      "deleted_after_ingest": false,
+      "verified": true,
+      "ingested_at": "2026-11-23T06:38:28.854355"
+    }
+  },
+  "last_updated": "2026-11-23T06:38:28.854365"
+}

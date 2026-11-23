@@ -1,0 +1,69 @@
+{
+  "admin_username": "admin_1112",
+  "admin_password": "1112",
+  "default_question_count": 10,
+  "available_question_counts": [
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    50,
+    100
+  ],
+  "max_questions_per_test": 50,
+  "upsc_marks_per_correct": 2.0,
+  "upsc_negative_penalty": 0.66,
+  "passing_percentage": 60.0,
+  "time_per_question_seconds": 120,
+  "allow_dynamic_rag_fallback": true,
+  "subject_mcq_limits": {
+    "Indian_Polity": {
+      "max_questions": 50,
+      "default_questions": 10
+    },
+    "History": {
+      "max_questions": 50,
+      "default_questions": 10
+    },
+    "Geography": {
+      "max_questions": 50,
+      "default_questions": 10
+    },
+    "Economy": {
+      "max_questions": 50,
+      "default_questions": 10
+    },
+    "Environment": {
+      "max_questions": 50,
+      "default_questions": 10
+    },
+    "Science_and_Technology": {
+      "max_questions": 50,
+      "default_questions": 10
+    },
+    "Art_and_Culture": {
+      "max_questions": 50,
+      "default_questions": 10
+    },
+    "Ethics": {
+      "max_questions": 50,
+      "default_questions": 10
+    }
+  },
+  "max_question_count": 100,
+  "questions_per_section": {
+    "History": 30,
+    "Geography": 30,
+    "Indian_Polity": 30,
+    "Economy": 30,
+    "Environment": 30,
+    "Science_Tech": 30,
+    "Art_Culture": 30,
+    "Ethics": 30
+  },
+  "marks_correct": 2.0,
+  "marks_penalty_incorrect": 0.66,
+  "pass_percentage": 50
+}

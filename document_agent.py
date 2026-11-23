@@ -9,8 +9,7 @@ from langchain_core.tools import tool
 DOC_SCRIPTS_DIR = Path("doc_scripts")
 DOC_SCRIPTS_DIR.mkdir(exist_ok=True)
 
-DOC_CODE_PROMPT = """
-You are the Document Operations and Inspection Agent.
+DOC_CODE_PROMPT = """You are the Document Operations and Inspection Agent.
 Your responsibility is to analyze user requests for ANY document changes (PDF, Word DOCX, text, markdown, etc.) or document queries, generate Python code or call existing Python scripts in the 'doc_scripts' folder, and inspect or execute them on the user's documents.
 
 Available Tools:
@@ -21,20 +20,20 @@ Available Tools:
 2. run_saved_script(script_name: str, script_args: list[str] = [])
    - Executes an existing script from doc_scripts/<script_name>.py.
    - Pre-built scripts available in doc_scripts/:
+     * compress_pdf.py <input_pdf> [output_pdf]
      * remove_pages.py <file_path> <page_spec...> (supports PDF and Word DOCX/DOC, single pages, discrete lists like 3 5 8, and ranges like 40-50, 40 to 50, from 40 to 50)
      * revert_pages.py <target_pdf> [source_pdf] <page1> [page2 ...]
      * edit_text.py <file_path> <find_text> <replace_text>
      * convert_document.py <source_path> <target_format>
      * add_signature.py <pdf_path> <image_path> [page] [x] [y]
-     * compress_pdf.py <input_pdf> [output_pdf]
      * get_doc_info.py <file_path>
 3. list_available_scripts()
    - Lists all saved scripts in doc_scripts/.
 
 Execution Rules:
 - Script Reuse Rule: Always check 'doc_scripts/' first. If an existing script already handles the requested operation (such as remove_pages.py, revert_pages.py, edit_text.py, convert_document.py, compress_pdf.py, get_doc_info.py, or any previously saved script), you MUST call 'run_saved_script' and NEVER create a new one. Only use 'write_and_execute_script' when no existing script can perform the task.
+- When compressing a PDF: call 'run_saved_script' with script_name='compress_pdf' and the file path. In your conversational response, state the original size, the compressed size, and the percentage saved.
 - Document Info & Questions: If the user asks about the document's file size, page count, structure, or content, execute 'get_doc_info.py' (or a quick inspection script) and directly answer their question with the exact file size and details.
-- When compressing or resizing a document, always clearly state the original size, the compressed size (in KB/MB), and the percentage saved in your response.
 - When removing pages, strictly use the actual page count numbers returned by the script execution stdout. State the exact original page count, how many and which pages were removed, and the exact remaining page count. Do not fabricate or invent page numbers.
 - When the user asks to revert or restore pages (e.g., "revert back the page 3"), look at the documents in 'uploads/'. If 'uploads/trimmed_...pdf' is active and an earlier version exists, use 'revert_pages.py' or generate a script to restore the page from the original into the active document.
 - Modification scripts must save the output file inside the 'uploads/' directory with a descriptive prefix (e.g., 'reverted_', 'trimmed_', 'edited_', 'signed_', 'converted_', 'compressed_').
@@ -104,12 +103,12 @@ def list_available_scripts() -> str:
 DOC_TOOLS = [write_and_execute_script, run_saved_script, list_available_scripts]
 
 
-def create_document_agent(llm, checkpointer, store):
-    agent = create_agent(
+def create_document_agent(llm, checkpointer=None, store=None):
+    return create_agent(
         model=llm,
         tools=DOC_TOOLS,
         system_prompt=DOC_CODE_PROMPT,
         checkpointer=checkpointer,
         store=store,
     )
-    return agent
+
